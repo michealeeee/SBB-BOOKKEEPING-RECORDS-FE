@@ -216,3 +216,102 @@ img {
   object-fit: contain;
   border-radius: 12px;
 }
+
+/* =========================
+   MOBILE RESPONSIVE DESIGN
+   ========================= */
+
+/* TABLET (≤ 1024px) */
+@media (max-width: 1024px) {
+
+  .hero {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero-left {
+    width: 100%;
+  }
+
+  .hero-right {
+    margin-top: 20px;
+  }
+
+  .features {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pricing-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-preview {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .testimonial-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* MOBILE (≤ 768px) */
+@media (max-width: 768px) {
+
+  /* NAVBAR STACK */
+  .navbar {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* HERO STACK */
+  .hero {
+    flex-direction: column;
+    padding: 40px 20px;
+  }
+
+  .hero-left h1 {
+    font-size: 28px;
+  }
+
+  .hero-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* FEATURES SINGLE COLUMN */
+  .features {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  /* PRICING SINGLE COLUMN */
+  .pricing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* DASHBOARD STACK */
+  .dashboard-preview {
+    flex-direction: column;
+  }
+
+  /* TESTIMONIALS SINGLE COLUMN */
+  .testimonial-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* IMAGES SCALE */
+  .hero-right img,
+  .preview-image img {
+    width: 100%;
+    height: auto;
+  }
+}
