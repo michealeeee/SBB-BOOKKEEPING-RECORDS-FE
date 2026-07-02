@@ -1,49 +1,76 @@
+import { useState } from "react";
 import heroImage from "../assets/hero.jpg";
 
 export default function LandingPage({ onLogin }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <div className="landing">
 
       {/* NAVBAR */}
       <nav className="navbar">
-        <div className="logo">Bookkeeply</div>
 
-        <div className="nav-links">
-          <a href="#features">Features</a>
-          <a href="#dashboard">Product</a>
-          <a href="#pricing">Pricing</a>
-          <a href="#testimonials">Reviews</a>
+  {/* LEFT: HAMBURGER */}
+  <button
+    className="hamburger"
+    onClick={() => setMenuOpen(true)}
+  >
+    ☰
+  </button>
+
+  {/* RIGHT: LOGO */}
+  <div className="logo">Bookkeeply</div>
+
+  <div className="desktop-links">
+    <a href="#features">Features</a>
+    <a href="#dashboard">Product</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#testimonials">Reviews</a>
+  </div>
+
+  <button className="login-btn desktop-only" onClick={onLogin}>
+    Start Free Trial
+  </button>
+
+</nav>
+
+
+      {/* OVERLAY */}
+      <div
+        className={`overlay ${menuOpen ? "show" : ""}`}
+        onClick={() => setMenuOpen(false)}
+      />
+
+      {/* MOBILE DRAWER */}
+      <div className={`mobile-drawer ${menuOpen ? "open" : ""}`}>
+
+        <div className="drawer-header">
+          <h3>Menu</h3>
+          <button onClick={() => setMenuOpen(false)}>✕</button>
         </div>
 
-        <button className="login-btn" onClick={onLogin}>
+        <a href="#features" onClick={() => setMenuOpen(false)}>Features</a>
+        <a href="#dashboard" onClick={() => setMenuOpen(false)}>Product</a>
+        <a href="#pricing" onClick={() => setMenuOpen(false)}>Pricing</a>
+        <a href="#testimonials" onClick={() => setMenuOpen(false)}>Reviews</a>
+
+        <button className="drawer-cta" onClick={onLogin}>
           Start Free Trial
         </button>
-      </nav>
+      </div>
 
-      {/* HERO SECTION */}
+      {/* HERO */}
       <header className="hero">
-        
-
         <div className="hero-left">
-         <p><h1>Smart Bookkeeping for Small Businesses</h1></p> 
+          <h1>Smart Bookkeeping for Small Business</h1>
           <p>
-            Track income, expenses, invoices, and financial reports in one powerful dashboard.
+            Track income, expenses, invoices, and reports in one dashboard.
           </p>
-
-          <div className="hero-buttons">
-            <button className="primary-btn" onClick={onLogin}>
-              Start Free Trial
-            </button>
-            <button className="secondary-btn">
-              Watch Demo
-            </button>
-          </div>
         </div>
 
         <div className="hero-right">
-         <img src={heroImage} alt="Dashboard Preview" />
+          <img src={heroImage} alt="Dashboard Preview" />
         </div>
-
       </header>
 
       {/* TRUST STRIP */}
@@ -53,7 +80,6 @@ export default function LandingPage({ onLogin }) {
 
       {/* FEATURES */}
       <section id="features" className="features">
-
         <div className="feature">
           <img src="https://images.unsplash.com/photo-1551288049-ec8c0d1f6f5d" />
           <h3>Real-time Analytics</h3>
@@ -73,12 +99,10 @@ export default function LandingPage({ onLogin }) {
           <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f" />
           <h3>Financial Reports</h3>
         </div>
-
       </section>
 
       {/* DASHBOARD PREVIEW */}
       <section id="dashboard" className="dashboard-preview">
-
         <div className="preview-text">
           <h2>All your finances in one dashboard</h2>
           <p>
@@ -92,16 +116,13 @@ export default function LandingPage({ onLogin }) {
             alt="Dashboard UI"
           />
         </div>
-
       </section>
 
       {/* PRICING */}
       <section id="pricing" className="pricing">
-
         <h2>Monthly Subscription Plans</h2>
 
         <div className="pricing-grid">
-
           <div className="plan">
             <h3>Starter</h3>
             <p className="price">$9 / month</p>
@@ -134,17 +155,14 @@ export default function LandingPage({ onLogin }) {
             </ul>
             <button>Subscribe</button>
           </div>
-
         </div>
       </section>
 
       {/* TESTIMONIALS */}
       <section id="testimonials" className="testimonials">
-
         <h2>What users say</h2>
 
         <div className="testimonial-grid">
-
           <div className="testimonial">
             <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e" />
             <p>"This app saved my business hours every week!"</p>
@@ -162,9 +180,7 @@ export default function LandingPage({ onLogin }) {
             <p>"Best bookkeeping tool I’ve used so far."</p>
             <h4>Michael T.</h4>
           </div>
-
         </div>
-
       </section>
 
       {/* FOOTER */}

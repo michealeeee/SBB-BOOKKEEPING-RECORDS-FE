@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 
+
 import Sidebar from "./components/layout/Sidebar";
 
 import Dashboard from "./components/dashboard/Dashboard";
@@ -12,11 +13,13 @@ import Vendors from "./components/vendors/Vendors";
 import Customers from "./components/customers/Customers";
 import Taxes from "./components/taxes/Taxes";
 import Subscribers from "./components/subscribers/Subscribers";
+import "./styles/landing.css";
+import LandingPage from "./components/LandingPage";
 
 export default function App() {
   const [page, setPage] = useState("dashboard");
   const [mobileOpen, setMobileOpen] = useState(false);
-
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const renderPage = () => {
     switch (page) {
       case "dashboard":
@@ -44,7 +47,10 @@ export default function App() {
 
   return (
     <div className="app-container">
-
+       {!isAuthenticated ? (
+      <LandingPage />
+    ) : (
+      <>
       <header className="mobile-header">
         <button
           className="menu-btn"
@@ -65,6 +71,8 @@ export default function App() {
       <main className="main-content">
         {renderPage()}
       </main>
+       </>
+    )}
 
     </div>
   );
