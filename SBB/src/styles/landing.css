@@ -525,7 +525,7 @@ img {
   right: -320px;
   width: 280px;
   height: 100vh;
-  background: #ffffff;
+  background: #1a1a1a;;
   z-index: 60;
   padding: 20px;
   display: flex;
@@ -550,6 +550,7 @@ img {
 .drawer-header h3 {
   margin: 0;
   font-size: 18px;
+  color: #fff;
 }
 
 /* LINKS */
@@ -560,11 +561,14 @@ img {
   padding: 10px;
   border-radius: 8px;
   transition: 0.2s;
+  color: #f1f1f1;
 }
 
 .mobile-drawer a:hover {
   background: #f2f6ff;
   color: #2f80ed;
+  background: rgba(255,255,255,0.08);
+  color: #4da3ff;
 }
 
 /* CTA BUTTON */
