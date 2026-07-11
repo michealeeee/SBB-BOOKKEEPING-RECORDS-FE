@@ -1,16 +1,18 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import heroImage from "../assets/hero.jpg";
 
 export default function LandingPage({ onLogin }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="landing">
 
       {/* NAVBAR */}
-      <nav className="navbar">
+  
+<nav className="navbar">
 
-  {/* LEFT: HAMBURGER */}
   <button
     className="hamburger"
     onClick={() => setMenuOpen(true)}
@@ -18,19 +20,40 @@ export default function LandingPage({ onLogin }) {
     ☰
   </button>
 
-  {/* RIGHT: LOGO */}
-  <div className="logo">Bookkeeply</div>
+
+  <div className="logo">
+    Bookkeeply
+  </div>
+
 
   <div className="desktop-links">
+
     <a href="#features">Features</a>
     <a href="#dashboard">Product</a>
     <a href="#pricing">Pricing</a>
     <a href="#testimonials">Reviews</a>
+
   </div>
 
-  <button className="login-btn desktop-only" onClick={onLogin}>
-    Start Free Trial
-  </button>
+
+  <div className="auth-buttons">
+
+    <button
+      className="signin-btn"
+      onClick={() => navigate("/signin")}
+    >
+      Sign In
+    </button>
+
+
+    <button
+      className="signup-btn"
+      onClick={() => navigate("/signup")}
+    >
+      Start Free Trial
+    </button>
+
+  </div>
 
 </nav>
 
@@ -54,9 +77,30 @@ export default function LandingPage({ onLogin }) {
         <a href="#pricing" onClick={() => setMenuOpen(false)}>Pricing</a>
         <a href="#testimonials" onClick={() => setMenuOpen(false)}>Reviews</a>
 
-        <button className="drawer-cta" onClick={onLogin}>
-          Start Free Trial
-        </button>
+       <div className="drawer-actions">
+
+  <button
+    className="drawer-signin"
+    onClick={() => {
+      setMenuOpen(false);
+      navigate("/signin");
+    }}
+  >
+    Sign In
+  </button>
+
+
+  <button
+    className="drawer-signup"
+    onClick={() => {
+      setMenuOpen(false);
+      navigate("/signup");
+    }}
+  >
+    Start Free Trial
+  </button>
+
+</div>
       </div>
 
       {/* HERO */}
