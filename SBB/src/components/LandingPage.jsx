@@ -188,7 +188,7 @@ export default function LandingPage() {
 
         <div className="preview-image">
           <img
-            src="https://images.unsplash.com/photo-1551288049-8a6b8b4b6c4b"
+            src="https://media.istockphoto.com/id/1480239160/photo/an-analyst-uses-a-computer-and-dashboard-for-data-business-analysis-and-data-management.jpg?s=612x612&w=0&k=20&c=Zng3q0-BD8rEl0r6ZYZY0fbt2AWO9q_gC8lSrwCIgdk="
             alt="Dashboard interface"
           />
         </div>
@@ -200,7 +200,7 @@ export default function LandingPage() {
 
         <div className="pricing-grid">
           <div className="plan">
-            <h3>Starter</h3>
+            <h3>Basic</h3>
 
             <p className="price">$9 / month</p>
 
@@ -214,7 +214,7 @@ export default function LandingPage() {
           </div>
 
           <div className="plan featured">
-            <h3>Professional</h3>
+            <h3>Premium</h3>
 
             <p className="price">$19 / month</p>
 
@@ -227,19 +227,6 @@ export default function LandingPage() {
             <button>Subscribe</button>
           </div>
 
-          <div className="plan">
-            <h3>Enterprise</h3>
-
-            <p className="price">$39 / month</p>
-
-            <ul>
-              <li>Multi-business system</li>
-              <li>API access</li>
-              <li>Priority support</li>
-            </ul>
-
-            <button>Subscribe</button>
-          </div>
         </div>
       </section>
 

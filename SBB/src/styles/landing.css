@@ -19,79 +19,82 @@ body {
 ========================= */
 
 .navbar {
+
   width:100%;
   display:flex;
   align-items:center;
+
   padding:16px 28px;
+
   background:white;
   border-bottom:1px solid #eee;
+
   box-sizing:border-box;
+
 }
 
 
 .logo {
-  font-size: 22px;
-  font-weight: 700;
-  color: #2f80ed;
-  white-space: nowrap;
+
+  font-size:22px;
+  font-weight:700;
+  color:#2f80ed;
+  white-space:nowrap;
+
 }
 
 
-/* HAMBURGER */
-
-.hamburger {
-  display: none;
-  background: transparent;
-  border: none;
-  color: #2563eb;
-  font-size: 28px;
-  cursor: pointer;
-  padding: 0;
-}
-
-
-
-/* DESKTOP NAV LINKS */
+/* Desktop links */
 
 .desktop-links {
-  display: flex;
-  align-items: center;
-  gap: 22px;
-  margin-left: 40px;
+
+  display:flex;
+  align-items:center;
+  gap:22px;
+  margin-left:40px;
+
 }
 
 
 .desktop-links a {
-  text-decoration: none;
-  color: #333;
-  font-size: 16px;
+
+  text-decoration:none;
+  color:#333;
+  font-size:16px;
+
 }
 
 
-
-/* AUTH BUTTONS */
+/* Buttons */
 
 .auth-buttons {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-left: auto;
+
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-left:auto;
+
 }
 
 
 .signin-btn {
 
-  background: white;
-  color: #2563eb;
-  border: 2px solid #2563eb;
-  padding: 12px 24px;
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: 600;
-  height: 46px;
-  min-width: 110px;
-  white-space: nowrap;
-  cursor: pointer;
+  background:white;
+  color:#2563eb;
+
+  border:2px solid #2563eb;
+
+  padding:12px 24px;
+
+  border-radius:12px;
+
+  font-size:15px;
+  font-weight:600;
+
+  height:46px;
+  min-width:110px;
+
+  cursor:pointer;
 
 }
 
@@ -104,19 +107,23 @@ body {
 }
 
 
-
 .signup-btn {
 
   background:#2563eb;
   color:white;
+
   border:none;
+
   padding:12px 26px;
+
   border-radius:12px;
+
   font-size:15px;
   font-weight:700;
+
   height:46px;
   min-width:160px;
-  white-space:nowrap;
+
   cursor:pointer;
 
 }
@@ -139,10 +146,14 @@ body {
 
   position:fixed;
   inset:0;
+
   background:rgba(0,0,0,.45);
+
   opacity:0;
   visibility:hidden;
+
   transition:.3s;
+
   z-index:50;
 
 }
@@ -160,19 +171,28 @@ body {
 .mobile-drawer {
 
   position:fixed;
+
   top:0;
   right:-320px;
+
   width:280px;
   height:100vh;
+
   background:#1a1a1a;
+
   z-index:60;
+
   padding:25px;
+
   display:flex;
   flex-direction:column;
+
   gap:18px;
+
   transition:.35s;
 
 }
+
 
 
 .mobile-drawer.open {
@@ -183,28 +203,51 @@ body {
 
 
 
+/* Close button area */
+
 .drawer-header {
 
   display:flex;
-  justify-content:space-between;
-  align-items:center;
+  justify-content:flex-end;
 
 }
 
 
-.drawer-header h3 {
+.drawer-header button {
+
+  background:#2563eb;
 
   color:white;
 
+  border:none;
+
+  width:100%;
+  height:60px;
+
+  border-radius:12px;
+
+  font-size:28px;
+
+  cursor:pointer;
+
 }
 
 
+
+/* Drawer links */
 
 .mobile-drawer a {
 
   color:white;
+
   text-decoration:none;
-  padding:10px;
+
+  text-align:center;
+
+  padding:12px;
+
+  font-size:18px;
+
   border-radius:8px;
 
 }
@@ -218,12 +261,38 @@ body {
 
 
 
+/* Bottom buttons */
+
 .drawer-actions {
 
   margin-top:auto;
+
   display:flex;
+
   flex-direction:column;
+
   gap:15px;
+
+  padding-bottom:20px;
+
+}
+
+
+
+.drawer-signin,
+.drawer-signup {
+
+  width:100%;
+
+  height:55px;
+
+  border-radius:12px;
+
+  font-size:18px;
+
+  font-weight:700;
+
+  cursor:pointer;
 
 }
 
@@ -232,11 +301,10 @@ body {
 .drawer-signin {
 
   background:white;
+
   color:#2563eb;
+
   border:2px solid #2563eb;
-  padding:14px;
-  border-radius:10px;
-  font-weight:600;
 
 }
 
@@ -245,11 +313,10 @@ body {
 .drawer-signup {
 
   background:#2563eb;
+
   color:white;
+
   border:none;
-  padding:14px;
-  border-radius:10px;
-  font-weight:600;
 
 }
 
@@ -263,13 +330,19 @@ body {
 .hero {
 
   display:flex;
+
   align-items:center;
+
   justify-content:space-between;
+
   padding:80px 60px;
+
   gap:40px;
+
   background:linear-gradient(135deg,#e8f0ff,#fff);
 
 }
+
 
 
 .hero-left {
@@ -279,40 +352,59 @@ body {
 }
 
 
+
 .hero-left h1 {
+
   font-size:42px;
+
   line-height:1.3;
+
   margin-bottom:20px;
+
 }
 
+
+
 .hero-left h1 span {
-  display:inline-block;
+
+  display:block;
+
   margin-top:15px;
+
 }
+
 
 
 .hero-left p {
 
   font-size:18px;
+
   color:#555;
+
   line-height:1.6;
 
 }
 
 
+
 .hero-right {
 
   flex:1;
+
   display:flex;
+
   justify-content:center;
 
 }
 
 
+
 .hero-right img {
 
   width:100%;
+
   max-width:500px;
+
   border-radius:12px;
 
 }
@@ -327,29 +419,41 @@ body {
 .features {
 
   display:grid;
+
   grid-template-columns:repeat(4,1fr);
+
   gap:20px;
+
   padding:50px;
 
 }
 
 
+
 .feature {
 
   background:white;
+
   padding:20px;
+
   border-radius:12px;
+
   text-align:center;
+
   box-shadow:0 2px 10px rgba(0,0,0,.05);
 
 }
 
 
+
 .feature img {
 
   width:150px;
+
   height:100px;
+
   object-fit:cover;
+
   border-radius:10px;
 
 }
@@ -364,16 +468,21 @@ body {
 .dashboard-preview {
 
   display:flex;
+
   align-items:center;
+
   gap:40px;
+
   padding:60px;
 
 }
 
 
+
 .preview-image img {
 
   width:100%;
+
   border-radius:12px;
 
 }
@@ -388,53 +497,124 @@ body {
 .pricing {
 
   padding:60px 20px;
+
   text-align:center;
 
 }
 
 
+
+.pricing h2 {
+
+  font-size:32px;
+
+  margin-bottom:40px;
+
+}
+
+
+
 .pricing-grid {
 
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:20px;
+
+  grid-template-columns:repeat(3,320px);
+
+  gap:25px;
+
+  justify-content:center;
 
 }
+
 
 
 .plan {
 
   background:white;
-  padding:25px;
+
+  padding:30px 25px;
+
   border-radius:12px;
-  box-shadow:0 2px 10px rgba(0,0,0,.05);
+
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+
+  text-align:center;
+
+  min-height:330px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:space-between;
 
 }
+
+
+
+.plan h3 {
+
+  font-size:24px;
+
+}
+
+
+
+.price {
+
+  font-size:28px;
+
+  font-weight:bold;
+
+  color:#2563eb;
+
+}
+
+
+
+.plan ul {
+
+  list-style-position:inside;
+
+  padding:0;
+
+}
+
+
+
+.plan li {
+
+  margin:12px 0;
+
+}
+
+
+
+.plan button {
+
+  width:100%;
+
+  padding:14px;
+
+  background:#2563eb;
+
+  color:white;
+
+  border:none;
+
+  border-radius:10px;
+
+  font-weight:600;
+
+}
+
 
 
 .plan.featured {
 
   border:2px solid #2563eb;
 
-}
-
-
-.price {
-
-  font-size:24px;
-  font-weight:bold;
-
-}
-
-
-.plan button {
-
-  width:100%;
-  padding:12px;
-  background:#2563eb;
-  color:white;
-  border:none;
-  border-radius:8px;
+  transform:translateY(-10px);
 
 }
 
@@ -448,26 +628,35 @@ body {
 .testimonial-grid {
 
   display:grid;
+
   grid-template-columns:repeat(3,1fr);
+
   gap:20px;
+
   padding:40px;
 
 }
 
 
+
 .testimonial {
 
   background:white;
+
   padding:20px;
+
   border-radius:12px;
 
 }
 
 
+
 .testimonial img {
 
   width:50px;
+
   height:50px;
+
   border-radius:50%;
 
 }
@@ -482,104 +671,146 @@ body {
 .footer {
 
   text-align:center;
+
   background:#111;
+
   color:white;
+
   padding:20px;
 
 }
 
 
+
 /* =========================
-   RESPONSIVE NAVBAR
+   HAMBURGER DEFAULT
+========================= */
+
+.hamburger {
+
+  display:none;
+
+}
+
+
+
+/* =========================
+   RESPONSIVE
 ========================= */
 
 
 @media(max-width:1024px){
 
-  .navbar{
-    width:100%;
-    padding:16px 0 16px 20px;
-    box-sizing:border-box;
-  }
-
-  .logo{
-    margin-right:auto;
-  }
-
 
   .desktop-links,
   .auth-buttons{
+
     display:none;
+
   }
 
 
   .hamburger{
+
     display:block;
+
     margin-left:auto;
-    background:transparent;
+
+    background:none;
+
     border:none;
-    color:#2563eb;
+
     font-size:32px;
+
+    color:#2563eb;
+
     cursor:pointer;
-    padding:0;
+
   }
 
 }
-
-
-
-
-@media(min-width:1025px){
-
-  .hamburger{
-    display:none;
-  }
-
-
-  .auth-buttons{
-    margin-left:auto;
-  }
-
-}
-
 
 
 
 @media(max-width:768px){
 
-  .hero{
+
+  .hero {
+
     flex-direction:column;
+
     padding:40px 20px;
+
     text-align:center;
+
   }
 
 
-  .hero-left h1{
-  font-size:26px;
-  line-height:1.5;
-}
+  .hero-left h1 {
+
+    font-size:26px;
+
+    line-height:1.5;
+
+  }
 
 
-  .features{
+
+  .features {
+
     grid-template-columns:1fr;
+
     padding:20px;
+
   }
 
 
-  .dashboard-preview{
+
+  .dashboard-preview {
+
     flex-direction:column;
+
     padding:30px;
+
   }
 
 
-  .pricing-grid{
+
+  .pricing-grid {
+
     grid-template-columns:1fr;
+
   }
 
 
-  .testimonial-grid{
+
+  .plan {
+
+    width:90%;
+
+    max-width:350px;
+
+  }
+
+
+
+  .plan.featured {
+
+    transform:none;
+
+  }
+
+
+
+  .testimonial-grid {
+
     grid-template-columns:1fr;
+
     padding:20px;
+
   }
+
 
 }
+
+
