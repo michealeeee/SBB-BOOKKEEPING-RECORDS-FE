@@ -11,15 +11,9 @@ export default function LandingPage({ onLogin }) {
 
       {/* NAVBAR */}
   
+{/* NAVBAR */}
+
 <nav className="navbar">
-
-  <button
-    className="hamburger"
-    onClick={() => setMenuOpen(true)}
-  >
-    ☰
-  </button>
-
 
   <div className="logo">
     Bookkeeply
@@ -55,8 +49,15 @@ export default function LandingPage({ onLogin }) {
 
   </div>
 
-</nav>
 
+  <button
+    className="hamburger"
+    onClick={() => setMenuOpen(true)}
+  >
+    ☰
+  </button>
+
+</nav>
 
       {/* OVERLAY */}
       <div
