@@ -2,21 +2,72 @@
    GLOBAL
 ========================= */
 
+* {
+  box-sizing:border-box;
+}
+
+
+html,
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f7f9fc;
+
+  margin:0;
+
+  padding:0;
+
+  width:100%;
+
+  min-height:100%;
+
+  color:white;
+
+  background:
+
+  radial-gradient(
+    circle at top left,
+    rgba(59,130,246,0.22),
+    transparent 35%
+  ),
+
+  radial-gradient(
+    circle at bottom right,
+    rgba(96,165,250,0.15),
+    transparent 40%
+  ),
+
+  #0b1220;
+
+  font-family:Arial, sans-serif;
+
+  overflow-x:hidden;
+
 }
 
-.landing {
-  width: 100%;
-  overflow-x: hidden;
+#root {
+
+  width:100%;
+
+  margin:0;
+
+  padding:0;
+
 }
 
+ .landing {
+
+  width:100%;
+
+  min-height:100vh;
+
+  overflow-x:hidden;
+
+   background:#07111f;
+
+}
 
 /* =========================
    NAVBAR
 ========================= */
+
 
 .navbar {
 
@@ -26,22 +77,28 @@ body {
 
   padding:16px 28px;
 
-  background:white;
-  border-bottom:1px solid #eee;
+  background:
 
-  box-sizing:border-box;
+linear-gradient(
+    135deg,
+    rgba(30,41,59,.95),
+    rgba(15,23,42,.95)
+);
 
+backdrop-filter:blur(15px);
 }
+
 
 
 .logo {
 
   font-size:22px;
   font-weight:700;
-  color:#2f80ed;
+  color:#3b82f6;
   white-space:nowrap;
 
 }
+
 
 
 /* Desktop links */
@@ -56,13 +113,22 @@ body {
 }
 
 
+
 .desktop-links a {
 
   text-decoration:none;
-  color:#333;
+  color:white;
   font-size:16px;
 
 }
+
+
+.desktop-links a:hover {
+
+  color:#3b82f6;
+
+}
+
 
 
 /* Buttons */
@@ -77,12 +143,13 @@ body {
 }
 
 
+
 .signin-btn {
 
-  background:white;
-  color:#2563eb;
+  background:transparent;
+  color:#3b82f6;
 
-  border:2px solid #2563eb;
+  border:2px solid #3b82f6;
 
   padding:12px 24px;
 
@@ -99,17 +166,19 @@ body {
 }
 
 
+
 .signin-btn:hover {
 
-  background:#2563eb;
+  background:#3b82f6;
   color:white;
 
 }
 
 
+
 .signup-btn {
 
-  background:#2563eb;
+  background:#3b82f6;
   color:white;
 
   border:none;
@@ -129,9 +198,10 @@ body {
 }
 
 
+
 .signup-btn:hover {
 
-  background:#1d4ed8;
+  background:#2563eb;
 
 }
 
@@ -147,7 +217,7 @@ body {
   position:fixed;
   inset:0;
 
-  background:rgba(0,0,0,.45);
+  background:rgba(0,0,0,.7);
 
   opacity:0;
   visibility:hidden;
@@ -157,6 +227,7 @@ body {
   z-index:50;
 
 }
+
 
 
 .overlay.show {
@@ -178,7 +249,7 @@ body {
   width:280px;
   height:100vh;
 
-  background:#1a1a1a;
+  background:#111;
 
   z-index:60;
 
@@ -203,14 +274,13 @@ body {
 
 
 
-/* Close button area */
-
 .drawer-header {
 
   display:flex;
   justify-content:flex-end;
 
 }
+
 
 
 .drawer-header button {
@@ -221,7 +291,7 @@ body {
 
   border:none;
 
-  width:100%;
+  width:60px;
   height:60px;
 
   border-radius:12px;
@@ -233,8 +303,6 @@ body {
 }
 
 
-
-/* Drawer links */
 
 .mobile-drawer a {
 
@@ -253,15 +321,14 @@ body {
 }
 
 
+
 .mobile-drawer a:hover {
 
-  background:rgba(255,255,255,.1);
+  background:#222;
 
 }
 
 
-
-/* Bottom buttons */
 
 .drawer-actions {
 
@@ -329,17 +396,51 @@ body {
 
 .hero {
 
+  position:relative;
+
+  min-height:650px;
+
   display:flex;
 
   align-items:center;
 
-  justify-content:space-between;
+  justify-content:center;
 
   padding:80px 60px;
 
-  gap:40px;
+  overflow:hidden;
 
-  background:linear-gradient(135deg,#e8f0ff,#fff);
+  background:
+   linear-gradient(
+    rgba(3,7,18,0.25),
+    rgba(3,7,18,0.45)
+  ),
+
+  url("https://media.istockphoto.com/id/893311798/photo/bookkeeping-concept-binders-on-desk-in-the-office-business-background.jpg?s=612x612&w=0&k=20&c=tzMpOeohoIXfSWY1slD9pWqwo0Gh7OVaRiwsP3jrI3M=");
+
+  background-size:cover;
+
+  background-position:center 80%;
+
+}
+
+.hero::before {
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+
+  radial-gradient(
+    circle at 15% 50%,
+    rgba(37,99,235,0.25),
+    transparent 35%
+  );
+
+  z-index:1;
 
 }
 
@@ -347,7 +448,13 @@ body {
 
 .hero-left {
 
-  flex:1;
+  position:relative;
+
+  z-index:2;
+
+  max-width:700px;
+
+  text-align:center;
 
 }
 
@@ -355,11 +462,17 @@ body {
 
 .hero-left h1 {
 
-  font-size:42px;
+  color:white;
 
-  line-height:1.3;
+  font-size:52px;
+
+  line-height:1.2;
+
+  font-weight:800;
 
   margin-bottom:20px;
+
+  text-shadow:0 5px 25px rgba(0,0,0,.7);
 
 }
 
@@ -377,9 +490,9 @@ body {
 
 .hero-left p {
 
-  font-size:18px;
+  color:#ccc;
 
-  color:#555;
+  font-size:18px;
 
   line-height:1.6;
 
@@ -389,11 +502,7 @@ body {
 
 .hero-right {
 
-  flex:1;
-
-  display:flex;
-
-  justify-content:center;
+  display:none;
 
 }
 
@@ -405,7 +514,12 @@ body {
 
   max-width:500px;
 
-  border-radius:12px;
+  border-radius:18px;
+
+  box-shadow:
+
+  0 0 50px rgba(37,99,235,.25);
+
 
 }
 
@@ -426,13 +540,28 @@ body {
 
   padding:50px;
 
+
 }
 
 
 
 .feature {
 
-  background:white;
+  background:
+
+  linear-gradient(
+    145deg,
+    rgba(30,41,59,.55),
+    rgba(15,23,42,.85)
+  );
+
+  border:1px solid rgba(255,255,255,.08);
+
+  backdrop-filter:blur(12px);
+
+  box-shadow:
+
+  0 15px 40px rgba(0,0,0,.5);
 
   padding:20px;
 
@@ -440,7 +569,9 @@ body {
 
   text-align:center;
 
-  box-shadow:0 2px 10px rgba(0,0,0,.05);
+  color:white;
+
+  
 
 }
 
@@ -475,6 +606,18 @@ body {
 
   padding:60px;
 
+ background:#0b1220;
+
+}
+
+.preview-text h2 {
+
+  color:white;
+  
+  font-size:32px;
+
+  font-weight:700;
+
 }
 
 
@@ -500,11 +643,15 @@ body {
 
   text-align:center;
 
+  background:#0b1220;
+
 }
 
 
 
 .pricing h2 {
+
+  color:white;
 
   font-size:32px;
 
@@ -530,13 +677,15 @@ body {
 
 .plan {
 
-  background:white;
+  background:#111;
+
+  color:white;
 
   padding:30px 25px;
 
   border-radius:12px;
 
-  box-shadow:0 2px 10px rgba(0,0,0,.08);
+  box-shadow:0 5px 20px rgba(0,0,0,.5);
 
   text-align:center;
 
@@ -566,17 +715,7 @@ body {
 
   font-weight:bold;
 
-  color:#2563eb;
-
-}
-
-
-
-.plan ul {
-
-  list-style-position:inside;
-
-  padding:0;
+  color:#3b82f6;
 
 }
 
@@ -596,7 +735,7 @@ body {
 
   padding:14px;
 
-  background:#2563eb;
+  background:#3b82f6;
 
   color:white;
 
@@ -612,7 +751,7 @@ body {
 
 .plan.featured {
 
-  border:2px solid #2563eb;
+  border:2px solid #3b82f6;
 
   transform:translateY(-10px);
 
@@ -635,13 +774,17 @@ body {
 
   padding:40px;
 
+  background:#0b1220;
+
 }
 
 
 
 .testimonial {
 
-  background:white;
+  background:#111;
+
+  color:white;
 
   padding:20px;
 
@@ -672,9 +815,11 @@ body {
 
   text-align:center;
 
-  background:#111;
+  background:#0b1220;
 
   color:white;
+
+  border-top:1px solid #222;
 
   padding:20px;
 
@@ -683,12 +828,21 @@ body {
 
 
 /* =========================
-   HAMBURGER DEFAULT
+   HAMBURGER
 ========================= */
+
 
 .hamburger {
 
   display:none;
+
+  background:none;
+
+  border:none;
+
+  color:#3b82f6;
+
+  font-size:32px;
 
 }
 
@@ -702,31 +856,22 @@ body {
 @media(max-width:1024px){
 
 
-  .desktop-links,
-  .auth-buttons{
+.desktop-links,
+.auth-buttons{
 
-    display:none;
+display:none;
 
-  }
+}
 
 
-  .hamburger{
+.hamburger{
 
-    display:block;
+display:block;
 
-    margin-left:auto;
+margin-left:auto;
 
-    background:none;
+}
 
-    border:none;
-
-    font-size:32px;
-
-    color:#2563eb;
-
-    cursor:pointer;
-
-  }
 
 }
 
@@ -735,82 +880,105 @@ body {
 @media(max-width:768px){
 
 
-  .hero {
+.hero {
 
-    flex-direction:column;
+flex-direction:column;
 
-    padding:40px 20px;
+padding:40px 20px;
 
-    text-align:center;
+text-align:center;
 
-  }
+}
 
+.hero {
 
-  .hero-left h1 {
+  min-height:550px;
 
-    font-size:26px;
-
-    line-height:1.5;
-
-  }
-
-
-
-  .features {
-
-    grid-template-columns:1fr;
-
-    padding:20px;
-
-  }
-
-
-
-  .dashboard-preview {
-
-    flex-direction:column;
-
-    padding:30px;
-
-  }
-
-
-
-  .pricing-grid {
-
-    grid-template-columns:1fr;
-
-  }
-
-
-
-  .plan {
-
-    width:90%;
-
-    max-width:350px;
-
-  }
-
-
-
-  .plan.featured {
-
-    transform:none;
-
-  }
-
-
-
-  .testimonial-grid {
-
-    grid-template-columns:1fr;
-
-    padding:20px;
-
-  }
-
+  padding:40px 20px;
 
 }
 
 
+.hero-left h1 {
+
+  font-size:32px;
+
+}
+
+
+
+.hero-left h1 {
+
+font-size:28px;
+
+}
+
+
+
+.features {
+
+grid-template-columns:1fr;
+
+padding:20px;
+
+}
+
+
+
+.dashboard-preview {
+
+flex-direction:column;
+
+padding:30px;
+
+}
+
+
+
+.pricing-grid {
+
+grid-template-columns:1fr;
+
+}
+
+
+
+.plan {
+
+width:90%;
+
+max-width:350px;
+
+}
+
+
+
+.plan.featured {
+
+transform:none;
+
+}
+
+
+
+.testimonial-grid {
+
+grid-template-columns:1fr;
+
+padding:20px;
+
+}
+
+}
+
+/* Remove unwanted page edges */
+html,
+body,
+#root,
+.landing {
+    width:100vw;
+    max-width:100%;
+    margin:0;
+    padding:0;
+    border:none;
+}

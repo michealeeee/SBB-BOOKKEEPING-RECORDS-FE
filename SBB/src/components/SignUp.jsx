@@ -46,7 +46,7 @@ function SignUp() {
 
         <p>
           Already have an account?
-          <Link to="/"> Sign In</Link>
+          <Link to="/SignIn"> Sign In</Link>
         </p>
 
 

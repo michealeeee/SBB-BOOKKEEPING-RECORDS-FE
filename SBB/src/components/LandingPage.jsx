@@ -165,7 +165,7 @@ export default function LandingPage() {
             src="https://media.istockphoto.com/id/849046214/photo/financial-report.jpg?s=612x612&w=0&k=20&c=U5olK4J7L24HOUafMetg6rHGZQ3CcpoaLKhjIbafAYE="
             alt="Financial reports"
           />
-
+          
           <h3>Financial Reports</h3>
 
           <p>
