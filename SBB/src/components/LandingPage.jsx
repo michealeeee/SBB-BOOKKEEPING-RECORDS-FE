@@ -88,21 +88,14 @@ export default function LandingPage() {
       {/* HERO */}
       <header className="hero">
         <div className="hero-left">
-          <div className="hero-left">
             <h1>
               Smart Bookkeeping for
               <br />
-              <span>Small Business</span>
+              <span>Growing Businesses</span>
             </h1>
 
-            <p>
-              Track income, expenses, invoices, and reports in one dashboard.
-            </p>
-          </div>
-
           <p>
-            Track income, expenses, invoices, and reports in one powerful
-            financial dashboard.
+            Manage your finances, simplify bookkeeping, and make smarter decisions.
           </p>
         </div>
 
@@ -113,14 +106,14 @@ export default function LandingPage() {
 
       {/* TRUST STRIP */}
       <section className="trust">
-        <p>Trusted by small businesses worldwide</p>
+        <p>Trusted by businesses worldwide</p>
       </section>
 
       {/* FEATURES */}
       <section id="features" className="features">
         <div className="feature">
           <img
-            src="https://images.unsplash.com/photo-1723785735443-16ffd373f398?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODYzfHxyZWFsJTIwdGltZSUyMGFuYWx5c2lzfGVufDB8fDB8fHww"
+            src="https://images.openai.com/static-rsc-4/53_FV-dVKoC8uDq_e1NuF7X6QE0-2DhMRKOZpHq4ZcKTmGIkIbNFsvtF_NE3O_tuRVaflJLMr00wwRW1PomXQtY2kSMqdcT0qFlTt8LxcSv77CsqINbypAKoG3IJFa1k_SPqSzCL7UQg-GIpX95Y74Lw3c_eDS4qZv5NaGMJRitCwt6Slq8NEjs_oUJIY3Z1?purpose=inline"
             alt="Real-time analytics"
           />
 
@@ -134,7 +127,7 @@ export default function LandingPage() {
 
         <div className="feature">
           <img
-            src="https://media.istockphoto.com/id/1175416252/vector/business-invoice-form-template-invoicing-quotes-money-bills-or-price-invoices-and-payment.jpg?s=612x612&w=0&k=20&c=lJ_I2P5VgH5IxpI2KQF1Jnfti6GWu3DJRu11WTziUS0="
+            src="https://images.unsplash.com/photo-1654263736203-a289f57c0d82?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8aW52b2ljZXxlbnwwfHwwfHx8MA%3D%3D"
             alt="Smart invoicing"
           />
 
@@ -162,7 +155,7 @@ export default function LandingPage() {
 
         <div className="feature">
           <img
-            src="https://media.istockphoto.com/id/849046214/photo/financial-report.jpg?s=612x612&w=0&k=20&c=U5olK4J7L24HOUafMetg6rHGZQ3CcpoaLKhjIbafAYE="
+            src="https://media.istockphoto.com/id/878863400/photo/businessman-analyzing-financial-report-data-company-operations-balance-sheet-fintech.jpg?s=612x612&w=0&k=20&c=JoDWSxnoM8rXGRUZ6Fkj0GTmDPr8TO4JzwBDdYWDE7s="
             alt="Financial reports"
           />
           
@@ -178,17 +171,16 @@ export default function LandingPage() {
       {/* DASHBOARD PREVIEW */}
       <section id="dashboard" className="dashboard-preview">
         <div className="preview-text">
-          <h2>All your finances in one dashboard</h2>
+          <h2>Grow Your Business with Better Financial Decisions</h2>
 
           <p>
-            Monitor cash flow, track invoices, and analyze profits with
-            real-time financial insights.
+           Understand your finances, track growth, and make smarter decisions with accurate financial insights.
           </p>
         </div>
 
         <div className="preview-image">
           <img
-            src="https://media.istockphoto.com/id/1480239160/photo/an-analyst-uses-a-computer-and-dashboard-for-data-business-analysis-and-data-management.jpg?s=612x612&w=0&k=20&c=Zng3q0-BD8rEl0r6ZYZY0fbt2AWO9q_gC8lSrwCIgdk="
+            src="https://images.openai.com/static-rsc-4/06s_WzMzreckSm-KAyPV_52iJ0bPrGoS7bQPgDjxwdc2apB36xyM5jNsWN6MZcoACwcTkytFjEUvc3ngrWFs82nG3rkkhcLkGkW2Dg2cUJXk5U1vFmFkNXw8B8CV1zG1EFUfff5s-5FT0YHcfc1rSai6g7YrS7vnv7inRjtCEzkBv0Y37eSVT81wcTmtaUv4?purpose=fullsize"
             alt="Dashboard interface"
           />
         </div>
