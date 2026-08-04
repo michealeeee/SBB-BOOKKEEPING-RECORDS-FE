@@ -544,7 +544,7 @@ p{
 
   display:grid;
 
-  grid-template-columns:repeat(4,320px);
+  grid-template-columns:repeat(4,300px);
 
   gap:25px;
 
@@ -552,7 +552,7 @@ p{
   
   align-items: center;
 
-  padding:50px 20px;
+  padding:40px 20px;
 
    background:
 
@@ -568,13 +568,17 @@ p{
 
 .feature {
 
-  padding:20px;
+    height:300px; /* same height for all cards */
+    padding:20px;
+    border-radius:28px;
 
-border-radius:30px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
 
-text-align:center;
-
-color:white;
+    text-align:center;
+    color:white;
 
   background:
 
@@ -591,16 +595,7 @@ color:white;
   box-shadow:
   0 20px 45px rgba(0,0,0,.35);
 
-  /* padding:20px;
-
-  border-radius:12px;
-
-  text-align:center;
-
-  color:white; */
-
   
-
 }
 
 
