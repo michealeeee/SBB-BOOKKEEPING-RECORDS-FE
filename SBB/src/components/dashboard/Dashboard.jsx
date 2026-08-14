@@ -60,7 +60,7 @@ export default function Dashboard() {
 
 
 
-      {/* Cash Flow Chart */}
+      {/* Cash Flow */}
 
       <div className="dashboard-chart-section">
 
@@ -82,7 +82,7 @@ export default function Dashboard() {
 
 
 
-      {/* Income vs Expense Chart */}
+      {/* Income Expense Chart */}
 
       <div className="dashboard-chart-section">
 

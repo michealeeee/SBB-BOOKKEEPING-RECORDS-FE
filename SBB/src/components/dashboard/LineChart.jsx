@@ -58,8 +58,16 @@ export default function LineChart() {
 
   return (
     <div className="chartBoxLarge">
-      <h3>Cash Flow Overview</h3>
-      <Line data={data} options={options} />
-    </div>
+
+  <h3>Cash Flow Overview</h3>
+
+  <div className="line-chart-wrapper">
+    <Line 
+      data={data} 
+      options={options} 
+    />
+  </div>
+
+</div>
   );
 }
