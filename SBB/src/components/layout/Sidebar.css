@@ -1,5 +1,8 @@
-.sidebar {
+/* =========================
+   DASHBOARD SIDEBAR
+========================= */
 
+.dashboard-shell .dashboard-sidebar {
 
     width:250px;
 
@@ -19,16 +22,23 @@
 
     transition:.3s ease;
 
-    z-index:200;
+    z-index:900;
+
+    overflow-y:auto;
 
 }
 
 
 
-.sidebar .logo {
+/* =========================
+   SIDEBAR LOGO
+========================= */
 
+.dashboard-shell .dashboard-sidebar .sidebar-logo {
 
     font-size:24px;
+
+    font-weight:700;
 
     margin-bottom:35px;
 
@@ -38,8 +48,11 @@
 
 
 
-.sidebar button {
+/* =========================
+   SIDEBAR BUTTONS
+========================= */
 
+.dashboard-shell .dashboard-sidebar button {
 
     width:100%;
 
@@ -61,12 +74,13 @@
 
     font-size:15px;
 
+    transition:.2s ease;
+
 }
 
 
 
-.sidebar button:hover {
-
+.dashboard-shell .dashboard-sidebar button:hover {
 
     background:#374151;
 
@@ -74,10 +88,23 @@
 
 
 
-/* Overlay */
+/* Active menu */
 
-.sidebar-overlay {
+.dashboard-shell .dashboard-sidebar button.active {
 
+    background:#2563eb;
+
+    color:white;
+
+}
+
+
+
+/* =========================
+   MOBILE OVERLAY
+========================= */
+
+.dashboard-shell .sidebar-overlay {
 
     position:fixed;
 
@@ -85,6 +112,91 @@
 
     background:rgba(0,0,0,.5);
 
-    z-index:150;
+    z-index:800;
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transition:.3s ease;
+
+}
+
+
+.dashboard-shell .sidebar-overlay.show {
+
+    opacity:1;
+
+    visibility:visible;
+
+}
+
+
+
+/* =========================
+   DESKTOP
+   Hide sidebar because
+   horizontal navbar is used
+========================= */
+
+@media(min-width:1025px){
+
+    .dashboard-shell .dashboard-sidebar {
+
+        display:none !important;
+
+    }
+
+}
+
+
+
+/* =========================
+   TABLET + MOBILE
+========================= */
+
+@media(max-width:1024px){
+
+    .dashboard-shell .dashboard-sidebar {
+
+        transform:translateX(-100%);
+
+        z-index:1000;
+
+    }
+
+
+    .dashboard-shell .dashboard-sidebar.mobile-open {
+
+        transform:translateX(0);
+
+    }
+
+}
+
+
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media(max-width:600px){
+
+    .dashboard-shell .dashboard-sidebar {
+
+        width:230px;
+
+        padding:20px;
+
+    }
+
+
+    .dashboard-shell .dashboard-sidebar button {
+
+        font-size:14px;
+
+        padding:12px;
+
+    }
 
 }

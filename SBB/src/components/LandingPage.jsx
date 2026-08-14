@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import heroImage from "../assets/hero.jpg";
+import "../styles/landing.css";
 
 export default function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false);

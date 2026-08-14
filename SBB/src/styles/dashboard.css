@@ -1,0 +1,486 @@
+/* =========================
+   DASHBOARD GLOBAL
+========================= */
+
+.dashboard-shell {
+
+    width:100%;
+
+    min-height:100vh;
+
+    background:#f8fafc;
+
+}
+
+
+
+/* =========================
+   DASHBOARD NAVBAR
+========================= */
+
+.dashboard-shell .dashboard-navbar {
+
+    width:100%;
+
+    height:80px;
+
+    display:flex;
+
+    align-items:center;
+
+    padding:0 35px;
+
+    background:#06101e;
+
+}
+
+
+
+.dashboard-shell .dashboard-logo {
+
+    color:#3b82f6;
+
+    font-size:24px;
+
+    font-weight:800;
+
+    white-space:nowrap;
+
+}
+
+
+
+/* Desktop menu */
+
+.dashboard-shell .dashboard-desktop-menu {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:25px;
+
+    margin-left:60px;
+
+}
+
+
+
+.dashboard-shell .dashboard-desktop-menu button {
+
+    border:none;
+
+    background:transparent;
+
+    color:white;
+
+    padding:10px 15px;
+
+    border-radius:8px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+}
+
+
+
+.dashboard-shell .dashboard-desktop-menu button:hover {
+
+    background:rgba(59,130,246,0.15);
+
+    color:#3b82f6;
+
+}
+
+
+
+/* Mobile toggle */
+
+.dashboard-shell .dashboard-toggle {
+
+    display:none;
+
+}
+
+
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.dashboard-shell .dashboard-main-content {
+
+    width:100%;
+
+    min-height:calc(100vh - 80px);
+
+    padding:30px;
+
+    background:#f8fafc;
+
+}
+
+
+
+/* =========================
+   DASHBOARD PAGE
+========================= */
+
+.dashboard-shell .dashboard-page {
+
+    width:100%;
+
+    max-width:1400px;
+
+    margin:0 auto;
+
+    color:#111827;
+
+    font-family:Arial, Helvetica, sans-serif;
+
+}
+
+
+
+/* Title */
+
+.dashboard-shell .dashboard-page h1 {
+
+    margin:0 0 30px;
+
+    color:#111827;
+
+    font-size:32px;
+
+    font-weight:700;
+
+}
+
+
+
+/* =========================
+   STAT CARDS
+========================= */
+
+.dashboard-shell .dashboard-stats-grid {
+
+    width:100%;
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(4,minmax(220px,1fr));
+
+    gap:24px;
+
+    margin-bottom:35px;
+
+}
+
+
+
+.dashboard-shell .card {
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:16px;
+
+    box-shadow:
+
+    0 5px 20px rgba(0,0,0,0.08);
+
+}
+
+
+
+.dashboard-shell .card h4 {
+
+    margin:0 0 10px;
+
+    color:#6b7280;
+
+    font-size:15px;
+
+}
+
+
+
+.dashboard-shell .card h2 {
+
+    margin:0;
+
+    color:#111827;
+
+    font-size:28px;
+
+}
+
+
+
+.dashboard-shell .card.green {
+
+    border-left:5px solid #22c55e;
+
+}
+
+
+.dashboard-shell .card.red {
+
+    border-left:5px solid #ef4444;
+
+}
+
+
+.dashboard-shell .card.blue {
+
+    border-left:5px solid #2563eb;
+
+}
+
+
+.dashboard-shell .card.orange {
+
+    border-left:5px solid #f97316;
+
+}
+
+
+
+/* =========================
+   DASHBOARD SECTIONS
+========================= */
+
+
+.dashboard-shell 
+.dashboard-page 
+> div:not(.dashboard-stats-grid) {
+
+    width:100%;
+
+    background:white;
+
+    padding:25px;
+
+    margin-bottom:30px;
+
+    border-radius:18px;
+
+    box-shadow:
+
+    0 8px 25px rgba(0,0,0,0.08);
+
+    overflow:hidden;
+
+}
+
+
+
+/* =========================
+   CHART LAYOUT
+========================= */
+
+
+.dashboard-shell .chart-container {
+
+    width:100%;
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:25px;
+
+}
+
+
+
+/* Chart responsiveness */
+
+.dashboard-shell canvas,
+.dashboard-shell svg {
+
+    max-width:100%;
+
+}
+
+
+
+/* =========================
+   LINE / CASHFLOW CHART
+========================= */
+
+
+.dashboard-shell .chartBoxLarge {
+
+    height:260px;
+
+    padding:15px;
+
+}
+
+
+
+.dashboard-shell .chartBoxLarge h3 {
+
+    margin:0 0 10px;
+
+    font-size:18px;
+
+    color:#111827;
+
+}
+
+
+
+.dashboard-shell .line-chart-wrapper {
+
+    height:170px;
+
+}
+
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media(max-width:1200px){
+
+
+    .dashboard-shell .dashboard-stats-grid {
+
+        grid-template-columns:
+
+        repeat(2,minmax(0,1fr));
+
+    }
+
+
+}
+
+
+
+/* =========================
+   MOBILE + TABLET
+========================= */
+
+@media(max-width:1024px){
+
+
+    .dashboard-shell .dashboard-main-content {
+
+        padding:20px;
+
+    }
+
+
+
+    .dashboard-shell .dashboard-desktop-menu {
+
+        display:none;
+
+    }
+
+
+
+    .dashboard-shell .dashboard-toggle {
+
+        display:block;
+
+        margin-left:auto;
+
+        border:none;
+
+        background:transparent;
+
+        color:#3b82f6;
+
+        font-size:34px;
+
+        cursor:pointer;
+
+    }
+
+
+
+    .dashboard-shell .dashboard-stats-grid {
+
+        grid-template-columns:1fr;
+
+    }
+
+
+
+    .dashboard-shell .chart-container {
+
+        grid-template-columns:1fr;
+
+    }
+
+
+
+}
+
+
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media(max-width:600px){
+
+
+    .dashboard-shell .dashboard-main-content {
+
+        padding:15px;
+
+    }
+
+
+
+    .dashboard-shell .dashboard-page h1 {
+
+        font-size:26px;
+
+        margin-bottom:20px;
+
+    }
+
+
+
+    .dashboard-shell 
+    .dashboard-page 
+    > div:not(.dashboard-stats-grid){
+
+        padding:15px;
+
+        border-radius:12px;
+
+    }
+
+
+
+    .dashboard-shell .chartBoxLarge {
+
+        height:280px;
+
+    }
+
+
+
+    .dashboard-shell .line-chart-wrapper {
+
+        height:200px;
+
+    }
+
+
+
+}
