@@ -15,7 +15,7 @@
 
 
 /* =========================
-   DASHBOARD NAVBAR
+   FIXED DASHBOARD HEADER
 ========================= */
 
 .dashboard-shell .dashboard-navbar {
@@ -32,9 +32,21 @@
 
     background:#06101e;
 
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    z-index:2000;
+
 }
 
 
+
+/* =========================
+   LOGO
+========================= */
 
 .dashboard-shell .dashboard-logo {
 
@@ -44,9 +56,15 @@
 
     font-weight:800;
 
+    white-space:nowrap;
+
 }
 
 
+
+/* =========================
+   DESKTOP MENU
+========================= */
 
 .dashboard-shell .dashboard-desktop-menu {
 
@@ -80,6 +98,13 @@
 
     cursor:pointer;
 
+
+    transition:
+
+    background 0.3s ease,
+
+    color 0.3s ease;
+
 }
 
 
@@ -90,9 +115,15 @@
 
     color:#3b82f6;
 
+    transform:none;
+
 }
 
 
+
+/* =========================
+   MOBILE TOGGLE
+========================= */
 
 .dashboard-shell .dashboard-toggle {
 
@@ -103,317 +134,32 @@
 
 
 /* =========================
-   MAIN CONTENT
+   PAGE CONTENT OFFSET
 ========================= */
 
 .dashboard-shell .dashboard-main-content {
 
-    width:100%;
-
-    min-height:calc(100vh - 80px);
-
-    padding:30px;
-
-    background:#ffffff;
+    padding-top:100px;
 
 }
 
 
 
 /* =========================
-   DASHBOARD PAGE
-========================= */
-
-.dashboard-shell .dashboard-page {
-
-    width:100%;
-
-    max-width:1400px;
-
-    margin:auto;
-
-    min-height:100vh;
-
-    background:#ffffff;
-
-    color:#111827;
-
-    font-family:Arial, Helvetica, sans-serif;
-
-}
-
-
-
-/* =========================
-   TITLE
-========================= */
-
-.dashboard-shell .dashboard-page > h1 {
-
-    margin:0 0 25px;
-
-    color:#111827;
-
-    font-size:32px;
-
-    font-weight:700;
-
-}
-
-
-
-/* =========================
-   STAT CARDS
-========================= */
-
-.dashboard-shell .dashboard-stats-grid {
-
-    display:grid;
-
-    grid-template-columns:repeat(4,220px);
-
-    gap:18px;
-
-    margin-bottom:30px;
-
-}
-
-
-
-.dashboard-shell .card {
-
-    width:220px;
-
-    height:100px;
-
-    background:#ffffff;
-
-    padding:12px 15px;
-
-    border-radius:12px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:center;
-
-    box-shadow:
-
-    0 3px 12px rgba(0,0,0,0.08);
-
-}
-
-
-
-.dashboard-shell .card h4 {
-
-    margin:0 0 5px;
-
-    font-size:13px;
-
-    color:#6b7280;
-
-}
-
-
-
-.dashboard-shell .card h2 {
-
-    margin:0;
-
-    font-size:20px;
-
-    color:#111827;
-
-}
-
-
-
-.dashboard-shell .card.green {
-
-    border-left:4px solid #22c55e;
-
-}
-
-
-
-.dashboard-shell .card.red {
-
-    border-left:4px solid #ef4444;
-
-}
-
-
-
-.dashboard-shell .card.blue {
-
-    border-left:4px solid #2563eb;
-
-}
-
-
-
-.dashboard-shell .card.orange {
-
-    border-left:4px solid #f97316;
-
-}
-
-
-
-/* =========================
-   DASHBOARD SECTIONS
-========================= */
-
-.dashboard-shell 
-.dashboard-page 
-> div:not(.dashboard-stats-grid){
-
-    background:#ffffff;
-
-    border-radius:16px;
-
-    padding:20px;
-
-    margin-bottom:25px;
-
-    box-shadow:
-
-    0 4px 15px rgba(0,0,0,0.08);
-
-}
-
-
-
-/* =========================
-   CHART AREA
-========================= */
-
-.dashboard-shell .chart-container {
-
-    display:grid;
-
-    grid-template-columns:repeat(2,1fr);
-
-    gap:20px;
-
-}
-
-
-
-.dashboard-shell canvas,
-.dashboard-shell svg {
-
-    max-width:100%;
-
-}
-
-
-
-/* =========================
-   LINE CHART SIZE
-========================= */
-
-.dashboard-shell .chartBoxLarge {
-
-    height:260px;
-
-}
-
-
-
-.dashboard-shell .line-chart-wrapper {
-
-    height:170px;
-
-}
-
-
-
-.dashboard-shell .chartBoxLarge h3 {
-
-    margin:0 0 10px;
-
-    font-size:18px;
-
-    color:#111827;
-
-}
-
-
-
-/* =========================
-   HORIZONTAL FEATURE CARDS
-========================= */
-
-.dashboard-shell .dashboard-features {
-
-    width:100%;
-
-    display:flex;
-
-    gap:20px;
-
-}
-
-
-
-.dashboard-shell .dashboard-feature-card {
-
-    flex:1;
-
-    background:white;
-
-    padding:20px;
-
-    border-radius:15px;
-
-    box-shadow:
-
-    0 4px 15px rgba(0,0,0,0.08);
-
-}
-
-
-
-/* =========================
-   TABLET
-========================= */
-
-@media(max-width:1200px){
-
-
-    .dashboard-shell .dashboard-stats-grid {
-
-        grid-template-columns:repeat(2,220px);
-
-    }
-
-
-    .dashboard-shell .dashboard-features {
-
-        flex-wrap:wrap;
-
-    }
-
-
-    .dashboard-shell .dashboard-feature-card {
-
-        flex:0 0 calc(50% - 10px);
-
-    }
-
-
-}
-
-
-
-/* =========================
-   MOBILE MENU + MOBILE VIEW
+   TABLET + MOBILE
 ========================= */
 
 @media(max-width:1024px){
+
+
+    .dashboard-shell .dashboard-navbar {
+
+        height:80px;
+
+        padding:0 20px;
+
+    }
+
 
 
     .dashboard-shell .dashboard-desktop-menu {
@@ -426,13 +172,25 @@
 
     .dashboard-shell .dashboard-toggle {
 
-        display:block;
+        display:flex;
 
-        margin-left:auto;
+        align-items:center;
 
-        background:none;
+        justify-content:center;
+
+        position:fixed;
+
+        right:20px;
+
+        top:18px;
+
+        width:45px;
+
+        height:45px;
 
         border:none;
+
+        background:transparent;
 
         color:#3b82f6;
 
@@ -440,37 +198,31 @@
 
         cursor:pointer;
 
-    }
-
-
-
-    .dashboard-shell .dashboard-main-content {
-
-        padding:20px;
+        z-index:2200;
 
     }
 
 
 
-    .dashboard-shell .dashboard-stats-grid {
+    .dashboard-shell .dashboard-toggle:hover {
 
-        grid-template-columns:1fr;
+        background:transparent;
 
-    }
-
-
-
-    .dashboard-shell .card {
-
-        width:100%;
+        transform:none;
 
     }
 
 
 
-    .dashboard-shell .chart-container {
+    .dashboard-shell .dashboard-toggle span {
 
-        grid-template-columns:1fr;
+        display:inline-block;
+
+        transition:
+
+        transform 0.5s ease,
+
+        opacity 0.5s ease;
 
     }
 
@@ -479,56 +231,96 @@
 
 
 /* =========================
-   SMALL MOBILE
+   MOBILE DRAWER RIGHT SIDE
 ========================= */
 
-@media(max-width:600px){
+.dashboard-shell .dashboard-mobile-menu {
+
+    position:fixed;
+
+    top:80px;
+
+    right:0;
+
+    width:150px;
+
+    background:#06101e;
+
+    padding:20px 15px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+    border-radius:0 0 0 15px;
+
+    box-shadow:
+    -5px 10px 30px rgba(0,0,0,0.35);
+
+    z-index:1500;
 
 
-    .dashboard-shell .dashboard-main-content {
+    /* Hidden above */
 
-        padding:15px;
+    transform:translateY(-100%);
 
-    }
+    opacity:0;
 
+    visibility:hidden;
 
-
-    .dashboard-shell .dashboard-page > h1 {
-
-        font-size:26px;
-
-    }
+    pointer-events:none;
 
 
+    transition:
 
-    .dashboard-shell .dashboard-features {
+    transform 1.3s ease-in-out,
 
-        flex-direction:column;
+    opacity 1.3s ease,
 
-    }
+    visibility 1.3s ease;
 
-
-
-    .dashboard-shell .dashboard-feature-card {
-
-        width:100%;
-
-    }
+}
 
 
+/* Open drawer */
 
-    .dashboard-shell .chartBoxLarge {
+.dashboard-shell .dashboard-mobile-menu.open {
 
-        height:280px;
+    transform:translateY(0);
 
-    }
+    opacity:1;
+
+    visibility:visible;
+
+    pointer-events:auto;
+
+}
 
 
+/* Menu buttons */
 
-    .dashboard-shell .line-chart-wrapper {
+.dashboard-shell .dashboard-mobile-menu button {
 
-        height:200px;
+    width:100%;
 
-    }
+    padding:10px 5px;
+
+    border:none;
+
+    background:transparent;
+
+    color:white;
+
+    text-align:center;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    border-radius:8px;
+
+    cursor:pointer;
 
 }
