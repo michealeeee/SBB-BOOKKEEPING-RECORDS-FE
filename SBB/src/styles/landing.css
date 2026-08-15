@@ -1301,3 +1301,21 @@ body,
     border:none;
 
 }
+
+.basic-plan {
+    border: 2px solid #3b82f6;
+}
+
+
+/* Desktop view only */
+@media (min-width: 1025px) {
+
+    .basic-plan {
+        border: 2px solid #3b82f6;
+        box-shadow: 
+            0 0 25px rgba(59,130,246,0.35);
+
+        transform: translateY(-5px);
+    }
+
+}

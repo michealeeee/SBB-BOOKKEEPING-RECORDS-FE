@@ -209,7 +209,7 @@ export default function LandingPage() {
         <h2>Monthly Subscription Plans</h2>
 
         <div className="pricing-grid">
-          <div className="plan">
+          <div className="plan basic-plan">
             <h3>Basic</h3>
 
             <p className="price">$9 / month</p>
