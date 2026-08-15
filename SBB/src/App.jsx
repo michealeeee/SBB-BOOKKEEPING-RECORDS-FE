@@ -107,7 +107,7 @@ export default function App() {
             <div className="dashboard-shell">
 
 
-              {isAuthenticated ? (
+              {!isAuthenticated ? (
 
                 <LandingPage />
 

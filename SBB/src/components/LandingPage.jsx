@@ -25,7 +25,14 @@ export default function LandingPage() {
             Sign In
           </button>
 
-          <button className="signup-btn" onClick={() => navigate("/signup")}>
+          <button
+            className="signup-btn"
+            onClick={() => {
+              document.getElementById("pricing").scrollIntoView({
+                behavior: "smooth",
+              });
+            }}
+          >
             Get Started
           </button>
         </div>
@@ -65,13 +72,18 @@ export default function LandingPage() {
 
         <div className="drawer-actions">
           <button
-            className="drawer-signin"
+            className="drawer-signup"
             onClick={() => {
               setMenuOpen(false);
-              navigate("/signin");
+
+              setTimeout(() => {
+                document.getElementById("pricing").scrollIntoView({
+                  behavior: "smooth",
+                });
+              }, 300);
             }}
           >
-            Sign In
+            Get Started
           </button>
 
           <button
@@ -89,19 +101,23 @@ export default function LandingPage() {
       {/* HERO */}
       <header className="hero">
         <div className="hero-left">
-            <h1>
-              Smart Bookkeeping for
-              <br />
-              <span>Growing Businesses</span>
-            </h1>
+          <h1>
+            Smart Bookkeeping for
+            <br />
+            <span>Growing Businesses</span>
+          </h1>
 
           <p>
-            Manage your finances, simplify bookkeeping, and make smarter decisions.
+            Manage your finances, simplify bookkeeping, and make smarter
+            decisions.
           </p>
         </div>
 
         <div className="hero-right">
-          <img src="https://media.istockphoto.com/id/893311798/photo/bookkeeping-concept-binders-on-desk-in-the-office-business-background.jpg?s=612x612&w=0&k=20&c=tzMpOeohoIXfSWY1slD9pWqwo0Gh7OVaRiwsP3jrI3M=" alt="Bookkeeping dashboard preview" />
+          <img
+            src="https://media.istockphoto.com/id/893311798/photo/bookkeeping-concept-binders-on-desk-in-the-office-business-background.jpg?s=612x612&w=0&k=20&c=tzMpOeohoIXfSWY1slD9pWqwo0Gh7OVaRiwsP3jrI3M="
+            alt="Bookkeeping dashboard preview"
+          />
         </div>
       </header>
 
@@ -159,7 +175,7 @@ export default function LandingPage() {
             src="https://media.istockphoto.com/id/878863400/photo/businessman-analyzing-financial-report-data-company-operations-balance-sheet-fintech.jpg?s=612x612&w=0&k=20&c=JoDWSxnoM8rXGRUZ6Fkj0GTmDPr8TO4JzwBDdYWDE7s="
             alt="Financial reports"
           />
-          
+
           <h3>Financial Reports</h3>
 
           <p>
@@ -175,7 +191,8 @@ export default function LandingPage() {
           <h2>Grow Your Business with Better Financial Decisions</h2>
 
           <p>
-           Understand your finances, track growth, and make smarter decisions with accurate financial insights.
+            Understand your finances, track growth, and make smarter decisions
+            with accurate financial insights.
           </p>
         </div>
 
@@ -219,7 +236,6 @@ export default function LandingPage() {
 
             <button>Subscribe</button>
           </div>
-
         </div>
       </section>
 
