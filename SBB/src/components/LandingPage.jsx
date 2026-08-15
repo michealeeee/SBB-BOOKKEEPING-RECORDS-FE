@@ -215,9 +215,8 @@ export default function LandingPage() {
             <p className="price">$9 / month</p>
 
             <ul>
-              <li>Basic bookkeeping</li>
-              <li>1 business</li>
-              <li>Email support</li>
+              <li>100 Customers</li>
+              <li>500 Invoices</li>
             </ul>
 
             <button>Subscribe</button>
@@ -229,7 +228,7 @@ export default function LandingPage() {
             <p className="price">$19 / month</p>
 
             <ul>
-              <li>Full dashboard access</li>
+              <li>unlimited Customers</li>
               <li>Unlimited invoices</li>
               <li>Advanced analytics</li>
             </ul>
