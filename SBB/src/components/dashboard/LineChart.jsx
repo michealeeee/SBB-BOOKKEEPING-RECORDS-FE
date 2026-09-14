@@ -6,8 +6,8 @@ import {
   PointElement,
   Tooltip,
   Legend,
+  Filler,
 } from "chart.js";
-
 import { Line } from "react-chartjs-2";
 
 ChartJS.register(
@@ -16,7 +16,8 @@ ChartJS.register(
   LinearScale,
   PointElement,
   Tooltip,
-  Legend
+  Legend,
+  Filler
 );
 
 export default function LineChart() {
@@ -26,16 +27,16 @@ export default function LineChart() {
       {
         label: "Income",
         data: [12000, 15000, 18000, 14000, 20000, 24000],
-        borderColor: "#2f80ed",
-        backgroundColor: "rgba(47,128,237,0.2)",
+        borderColor: "#2563eb",
+        backgroundColor: "rgba(37,99,235,0.16)",
         tension: 0.4,
         fill: true,
       },
       {
         label: "Expenses",
         data: [8000, 9000, 11000, 10000, 12000, 13000],
-        borderColor: "#eb5757",
-        backgroundColor: "rgba(235,87,87,0.2)",
+        borderColor: "#ef4444",
+        backgroundColor: "rgba(239,68,68,0.12)",
         tension: 0.4,
         fill: true,
       },
@@ -44,30 +45,21 @@ export default function LineChart() {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
-      legend: {
-        position: "top",
-      },
+      legend: { position: "top" },
     },
     scales: {
-      y: {
-        beginAtZero: true,
-      },
+      y: { beginAtZero: true },
     },
   };
 
   return (
     <div className="chartBoxLarge">
-
-  <h3>Cash Flow Overview</h3>
-
-  <div className="line-chart-wrapper">
-    <Line 
-      data={data} 
-      options={options} 
-    />
-  </div>
-
-</div>
+      <h3>Cash Flow Overview</h3>
+      <div className="line-chart-wrapper">
+        <Line data={data} options={options} />
+      </div>
+    </div>
   );
 }

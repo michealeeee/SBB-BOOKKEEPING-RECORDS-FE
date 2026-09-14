@@ -1,8 +1,6 @@
-import { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-import "./App.css";
-
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { AppProvider, useApp } from "./context/AppContext";
+import AppLayout from "./components/layout/AppLayout";
 import Dashboard from "./components/dashboard/Dashboard";
 import Transactions from "./components/transactions/Transactions";
 import Invoices from "./components/invoices/Invoices";
@@ -12,284 +10,70 @@ import Vendors from "./components/vendors/Vendors";
 import Customers from "./components/customers/Customers";
 import Taxes from "./components/taxes/Taxes";
 import Subscribers from "./components/subscribers/Subscribers";
-
 import LandingPage from "./components/LandingPage";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
+import "./App.css";
 
+function ProtectedRoute({ children }) {
+  const { isAuthenticated } = useApp();
+  if (!isAuthenticated) {
+    return <Navigate to="/signin" replace />;
+  }
+  return children;
+}
+
+function PublicOnly({ children }) {
+  const { isAuthenticated } = useApp();
+  if (isAuthenticated) {
+    return <Navigate to="/app" replace />;
+  }
+  return children;
+}
 
 export default function App() {
-
-  const [page, setPage] = useState("dashboard");
-
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-
-
-  const changePage = (selectedPage) => {
-
-    setPage(selectedPage);
-
-    setMobileOpen(false);
-
-  };
-
-
-
-  const renderPage = () => {
-
-    switch(page){
-
-      case "dashboard":
-        return <Dashboard />;
-
-      case "transactions":
-        return <Transactions />;
-
-      case "invoices":
-        return <Invoices />;
-
-      case "reports":
-        return <Reports />;
-
-      case "expenses":
-        return <Expenses />;
-
-      case "vendors":
-        return <Vendors />;
-
-      case "customers":
-        return <Customers />;
-
-      case "taxes":
-        return <Taxes />;
-
-      case "subscribers":
-        return <Subscribers />;
-
-      default:
-        return <Dashboard />;
-
-    }
-
-  };
-
-
-
   return (
-
-    <BrowserRouter>
-
-      <Routes>
-
-
-        <Route 
-          path="/signup"
-          element={<SignUp />}
-        />
-
-
-        <Route 
-          path="/signin"
-          element={<SignIn />}
-        />
-
-
-
-        <Route
-
-          path="/*"
-
-          element={
-
-            <div className="dashboard-shell">
-
-
-              {!isAuthenticated ? (
-
-                <LandingPage />
-
-              ) : (
-
-                <>
-
-
-                  {/* DASHBOARD NAVBAR */}
-
-                  <nav className="dashboard-navbar">
-
-
-                    <div className="dashboard-logo">
-
-                      Bookkeeply
-
-                    </div>
-
-
-
-                    {/* DESKTOP MENU */}
-
-                    <div className="dashboard-desktop-menu">
-
-
-                      <button onClick={() => changePage("dashboard")}>
-                        Dashboard
-                      </button>
-
-
-                      <button onClick={() => changePage("transactions")}>
-                        Transactions
-                      </button>
-
-
-                      <button onClick={() => changePage("invoices")}>
-                        Invoices
-                      </button>
-
-
-                      <button onClick={() => changePage("reports")}>
-                        Reports
-                      </button>
-
-
-                      <button onClick={() => changePage("expenses")}>
-                        Expenses
-                      </button>
-
-
-                      <button onClick={() => changePage("vendors")}>
-                        Vendors
-                      </button>
-
-
-                      <button onClick={() => changePage("customers")}>
-                        Customers
-                      </button>
-
-
-                      <button onClick={() => changePage("taxes")}>
-                        Taxes
-                      </button>
-
-
-                    </div>
-
-
-
-
-                    {/* MOBILE TOGGLE */}
-
-                    <button
-
-                      className="dashboard-toggle"
-
-                      onClick={() => setMobileOpen(!mobileOpen)}
-
-                    >
-
-                      <span>
-
-                        {mobileOpen ? "✕" : "☰"}
-
-                      </span>
-
-
-                    </button>
-
-
-
-                  </nav>
-
-
-
-
-
-                  {/* MOBILE DRAWER */}
-
-                  <div
-
-                    className={
-                      `dashboard-mobile-menu ${
-                        mobileOpen ? "open" : ""
-                      }`
-                    }
-
-                  >
-
-
-                    <button onClick={() => changePage("dashboard")}>
-                      Dashboard
-                    </button>
-
-
-                    <button onClick={() => changePage("transactions")}>
-                      Transactions
-                    </button>
-
-
-                    <button onClick={() => changePage("invoices")}>
-                      Invoices
-                    </button>
-
-
-                    <button onClick={() => changePage("reports")}>
-                      Reports
-                    </button>
-
-
-                    <button onClick={() => changePage("expenses")}>
-                      Expenses
-                    </button>
-
-
-                    <button onClick={() => changePage("vendors")}>
-                      Vendors
-                    </button>
-
-
-                    <button onClick={() => changePage("customers")}>
-                      Customers
-                    </button>
-
-
-                    <button onClick={() => changePage("taxes")}>
-                      Taxes
-                    </button>
-
-
-                  </div>
-
-
-
-
-
-                  {/* PAGE CONTENT */}
-
-                  <main className="dashboard-main-content">
-
-                    {renderPage()}
-
-                  </main>
-
-
-                </>
-
-              )}
-
-            </div>
-
-          }
-
-        />
-
-
-      </Routes>
-
-
-    </BrowserRouter>
-
+    <AppProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route
+            path="/signin"
+            element={
+              <PublicOnly>
+                <SignIn />
+              </PublicOnly>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <PublicOnly>
+                <SignUp />
+              </PublicOnly>
+            }
+          />
+          <Route
+            path="/app"
+            element={
+              <ProtectedRoute>
+                <AppLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Dashboard />} />
+            <Route path="transactions" element={<Transactions />} />
+            <Route path="invoices" element={<Invoices />} />
+            <Route path="reports" element={<Reports />} />
+            <Route path="expenses" element={<Expenses />} />
+            <Route path="vendors" element={<Vendors />} />
+            <Route path="customers" element={<Customers />} />
+            <Route path="taxes" element={<Taxes />} />
+            <Route path="subscribers" element={<Subscribers />} />
+          </Route>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </AppProvider>
   );
-
 }

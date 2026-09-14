@@ -1,110 +1,163 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useApp } from "../../context/AppContext";
+import { badgeClass } from "../../utils/format";
+
+const emptyForm = {
+  name: "",
+  plan: "Basic",
+  status: "Active",
+  renew: "",
+};
 
 export default function Subscribers() {
-  const [subscribers, setSubscribers] = useState([
-    {
-      name: "Ama K.",
-      plan: "Professional",
-      status: "Active",
-      renew: "2026-02-10"
-    },
-    {
-      name: "John D.",
-      plan: "Starter",
-      status: "Active",
-      renew: "2026-01-25"
+  const { subscribers, addSubscriber, updateSubscriberStatus } = useApp();
+  const [form, setForm] = useState(emptyForm);
+  const [query, setQuery] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const visible = useMemo(
+    () =>
+      subscribers.filter((item) =>
+        `${item.name} ${item.plan}`.toLowerCase().includes(query.trim().toLowerCase())
+      ),
+    [subscribers, query]
+  );
+
+  const submit = (event) => {
+    event.preventDefault();
+    setError("");
+    setSuccess("");
+    if (!form.name.trim() || !form.renew) {
+      setError("Name and renewal date are required.");
+      return;
     }
-  ]);
-
-  const [form, setForm] = useState({
-    name: "",
-    plan: "Starter",
-    status: "Active",
-    renew: ""
-  });
-
-  const addSubscriber = () => {
-    if (!form.name || !form.renew) return;
-
-    setSubscribers([...subscribers, form]);
-
-    setForm({
-      name: "",
-      plan: "Starter",
-      status: "Active",
-      renew: ""
-    });
+    addSubscriber({ ...form, name: form.name.trim() });
+    setForm(emptyForm);
+    setSuccess("Subscriber added locally. No billing account was created.");
   };
 
   return (
-    <div>
-      <h2>Subscribers</h2>
+    <div className="app-page">
+      <header className="page-header">
+        <div>
+          <h1>Subscribers</h1>
+          <p>Plan names match landing (Basic / Premium). Billing is not connected.</p>
+        </div>
+      </header>
 
-      {/* FORM */}
-      <div className="formRow">
-        <input
-          placeholder="Subscriber name"
-          value={form.name}
-          onChange={(e) =>
-            setForm({ ...form, name: e.target.value })
-          }
-        />
+      <section className="panel">
+        <h2>Add subscriber</h2>
+        {error ? <p className="auth-error" role="alert">{error}</p> : null}
+        {success ? <p className="form-success" role="status">{success}</p> : null}
+        <form className="form-grid" onSubmit={submit}>
+          <div className="field">
+            <label htmlFor="sub-name">Name</label>
+            <input
+              id="sub-name"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="sub-plan">Plan</label>
+            <select
+              id="sub-plan"
+              value={form.plan}
+              onChange={(e) => setForm({ ...form, plan: e.target.value })}
+            >
+              <option>Basic</option>
+              <option>Premium</option>
+            </select>
+          </div>
+          <div className="field">
+            <label htmlFor="sub-status">Status</label>
+            <select
+              id="sub-status"
+              value={form.status}
+              onChange={(e) => setForm({ ...form, status: e.target.value })}
+            >
+              <option>Active</option>
+              <option>Suspended</option>
+              <option>Cancelled</option>
+            </select>
+          </div>
+          <div className="field">
+            <label htmlFor="sub-renew">Renewal date</label>
+            <input
+              id="sub-renew"
+              type="date"
+              value={form.renew}
+              onChange={(e) => setForm({ ...form, renew: e.target.value })}
+            />
+          </div>
+          <button className="btn" type="submit">
+            Add
+          </button>
+        </form>
+      </section>
 
-        <select
-          value={form.plan}
-          onChange={(e) =>
-            setForm({ ...form, plan: e.target.value })
-          }
-        >
-          <option>Starter</option>
-          <option>Professional</option>
-          <option>Enterprise</option>
-        </select>
-
-        <select
-          value={form.status}
-          onChange={(e) =>
-            setForm({ ...form, status: e.target.value })
-          }
-        >
-          <option>Active</option>
-          <option>Suspended</option>
-          <option>Cancelled</option>
-        </select>
-
-        <input
-          type="date"
-          value={form.renew}
-          onChange={(e) =>
-            setForm({ ...form, renew: e.target.value })
-          }
-        />
-
-        <button onClick={addSubscriber}>Add</button>
-      </div>
-
-      {/* TABLE */}
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Plan</th>
-            <th>Status</th>
-            <th>Renewal Date</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {subscribers.map((s, i) => (
-            <tr key={i}>
-              <td>{s.name}</td>
-              <td>{s.plan}</td>
-              <td>{s.status}</td>
-              <td>{s.renew}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <section className="panel">
+        <div className="toolbar">
+          <div className="field">
+            <label htmlFor="sub-search">Search</label>
+            <input
+              id="sub-search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search subscribers"
+            />
+          </div>
+        </div>
+        <div className="table-wrap">
+          {visible.length === 0 ? (
+            <p className="empty-state">No subscribers to show.</p>
+          ) : (
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Plan</th>
+                  <th>Status</th>
+                  <th>Renewal</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {visible.map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.name}</td>
+                    <td>{item.plan}</td>
+                    <td>
+                      <span className={badgeClass(item.status)}>{item.status}</span>
+                    </td>
+                    <td>{item.renew}</td>
+                    <td>
+                      {item.status === "Active" ? (
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={() => updateSubscriberStatus(item.id, "Suspended")}
+                        >
+                          Suspend
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={() => updateSubscriberStatus(item.id, "Active")}
+                        >
+                          Activate
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      </section>
     </div>
   );
 }

@@ -1,110 +1,36 @@
 import StatCard from "./StatCard";
 import LineChart from "./LineChart";
-import CashFlow from "./CashFlow";
-import SummaryBoxes from "./SummaryBoxes";
 import IncomeExpenseChart from "./IncomeExpenseChart";
-
+import SummaryBoxes from "./SummaryBoxes";
+import { useApp } from "../../context/AppContext";
+import { formatMoney } from "../../utils/format";
 import "../../styles/dashboard.css";
 
-
 export default function Dashboard() {
+  const { totals, user } = useApp();
 
   return (
-
-    <div className="dashboard-page">
-
-
-      {/* Dashboard Title */}
-
-      <h1>
-        Dashboard
-      </h1>
-
-
-
-      {/* Statistics Cards */}
+    <div className="dashboard-page app-page">
+      <header className="page-header">
+        <div>
+          <h1>Dashboard</h1>
+          <p>Welcome back, {user.name}. Figures below are demo data stored in this browser.</p>
+        </div>
+      </header>
 
       <div className="dashboard-stats-grid">
-
-
-        <StatCard
-          title="Income"
-          value="$24,250"
-          color="green"
-        />
-
-
-        <StatCard
-          title="Expenses"
-          value="$8,320"
-          color="red"
-        />
-
-
-        <StatCard
-          title="Net Profit"
-          value="$15,930"
-          color="blue"
-        />
-
-
-        <StatCard
-          title="Invoices"
-          value="$5,600"
-          color="orange"
-        />
-
-
+        <StatCard title="Income" value={formatMoney(totals.income)} color="green" />
+        <StatCard title="Expenses" value={formatMoney(totals.expenses)} color="red" />
+        <StatCard title="Net Profit" value={formatMoney(totals.net)} color="blue" />
+        <StatCard title="Open invoices" value={formatMoney(totals.outstanding)} color="orange" />
       </div>
 
-
-
-
-      {/* Cash Flow */}
-
-      <div className="dashboard-chart-section">
-
-        <CashFlow />
-
-      </div>
-
-
-
-
-      {/* Line Chart */}
-
-      <div className="dashboard-chart-section">
-
+      <div className="dashboard-charts-row">
         <LineChart />
-
-      </div>
-
-
-
-
-      {/* Income Expense Chart */}
-
-      <div className="dashboard-chart-section">
-
         <IncomeExpenseChart />
-
       </div>
 
-
-
-
-      {/* Summary */}
-
-      <div className="dashboard-chart-section">
-
-        <SummaryBoxes />
-
-      </div>
-
-
-
+      <SummaryBoxes />
     </div>
-
   );
-
 }

@@ -1,46 +1,38 @@
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-} from "chart.js";
-
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import { useApp } from "../../context/AppContext";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function IncomeExpenseChart() {
+  const { totals } = useApp();
+
   const data = {
     labels: ["Income", "Expenses"],
     datasets: [
       {
-        data: [24250, 8320],
-        backgroundColor: ["#2f80ed", "#eb5757"],
+        data: [totals.income || 0, totals.expenses || 0],
+        backgroundColor: ["#2563eb", "#ef4444"],
         borderColor: "#ffffff",
         borderWidth: 2,
         hoverOffset: 8,
-        cutout: "70%", // donut hole size
+        cutout: "70%",
       },
     ],
   };
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "bottom",
-        labels: {
-          boxWidth: 12,
-          font: {
-            size: 12,
-          },
-        },
+        labels: { boxWidth: 12, font: { size: 12 } },
       },
       tooltip: {
         callbacks: {
-          label: function (context) {
-            let value = context.raw;
-            return `${context.label}: $${value.toLocaleString()}`;
+          label(context) {
+            return `${context.label}: $${Number(context.raw).toLocaleString()}`;
           },
         },
       },
@@ -50,7 +42,9 @@ export default function IncomeExpenseChart() {
   return (
     <div className="chartBoxSmall">
       <h3>Income vs Expenses</h3>
-      <Doughnut data={data} options={options} />
+      <div className="doughnut-wrap">
+        <Doughnut data={data} options={options} />
+      </div>
     </div>
   );
 }
