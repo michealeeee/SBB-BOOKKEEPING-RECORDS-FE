@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useApp } from "../../context/AppContext";
-import { badgeClass } from "../../utils/format";
+import { badgeClass, formatDate } from "../../utils/format";
 
 const emptyForm = {
   name: "",
@@ -40,10 +40,7 @@ export default function Subscribers() {
   return (
     <div className="app-page">
       <header className="page-header">
-        <div>
-          <h1>Subscribers</h1>
-          <p>Plan names match landing (Basic / Premium). Billing is not connected.</p>
-        </div>
+        <p>Basic and Premium plans. Billing is not connected.</p>
       </header>
 
       <section className="panel">
@@ -131,7 +128,7 @@ export default function Subscribers() {
                     <td>
                       <span className={badgeClass(item.status)}>{item.status}</span>
                     </td>
-                    <td>{item.renew}</td>
+                    <td>{formatDate(item.renew)}</td>
                     <td>
                       {item.status === "Active" ? (
                         <button

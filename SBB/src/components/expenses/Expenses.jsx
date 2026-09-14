@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useApp } from "../../context/AppContext";
-import { formatMoney } from "../../utils/format";
+import { formatDate, formatMoney } from "../../utils/format";
 import ConfirmDialog from "../ConfirmDialog";
 
 const emptyForm = {
@@ -50,10 +50,7 @@ export default function Expenses() {
   return (
     <div className="app-page">
       <header className="page-header">
-        <div>
-          <h1>Expenses</h1>
-          <p>Track operating costs. These records are not synced to accounting software.</p>
-        </div>
+        <p>Track operating costs. New expenses are also posted to the ledger.</p>
       </header>
 
       <section className="panel">
@@ -125,8 +122,8 @@ export default function Expenses() {
                   <th>Name</th>
                   <th>Category</th>
                   <th>Date</th>
-                  <th>Amount</th>
-                  <th>Actions</th>
+                  <th className="num">Amount</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -134,8 +131,8 @@ export default function Expenses() {
                   <tr key={item.id}>
                     <td>{item.name}</td>
                     <td>{item.category || "—"}</td>
-                    <td>{item.date || "—"}</td>
-                    <td>{formatMoney(item.amount)}</td>
+                    <td>{formatDate(item.date)}</td>
+                    <td className="num">{formatMoney(item.amount)}</td>
                     <td>
                       <button
                         type="button"

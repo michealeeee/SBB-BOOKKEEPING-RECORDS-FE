@@ -41,10 +41,7 @@ export default function Customers() {
   return (
     <div className="app-page">
       <header className="page-header">
-        <div>
-          <h1>Customers</h1>
-          <p>Balances shown here are demo figures, not live accounts receivable.</p>
-        </div>
+        <p>Customer list with demo balances. These are not live accounts receivable.</p>
       </header>
 
       <section className="panel">
@@ -96,8 +93,8 @@ export default function Customers() {
                 <tr>
                   <th>Name</th>
                   <th>Email</th>
-                  <th>Balance</th>
-                  <th>Actions</th>
+                  <th className="num">Balance</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -105,7 +102,7 @@ export default function Customers() {
                   <tr key={item.id}>
                     <td>{item.name}</td>
                     <td>{item.email || "—"}</td>
-                    <td>{formatMoney(item.balance)}</td>
+                    <td className="num">{formatMoney(item.balance)}</td>
                     <td>
                       <button
                         type="button"

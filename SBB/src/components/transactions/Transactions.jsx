@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useApp } from "../../context/AppContext";
-import { formatMoney } from "../../utils/format";
+import { formatDate, formatMoney } from "../../utils/format";
 import ConfirmDialog from "../ConfirmDialog";
 
 const emptyForm = {
@@ -52,10 +52,7 @@ export default function Transactions() {
   return (
     <div className="app-page">
       <header className="page-header">
-        <div>
-          <h1>Transactions</h1>
-          <p>Record income and expenses. Changes stay in this browser session only.</p>
-        </div>
+        <p>Record income and expenses. Your ledger is saved in this browser.</p>
       </header>
 
       <section className="panel">
@@ -153,20 +150,20 @@ export default function Transactions() {
                   <th>Description</th>
                   <th>Category</th>
                   <th>Type</th>
-                  <th>Amount</th>
-                  <th>Actions</th>
+                  <th className="num">Amount</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
                 {visible.map((item) => (
                   <tr key={item.id}>
-                    <td>{item.date}</td>
+                    <td>{formatDate(item.date)}</td>
                     <td>{item.description}</td>
                     <td>{item.category}</td>
                     <td>
                       <span className={`badge badge-${item.type}`}>{item.type}</span>
                     </td>
-                    <td className={item.type === "income" ? "amount-pos" : "amount-neg"}>
+                    <td className={`num ${item.type === "income" ? "amount-pos" : "amount-neg"}`}>
                       {formatMoney(item.amount)}
                     </td>
                     <td>

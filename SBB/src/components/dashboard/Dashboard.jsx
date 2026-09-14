@@ -1,31 +1,38 @@
-import StatCard from "./StatCard";
+import { useApp } from "../../context/AppContext";
+import { formatMoney } from "../../utils/format";
 import LineChart from "./LineChart";
 import IncomeExpenseChart from "./IncomeExpenseChart";
 import SummaryBoxes from "./SummaryBoxes";
-import { useApp } from "../../context/AppContext";
-import { formatMoney } from "../../utils/format";
-import "../../styles/dashboard.css";
 
 export default function Dashboard() {
   const { totals, user } = useApp();
 
   return (
-    <div className="dashboard-page app-page">
+    <div className="app-page">
       <header className="page-header">
-        <div>
-          <h1>Dashboard</h1>
-          <p>Welcome back, {user.name}. Figures below are demo data stored in this browser.</p>
-        </div>
+        <p>Welcome back, {user.name}. These figures come from the books stored in this browser.</p>
       </header>
 
-      <div className="dashboard-stats-grid">
-        <StatCard title="Income" value={formatMoney(totals.income)} color="green" />
-        <StatCard title="Expenses" value={formatMoney(totals.expenses)} color="red" />
-        <StatCard title="Net Profit" value={formatMoney(totals.net)} color="blue" />
-        <StatCard title="Open invoices" value={formatMoney(totals.outstanding)} color="orange" />
+      <div className="stats-grid">
+        <article className="stat-card income">
+          <span>Income</span>
+          <strong className="num">{formatMoney(totals.income)}</strong>
+        </article>
+        <article className="stat-card expense">
+          <span>Expenses</span>
+          <strong className="num">{formatMoney(totals.expenses)}</strong>
+        </article>
+        <article className="stat-card net">
+          <span>Net profit</span>
+          <strong className="num">{formatMoney(totals.net)}</strong>
+        </article>
+        <article className="stat-card open">
+          <span>Open invoices</span>
+          <strong className="num">{formatMoney(totals.outstanding)}</strong>
+        </article>
       </div>
 
-      <div className="dashboard-charts-row">
+      <div className="charts-row">
         <LineChart />
         <IncomeExpenseChart />
       </div>

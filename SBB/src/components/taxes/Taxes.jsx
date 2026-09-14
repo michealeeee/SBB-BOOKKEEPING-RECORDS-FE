@@ -6,28 +6,20 @@ export default function Taxes() {
   const { totals } = useApp();
   const [rate, setRate] = useState(15);
   const income = totals.income;
-  const taxAmount = income * (Number(rate) || 0) / 100;
+  const taxAmount = (income * (Number(rate) || 0)) / 100;
+  const afterTax = income - taxAmount;
 
   return (
     <div className="app-page">
       <header className="page-header">
-        <div>
-          <h1>Taxes</h1>
-          <p>
-            Estimate only, using demo income. This is not a filing, remittance, or
-            official tax calculation.
-          </p>
-        </div>
+        <p>
+          A simple estimate from book income. This is not a filing or official tax
+          calculation.
+        </p>
       </header>
 
       <section className="panel">
-        <div className="stat-pills">
-          <div className="stat-pill">Taxable income {formatMoney(income)}</div>
-          <div className="stat-pill">Rate {Number(rate) || 0}%</div>
-          <div className="stat-pill">Estimated tax {formatMoney(taxAmount)}</div>
-        </div>
-
-        <div className="field" style={{ maxWidth: 240 }}>
+        <div className="field" style={{ maxWidth: 240, marginBottom: 16 }}>
           <label htmlFor="tax-rate">Estimated rate (%)</label>
           <input
             id="tax-rate"
@@ -39,6 +31,27 @@ export default function Taxes() {
             onChange={(e) => setRate(e.target.value)}
           />
         </div>
+
+        <table className="data-table pl-table">
+          <tbody>
+            <tr>
+              <td>Taxable income</td>
+              <td className="num">{formatMoney(income)}</td>
+            </tr>
+            <tr>
+              <td>Rate</td>
+              <td className="num">{Number(rate) || 0}%</td>
+            </tr>
+            <tr>
+              <td>Estimated tax</td>
+              <td className="num amount-neg">{formatMoney(taxAmount)}</td>
+            </tr>
+            <tr className="pl-total">
+              <td>Income after estimate</td>
+              <td className="num">{formatMoney(afterTax)}</td>
+            </tr>
+          </tbody>
+        </table>
       </section>
     </div>
   );

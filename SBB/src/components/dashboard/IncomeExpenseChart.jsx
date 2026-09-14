@@ -1,6 +1,7 @@
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { useApp } from "../../context/AppContext";
+import { formatMoney } from "../../utils/format";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -12,11 +13,10 @@ export default function IncomeExpenseChart() {
     datasets: [
       {
         data: [totals.income || 0, totals.expenses || 0],
-        backgroundColor: ["#2563eb", "#ef4444"],
+        backgroundColor: ["#1b6b4a", "#b42318"],
         borderColor: "#ffffff",
         borderWidth: 2,
-        hoverOffset: 8,
-        cutout: "70%",
+        cutout: "68%",
       },
     ],
   };
@@ -32,7 +32,7 @@ export default function IncomeExpenseChart() {
       tooltip: {
         callbacks: {
           label(context) {
-            return `${context.label}: $${Number(context.raw).toLocaleString()}`;
+            return `${context.label}: ${formatMoney(context.raw)}`;
           },
         },
       },
@@ -40,9 +40,9 @@ export default function IncomeExpenseChart() {
   };
 
   return (
-    <div className="chartBoxSmall">
-      <h3>Income vs Expenses</h3>
-      <div className="doughnut-wrap">
+    <div className="chart-box">
+      <h3>Income vs expenses</h3>
+      <div className="chart-frame">
         <Doughnut data={data} options={options} />
       </div>
     </div>

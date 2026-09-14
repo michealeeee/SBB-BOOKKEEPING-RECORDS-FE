@@ -40,10 +40,7 @@ export default function Vendors() {
   return (
     <div className="app-page">
       <header className="page-header">
-        <div>
-          <h1>Vendors</h1>
-          <p>Keep supplier contacts in one place.</p>
-        </div>
+        <p>Keep supplier contacts in one place.</p>
       </header>
 
       <section className="panel">
@@ -97,25 +94,36 @@ export default function Vendors() {
         {visible.length === 0 ? (
           <p className="empty-state">No vendors to show.</p>
         ) : (
-          <ul className="list">
-            {visible.map((item) => (
-              <li key={item.id}>
-                <div>
-                  <strong>{item.name}</strong>
-                  <div className="muted">
-                    {item.contact || "No phone"} · {item.email || "No email"}
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  className="btn-ghost"
-                  onClick={() => setPendingDelete(item)}
-                >
-                  Remove
-                </button>
-              </li>
-            ))}
-          </ul>
+          <div className="table-wrap">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Contact</th>
+                  <th>Email</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {visible.map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.name}</td>
+                    <td>{item.contact || "—"}</td>
+                    <td>{item.email || "—"}</td>
+                    <td>
+                      <button
+                        type="button"
+                        className="btn-ghost"
+                        onClick={() => setPendingDelete(item)}
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </section>
 

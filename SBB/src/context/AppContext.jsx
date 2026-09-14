@@ -1,7 +1,11 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-const STORAGE_KEY = "bookkeeply-auth";
+/* Context files export the provider and a hook together. */
+/* eslint-disable react-refresh/only-export-components */
+
+const AUTH_KEY = "bookkeeply-auth";
 const USER_KEY = "bookkeeply-user";
+const BOOKS_KEY = "bookkeeply-books";
 
 const AppContext = createContext(null);
 
@@ -9,48 +13,48 @@ function createId() {
   return crypto.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
-const initialTransactions = [
-  { id: "t1", date: "2026-08-02", description: "Website redesign project", category: "Services", type: "income", amount: 4200 },
-  { id: "t2", date: "2026-08-05", description: "Office rent", category: "Rent", type: "expense", amount: 1200 },
-  { id: "t3", date: "2026-08-08", description: "Invoice #1041 — Ama K.", category: "Consulting", type: "income", amount: 1850 },
-  { id: "t4", date: "2026-08-12", description: "Software subscriptions", category: "Software", type: "expense", amount: 240 },
-  { id: "t5", date: "2026-08-18", description: "Product sales", category: "Sales", type: "income", amount: 3120 },
-  { id: "t6", date: "2026-08-22", description: "Internet & utilities", category: "Utilities", type: "expense", amount: 180 },
-];
-
-const initialInvoices = [
-  { id: "inv-1042", customer: "Ama K.", amount: 1850, status: "Paid", issued: "2026-08-01", due: "2026-08-15" },
-  { id: "inv-1043", customer: "John Doe", amount: 2400, status: "Sent", issued: "2026-08-10", due: "2026-08-31" },
-  { id: "inv-1044", customer: "Northwind Ltd", amount: 1350, status: "Overdue", issued: "2026-07-12", due: "2026-08-12" },
-  { id: "inv-1045", customer: "Ama K.", amount: 1850, status: "Draft", issued: "2026-08-24", due: "2026-09-10" },
-];
-
-const initialExpenses = [
-  { id: "e1", name: "Office Rent", amount: 1200, category: "Rent", date: "2026-08-05" },
-  { id: "e2", name: "Internet", amount: 80, category: "Utilities", date: "2026-08-08" },
-  { id: "e3", name: "Accounting software", amount: 49, category: "Software", date: "2026-08-14" },
-];
-
-const initialVendors = [
-  { id: "v1", name: "Office Supplies Ltd", contact: "024 000 0000", email: "info@office.com" },
-  { id: "v2", name: "City Utilities", contact: "030 111 2222", email: "billing@cityutil.com" },
-];
-
-const initialCustomers = [
-  { id: "c1", name: "John Doe", email: "john@example.com", balance: 2400 },
-  { id: "c2", name: "Ama K.", email: "ama@example.com", balance: 1850 },
-  { id: "c3", name: "Northwind Ltd", email: "ap@northwind.com", balance: 1350 },
-];
-
-const initialSubscribers = [
-  { id: "s1", name: "Ama K.", plan: "Premium", status: "Active", renew: "2026-09-10" },
-  { id: "s2", name: "John D.", plan: "Basic", status: "Active", renew: "2026-09-25" },
-  { id: "s3", name: "Northwind Ltd", plan: "Premium", status: "Suspended", renew: "2026-08-30" },
-];
+const seed = {
+  transactions: [
+    { id: "t1", date: "2026-08-02", description: "Website redesign project", category: "Services", type: "income", amount: 4200 },
+    { id: "t2", date: "2026-08-05", description: "Office rent", category: "Rent", type: "expense", amount: 1200 },
+    { id: "t3", date: "2026-08-08", description: "Invoice INV-1042 — Ama K.", category: "Consulting", type: "income", amount: 1850 },
+    { id: "t4", date: "2026-08-12", description: "Software subscriptions", category: "Software", type: "expense", amount: 240 },
+    { id: "t5", date: "2026-08-18", description: "Product sales", category: "Sales", type: "income", amount: 3120 },
+    { id: "t6", date: "2026-08-22", description: "Internet & utilities", category: "Utilities", type: "expense", amount: 180 },
+    { id: "t7", date: "2026-09-03", description: "Retainer — Northwind Ltd", category: "Consulting", type: "income", amount: 2100 },
+    { id: "t8", date: "2026-09-08", description: "Office supplies", category: "Supplies", type: "expense", amount: 96 },
+  ],
+  invoices: [
+    { id: "INV-1042", customer: "Ama K.", amount: 1850, status: "Paid", issued: "2026-08-01", due: "2026-08-15" },
+    { id: "INV-1043", customer: "John Doe", amount: 2400, status: "Sent", issued: "2026-08-10", due: "2026-08-31" },
+    { id: "INV-1044", customer: "Northwind Ltd", amount: 1350, status: "Overdue", issued: "2026-07-12", due: "2026-08-12" },
+    { id: "INV-1045", customer: "Ama K.", amount: 1850, status: "Draft", issued: "2026-08-24", due: "2026-09-10" },
+  ],
+  expenses: [
+    { id: "e1", name: "Office Rent", amount: 1200, category: "Rent", date: "2026-08-05" },
+    { id: "e2", name: "Internet", amount: 80, category: "Utilities", date: "2026-08-08" },
+    { id: "e3", name: "Accounting software", amount: 49, category: "Software", date: "2026-08-14" },
+    { id: "e4", name: "Office supplies", amount: 96, category: "Supplies", date: "2026-09-08" },
+  ],
+  vendors: [
+    { id: "v1", name: "Office Supplies Ltd", contact: "024 000 0000", email: "info@office.com" },
+    { id: "v2", name: "City Utilities", contact: "030 111 2222", email: "billing@cityutil.com" },
+  ],
+  customers: [
+    { id: "c1", name: "John Doe", email: "john@example.com", balance: 2400 },
+    { id: "c2", name: "Ama K.", email: "ama@example.com", balance: 1850 },
+    { id: "c3", name: "Northwind Ltd", email: "ap@northwind.com", balance: 1350 },
+  ],
+  subscribers: [
+    { id: "s1", name: "Ama K.", plan: "Premium", status: "Active", renew: "2026-09-10" },
+    { id: "s2", name: "John D.", plan: "Basic", status: "Active", renew: "2026-09-25" },
+    { id: "s3", name: "Northwind Ltd", plan: "Premium", status: "Suspended", renew: "2026-08-30" },
+  ],
+};
 
 function readAuth() {
   try {
-    return sessionStorage.getItem(STORAGE_KEY) === "1";
+    return sessionStorage.getItem(AUTH_KEY) === "1";
   } catch {
     return false;
   }
@@ -66,21 +70,45 @@ function readUser() {
   return { name: "Alex Mensah", email: "alex@bookkeeply.app" };
 }
 
+function loadBooks() {
+  try {
+    const raw = localStorage.getItem(BOOKS_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      return {
+        transactions: parsed.transactions ?? seed.transactions,
+        invoices: parsed.invoices ?? seed.invoices,
+        expenses: parsed.expenses ?? seed.expenses,
+        vendors: parsed.vendors ?? seed.vendors,
+        customers: parsed.customers ?? seed.customers,
+        subscribers: parsed.subscribers ?? seed.subscribers,
+      };
+    }
+  } catch {
+    /* ignore */
+  }
+  return seed;
+}
+
 export function AppProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(readAuth);
   const [user, setUser] = useState(readUser);
-  const [transactions, setTransactions] = useState(initialTransactions);
-  const [invoices, setInvoices] = useState(initialInvoices);
-  const [expenses, setExpenses] = useState(initialExpenses);
-  const [vendors, setVendors] = useState(initialVendors);
-  const [customers, setCustomers] = useState(initialCustomers);
-  const [subscribers, setSubscribers] = useState(initialSubscribers);
+  const [books, setBooks] = useState(loadBooks);
+  const { transactions, invoices, expenses, vendors, customers, subscribers } = books;
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(BOOKS_KEY, JSON.stringify(books));
+    } catch {
+      /* ignore */
+    }
+  }, [books]);
 
   const signIn = (profile) => {
     setUser(profile);
     setIsAuthenticated(true);
     try {
-      sessionStorage.setItem(STORAGE_KEY, "1");
+      sessionStorage.setItem(AUTH_KEY, "1");
       sessionStorage.setItem(USER_KEY, JSON.stringify(profile));
     } catch {
       /* ignore */
@@ -90,7 +118,7 @@ export function AppProvider({ children }) {
   const signOut = () => {
     setIsAuthenticated(false);
     try {
-      sessionStorage.removeItem(STORAGE_KEY);
+      sessionStorage.removeItem(AUTH_KEY);
       sessionStorage.removeItem(USER_KEY);
     } catch {
       /* ignore */
@@ -98,63 +126,110 @@ export function AppProvider({ children }) {
   };
 
   const addTransaction = (item) => {
-    setTransactions((list) => [{ id: createId(), ...item }, ...list]);
+    setBooks((current) => ({
+      ...current,
+      transactions: [{ id: createId(), ...item }, ...current.transactions],
+    }));
   };
 
   const removeTransaction = (id) => {
-    setTransactions((list) => list.filter((item) => item.id !== id));
+    setBooks((current) => ({
+      ...current,
+      transactions: current.transactions.filter((item) => item.id !== id),
+    }));
   };
 
   const addInvoice = (item) => {
-    setInvoices((list) => [
-      {
-        id: `inv-${1046 + list.length}`,
-        status: "Draft",
-        issued: new Date().toISOString().slice(0, 10),
-        ...item,
-      },
-      ...list,
-    ]);
+    setBooks((current) => {
+      const nums = current.invoices.map((invoice) => Number(String(invoice.id).replace(/\D/g, "")) || 0);
+      const next = Math.max(1045, ...nums) + 1;
+      return {
+        ...current,
+        invoices: [
+          {
+            id: `INV-${next}`,
+            status: "Draft",
+            issued: new Date().toISOString().slice(0, 10),
+            ...item,
+          },
+          ...current.invoices,
+        ],
+      };
+    });
   };
 
   const updateInvoiceStatus = (id, status) => {
-    setInvoices((list) =>
-      list.map((item) => (item.id === id ? { ...item, status } : item))
-    );
+    setBooks((current) => ({
+      ...current,
+      invoices: current.invoices.map((item) => (item.id === id ? { ...item, status } : item)),
+    }));
   };
 
   const addExpense = (item) => {
-    setExpenses((list) => [{ id: createId(), ...item }, ...list]);
+    setBooks((current) => ({
+      ...current,
+      expenses: [{ id: createId(), ...item }, ...current.expenses],
+      transactions: [
+        {
+          id: createId(),
+          date: item.date,
+          description: item.name,
+          category: item.category || "Expense",
+          type: "expense",
+          amount: item.amount,
+        },
+        ...current.transactions,
+      ],
+    }));
   };
 
   const removeExpense = (id) => {
-    setExpenses((list) => list.filter((item) => item.id !== id));
+    setBooks((current) => ({
+      ...current,
+      expenses: current.expenses.filter((item) => item.id !== id),
+    }));
   };
 
   const addVendor = (item) => {
-    setVendors((list) => [{ id: createId(), ...item }, ...list]);
+    setBooks((current) => ({
+      ...current,
+      vendors: [{ id: createId(), ...item }, ...current.vendors],
+    }));
   };
 
   const removeVendor = (id) => {
-    setVendors((list) => list.filter((item) => item.id !== id));
+    setBooks((current) => ({
+      ...current,
+      vendors: current.vendors.filter((item) => item.id !== id),
+    }));
   };
 
   const addCustomer = (item) => {
-    setCustomers((list) => [{ id: createId(), balance: 0, ...item }, ...list]);
+    setBooks((current) => ({
+      ...current,
+      customers: [{ id: createId(), balance: 0, ...item }, ...current.customers],
+    }));
   };
 
   const removeCustomer = (id) => {
-    setCustomers((list) => list.filter((item) => item.id !== id));
+    setBooks((current) => ({
+      ...current,
+      customers: current.customers.filter((item) => item.id !== id),
+    }));
   };
 
   const addSubscriber = (item) => {
-    setSubscribers((list) => [{ id: createId(), ...item }, ...list]);
+    setBooks((current) => ({
+      ...current,
+      subscribers: [{ id: createId(), ...item }, ...current.subscribers],
+    }));
   };
 
   const updateSubscriberStatus = (id, status) => {
-    setSubscribers((list) =>
-      list.map((item) => (item.id === id ? { ...item, status } : item))
-    );
+    setBooks((current) => ({
+      ...current,
+      subscribers: current.subscribers.map((item) => (item.id === id ? { ...item, status } : item)),
+    }));
   };
 
   const totals = useMemo(() => {

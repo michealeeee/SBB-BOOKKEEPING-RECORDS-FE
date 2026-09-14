@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useApp } from "../../context/AppContext";
-import { badgeClass, formatMoney } from "../../utils/format";
+import { badgeClass, formatDate, formatMoney } from "../../utils/format";
 
 const emptyForm = {
   customer: "",
@@ -53,10 +53,7 @@ export default function Invoices() {
   return (
     <div className="app-page">
       <header className="page-header">
-        <div>
-          <h1>Invoices</h1>
-          <p>Create and track invoices. Sending and payment collection need a backend.</p>
-        </div>
+        <p>Create and track invoices. Sending and collection are not connected yet.</p>
       </header>
 
       <section className="panel">
@@ -155,9 +152,9 @@ export default function Invoices() {
                   <th>Customer</th>
                   <th>Issued</th>
                   <th>Due</th>
-                  <th>Amount</th>
+                  <th className="num">Amount</th>
                   <th>Status</th>
-                  <th>Actions</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -165,9 +162,9 @@ export default function Invoices() {
                   <tr key={item.id}>
                     <td>{item.id}</td>
                     <td>{item.customer}</td>
-                    <td>{item.issued}</td>
-                    <td>{item.due}</td>
-                    <td>{formatMoney(item.amount)}</td>
+                    <td>{formatDate(item.issued)}</td>
+                    <td>{formatDate(item.due)}</td>
+                    <td className="num">{formatMoney(item.amount)}</td>
                     <td>
                       <span className={badgeClass(item.status)}>{item.status}</span>
                     </td>

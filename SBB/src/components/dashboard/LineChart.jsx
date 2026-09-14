@@ -9,6 +9,8 @@ import {
   Filler,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { useApp } from "../../context/AppContext";
+import { lastSixMonths, monthKey } from "../../utils/format";
 
 ChartJS.register(
   LineElement,
@@ -21,23 +23,37 @@ ChartJS.register(
 );
 
 export default function LineChart() {
+  const { transactions } = useApp();
+  const months = lastSixMonths();
+
+  const income = months.map((month) =>
+    transactions
+      .filter((item) => item.type === "income" && monthKey(item.date) === month.key)
+      .reduce((sum, item) => sum + Number(item.amount || 0), 0)
+  );
+  const expenses = months.map((month) =>
+    transactions
+      .filter((item) => item.type === "expense" && monthKey(item.date) === month.key)
+      .reduce((sum, item) => sum + Number(item.amount || 0), 0)
+  );
+
   const data = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    labels: months.map((month) => month.label),
     datasets: [
       {
         label: "Income",
-        data: [12000, 15000, 18000, 14000, 20000, 24000],
-        borderColor: "#2563eb",
-        backgroundColor: "rgba(37,99,235,0.16)",
-        tension: 0.4,
+        data: income,
+        borderColor: "#1b6b4a",
+        backgroundColor: "rgba(27,107,74,0.12)",
+        tension: 0.3,
         fill: true,
       },
       {
         label: "Expenses",
-        data: [8000, 9000, 11000, 10000, 12000, 13000],
-        borderColor: "#ef4444",
-        backgroundColor: "rgba(239,68,68,0.12)",
-        tension: 0.4,
+        data: expenses,
+        borderColor: "#b42318",
+        backgroundColor: "rgba(180,35,24,0.1)",
+        tension: 0.3,
         fill: true,
       },
     ],
@@ -55,9 +71,9 @@ export default function LineChart() {
   };
 
   return (
-    <div className="chartBoxLarge">
-      <h3>Cash Flow Overview</h3>
-      <div className="line-chart-wrapper">
+    <div className="chart-box">
+      <h3>Cash flow</h3>
+      <div className="chart-frame">
         <Line data={data} options={options} />
       </div>
     </div>
