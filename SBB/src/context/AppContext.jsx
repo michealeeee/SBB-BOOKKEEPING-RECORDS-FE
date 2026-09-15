@@ -5,7 +5,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 const AUTH_KEY = "bookkeeply-auth";
 const USER_KEY = "bookkeeply-user";
-const BOOKS_KEY = "bookkeeply-books";
+const BOOKS_KEY = "bookkeeply-books-v2";
 
 const AppContext = createContext(null);
 

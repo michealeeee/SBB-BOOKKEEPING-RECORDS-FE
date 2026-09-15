@@ -6,7 +6,7 @@ import ConfirmDialog from "../ConfirmDialog";
 const emptyForm = { name: "", bank: "", last4: "", balance: "" };
 
 export default function Bank() {
-  const { banks = [], addBank, removeBank } = useApp();
+  const { banks = [], addBank, removeBank, totals } = useApp();
   const [form, setForm] = useState(emptyForm);
   const [query, setQuery] = useState("");
   const [error, setError] = useState("");
@@ -48,6 +48,11 @@ export default function Bank() {
       <header className="page-header">
         <p>Track cash accounts used with these demo books.</p>
       </header>
+
+      <div className="stat-pills">
+        <div className="stat-pill">Cash on hand {formatMoney(totals.cash)}</div>
+        <div className="stat-pill">{banks.length} accounts</div>
+      </div>
 
       <section className="panel">
         <h2>Add account</h2>
