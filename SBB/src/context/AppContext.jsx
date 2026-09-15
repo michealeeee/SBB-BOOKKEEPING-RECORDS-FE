@@ -75,14 +75,16 @@ function loadBooks() {
     const raw = localStorage.getItem(BOOKS_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      return {
-        transactions: parsed.transactions ?? seed.transactions,
-        invoices: parsed.invoices ?? seed.invoices,
-        expenses: parsed.expenses ?? seed.expenses,
-        vendors: parsed.vendors ?? seed.vendors,
-        customers: parsed.customers ?? seed.customers,
-        subscribers: parsed.subscribers ?? seed.subscribers,
-      };
+      if (parsed && typeof parsed === "object") {
+        return {
+          transactions: Array.isArray(parsed.transactions) ? parsed.transactions : seed.transactions,
+          invoices: Array.isArray(parsed.invoices) ? parsed.invoices : seed.invoices,
+          expenses: Array.isArray(parsed.expenses) ? parsed.expenses : seed.expenses,
+          vendors: Array.isArray(parsed.vendors) ? parsed.vendors : seed.vendors,
+          customers: Array.isArray(parsed.customers) ? parsed.customers : seed.customers,
+          subscribers: Array.isArray(parsed.subscribers) ? parsed.subscribers : seed.subscribers,
+        };
+      }
     }
   } catch {
     /* ignore */

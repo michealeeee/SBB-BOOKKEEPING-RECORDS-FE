@@ -1,12 +1,14 @@
 # Bookkeeply
 
-A simple bookkeeping app for recording income, expenses, invoices, and contacts, with a local profit-and-loss view.
+Simple bookkeeping for small businesses.
 
-The app lives in `SBB/`. From the repo root:
+The live app is a Vite + React project in `SBB/`. A blank page usually means the dev server is not running.
 
 ```bash
-cd SBB && npm install
+npm install
 npm run dev
 ```
 
-Root `npm run dev`, `npm run build`, and `npm run preview` forward into `SBB`.
+Then open **http://localhost:5173/**
+
+Sign in with any valid email and a password of 6+ characters (example: `demo@business.com` / `demo1234`).
