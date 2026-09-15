@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
 import { formatDate, formatMoney } from "../../utils/format";
 
-export default function SummaryBoxes() {
+export default function SummaryBoxes({ entries }) {
   const { transactions, invoices } = useApp();
-  const recent = transactions.slice(0, 5);
+  const recent = (entries ?? transactions).slice(0, 5);
   const openInvoices = invoices.filter((item) => item.status !== "Paid").slice(0, 5);
 
   return (
@@ -12,7 +12,7 @@ export default function SummaryBoxes() {
       <section className="panel">
         <h3>Recent entries</h3>
         {recent.length === 0 ? (
-          <p className="empty-state">No transactions yet.</p>
+          <p className="empty-state">No transactions in this period.</p>
         ) : (
           recent.map((item) => (
             <div className="summary-item" key={item.id}>
