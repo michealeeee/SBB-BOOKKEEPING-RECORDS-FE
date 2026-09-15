@@ -379,6 +379,22 @@
   color: var(--navy);
 }
 
+.ledger-panel h2 {
+  font-size: 18px;
+}
+
+.empty-ledger {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.empty-ledger .empty-state {
+  margin: 0;
+  padding: 0;
+}
+
 .period-stats {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin-bottom: 0;

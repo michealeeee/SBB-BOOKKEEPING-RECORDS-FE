@@ -61,17 +61,29 @@ function PeriodTable({ rows }) {
   );
 }
 
+function pickLedgerDate(items) {
+  const today = todayISO();
+  if (items.some((item) => item.date === today)) return today;
+  if (items.length === 0) return today;
+  return items.reduce((max, item) => (item.date > max ? item.date : max), items[0].date);
+}
+
 export default function Dashboard() {
   const { totals, user, transactions, addTransaction } = useApp();
   const name = user?.name || "there";
   const [view, setView] = useState("daily");
-  const [selectedDate, setSelectedDate] = useState(todayISO);
-  const [form, setForm] = useState(() => emptyForm());
+  const [selectedDate, setSelectedDate] = useState(() => pickLedgerDate(transactions));
+  const [form, setForm] = useState(() => emptyForm(pickLedgerDate(transactions)));
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const weekStart = startOfWeekISO(selectedDate);
   const weekEnd = addDaysISO(weekStart, 6);
+
+  const latestDate = useMemo(() => {
+    if (transactions.length === 0) return "";
+    return transactions.reduce((max, item) => (item.date > max ? item.date : max), "");
+  }, [transactions]);
 
   const alignFormDate = (nextView, nextSelected) => {
     const start = startOfWeekISO(nextSelected);
@@ -97,11 +109,15 @@ export default function Dashboard() {
     alignFormDate(view, next);
   };
 
-  const periodRows = useMemo(() => {
-    if (view === "daily") return transactions.filter((item) => item.date === selectedDate);
-    if (view === "weekly") return transactions.filter((item) => inWeek(item.date, weekStart));
-    return transactions;
-  }, [transactions, view, selectedDate, weekStart]);
+  const dailyRows = useMemo(
+    () => transactions.filter((item) => item.date === selectedDate),
+    [transactions, selectedDate]
+  );
+  const weeklyRows = useMemo(
+    () => transactions.filter((item) => inWeek(item.date, weekStart)),
+    [transactions, weekStart]
+  );
+  const periodRows = view === "daily" ? dailyRows : view === "weekly" ? weeklyRows : transactions;
 
   const periodTotals = view === "all" ? totals : summarizeLedger(periodRows);
 
@@ -144,11 +160,11 @@ export default function Dashboard() {
     <div className="app-page">
       <header className="page-header">
         <p>
-          Welcome back, {name}. Record and review the books by day or week.
+          Welcome back, {name}. Daily and weekly transactions are listed below.
         </p>
       </header>
       <div className="record-bar">
-        <span>Record by</span>
+        <span>Show</span>
         <div className="view-toggle" role="tablist" aria-label="Dashboard period">
           {VIEWS.map((item) => (
             <button
@@ -165,49 +181,48 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {view !== "all" ? (
-        <section className="panel period-panel">
-          <div className="period-nav">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={() =>
-                changeSelectedDate(
-                  addDaysISO(view === "daily" ? selectedDate : weekStart, view === "daily" ? -1 : -7)
-                )
-              }
-            >
-              Previous {view === "daily" ? "day" : "week"}
-            </button>
-            <div className="field">
-              <label htmlFor="dash-period">{view === "daily" ? "Day" : "Week of"}</label>
-              <input
-                id="dash-period"
-                type="date"
-                value={selectedDate}
-                onChange={(e) => changeSelectedDate(e.target.value)}
-              />
-            </div>
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={() =>
-                changeSelectedDate(
-                  addDaysISO(view === "daily" ? selectedDate : weekStart, view === "daily" ? 1 : 7)
-                )
-              }
-            >
-              Next {view === "daily" ? "day" : "week"}
-            </button>
-            <button type="button" className="btn btn-secondary" onClick={() => changeSelectedDate(todayISO())}>
-              Today
-            </button>
+      <section className="panel period-panel">
+        <div className="period-nav">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => changeSelectedDate(addDaysISO(selectedDate, -1))}
+          >
+            Previous day
+          </button>
+          <div className="field">
+            <label htmlFor="dash-period">Day</label>
+            <input
+              id="dash-period"
+              type="date"
+              value={selectedDate}
+              onChange={(e) => changeSelectedDate(e.target.value)}
+            />
           </div>
-          <p className="period-label">
-            {view === "daily" ? formatWeekdayDate(selectedDate) : `Week of ${formatWeekRange(weekStart)}`}
-          </p>
-        </section>
-      ) : null}
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => changeSelectedDate(addDaysISO(selectedDate, 1))}
+          >
+            Next day
+          </button>
+          <button type="button" className="btn btn-secondary" onClick={() => changeSelectedDate(todayISO())}>
+            Today
+          </button>
+          {latestDate ? (
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => changeSelectedDate(latestDate)}
+            >
+              Latest entry
+            </button>
+          ) : null}
+        </div>
+        <p className="period-label">
+          {formatWeekdayDate(selectedDate)} · Week of {formatWeekRange(weekStart)}
+        </p>
+      </section>
 
       <div className="stats-grid">
         <article className="stat-card income">
@@ -229,6 +244,59 @@ export default function Dashboard() {
           </strong>
         </article>
       </div>
+
+      <section className="panel ledger-panel" id="daily-transactions">
+        <h2>Daily transactions</h2>
+        <p className="muted form-hint">{formatWeekdayDate(selectedDate)}</p>
+        {dailyRows.length === 0 ? (
+          <div className="empty-ledger">
+            <p className="empty-state">No transactions on this day.</p>
+            {latestDate && latestDate !== selectedDate ? (
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => changeSelectedDate(latestDate)}
+              >
+                Show latest entry ({formatDate(latestDate)})
+              </button>
+            ) : null}
+          </div>
+        ) : (
+          <PeriodTable rows={dailyRows} />
+        )}
+      </section>
+
+      <section className="panel ledger-panel" id="weekly-transactions">
+        <h2>Weekly transactions</h2>
+        <p className="muted form-hint">Week of {formatWeekRange(weekStart)}</p>
+        {weeklyRows.length === 0 ? (
+          <div className="empty-ledger">
+            <p className="empty-state">No transactions recorded this week.</p>
+            {latestDate && !inWeek(latestDate, weekStart) ? (
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => changeSelectedDate(latestDate)}
+              >
+                Show week of latest entry
+              </button>
+            ) : null}
+          </div>
+        ) : (
+          <div className="week-groups">
+            {weekDaysISO(weekStart).map((date) => {
+              const items = weeklyRows.filter((item) => item.date === date);
+              if (items.length === 0) return null;
+              return (
+                <div className="week-day" key={date}>
+                  <h3>{formatWeekdayDate(date)}</h3>
+                  <PeriodTable rows={items} />
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </section>
 
       <section className="panel">
         <h2>Add transaction</h2>
@@ -305,44 +373,21 @@ export default function Dashboard() {
         </div>
       ) : null}
 
-      <section className="panel">
-        <h2>
-          {view === "daily"
-            ? "Daily transactions"
-            : view === "weekly"
-              ? "Weekly transactions"
-              : "All transactions"}
-        </h2>
-        {view === "weekly" ? (
-          periodRows.length === 0 ? (
-            <p className="empty-state">No transactions recorded this week.</p>
+      {view === "all" ? (
+        <section className="panel ledger-panel">
+          <h2>All transactions</h2>
+          {transactions.length === 0 ? (
+            <p className="empty-state">No transactions yet.</p>
           ) : (
-            <div className="week-groups">
-              {weekDaysISO(weekStart).map((date) => {
-                const items = periodRows.filter((item) => item.date === date);
-                if (items.length === 0) return null;
-                return (
-                  <div className="week-day" key={date}>
-                    <h3>{formatWeekdayDate(date)}</h3>
-                    <PeriodTable rows={items} />
-                  </div>
-                );
-              })}
-            </div>
-          )
-        ) : periodRows.length === 0 ? (
-          <p className="empty-state">
-            {view === "daily" ? "No transactions recorded on this day." : "No transactions yet."}
-          </p>
-        ) : (
-          <>
-            {view === "all" && periodRows.length > 12 ? (
-              <p className="muted form-hint">Showing the 12 most recent entries.</p>
-            ) : null}
-            <PeriodTable rows={view === "all" ? periodRows.slice(0, 12) : periodRows} />
-          </>
-        )}
-      </section>
+            <>
+              {transactions.length > 12 ? (
+                <p className="muted form-hint">Showing the 12 most recent entries.</p>
+              ) : null}
+              <PeriodTable rows={transactions.slice(0, 12)} />
+            </>
+          )}
+        </section>
+      ) : null}
 
       <SummaryBoxes />
     </div>
