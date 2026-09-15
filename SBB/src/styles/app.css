@@ -696,14 +696,23 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   height: 100%;
+}
+
+.spark-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+  height: 68px;
+  width: 100%;
 }
 
 .spark-up,
 .spark-down {
   display: block;
-  width: 10px;
+  width: 9px;
   min-height: 4px;
   border-radius: 4px 4px 0 0;
 }
@@ -714,8 +723,6 @@
 
 .spark-down {
   background: var(--expense);
-  border-radius: 0 0 4px 4px;
-  min-height: 3px;
 }
 
 .spark-col em {
@@ -761,9 +768,24 @@
 }
 
 .meter-wide {
-  max-width: 220px;
+  max-width: none;
+  width: 100%;
   display: block;
-  margin-top: 6px;
+  margin: 0;
+}
+
+.mix-row {
+  display: grid;
+  grid-template-columns: 88px 1fr 48px;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+
+.mix-row .num {
+  text-align: right;
 }
 
 .tax-visual {

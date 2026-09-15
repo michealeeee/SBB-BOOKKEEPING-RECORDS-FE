@@ -159,14 +159,22 @@ export default function Reports() {
             const expense = monthSum(transactions, "expense", month.key);
             return (
               <div className="spark-col" key={month.key}>
-                <span
-                  className="spark-up"
-                  style={{ height: `${(income / sparkMax) * 100}%` }}
-                />
-                <span
-                  className="spark-down"
-                  style={{ height: `${(expense / sparkMax) * 100}%` }}
-                />
+                <div className="spark-bars">
+                  <span
+                    className="spark-up"
+                    style={{
+                      height: income ? `${(income / sparkMax) * 100}%` : "3px",
+                      opacity: income ? 1 : 0.25,
+                    }}
+                  />
+                  <span
+                    className="spark-down"
+                    style={{
+                      height: expense ? `${(expense / sparkMax) * 100}%` : "3px",
+                      opacity: expense ? 1 : 0.25,
+                    }}
+                  />
+                </div>
                 <em>{month.label}</em>
               </div>
             );
@@ -290,16 +298,14 @@ export default function Reports() {
           ))}
         </div>
         {invoiceMix.map(([status, amount]) => (
-          <div className="summary-item" key={status}>
-            <span>
-              {status}
-              <div className="meter meter-wide" aria-hidden="true">
-                <span
-                  className={`meter-fill status-${status.toLowerCase()}`}
-                  style={{ width: `${share(amount, invoiceTotal)}%` }}
-                />
-              </div>
-            </span>
+          <div className="mix-row" key={status}>
+            <span>{status}</span>
+            <div className="meter meter-wide" aria-hidden="true">
+              <span
+                className={`meter-fill status-${status.toLowerCase()}`}
+                style={{ width: `${share(amount, invoiceTotal)}%` }}
+              />
+            </div>
             <span className="num">{share(amount, invoiceTotal)}%</span>
           </div>
         ))}
