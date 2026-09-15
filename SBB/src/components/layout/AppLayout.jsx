@@ -85,7 +85,7 @@ export default function AppLayout() {
             <h1>{page}</h1>
           </div>
           <div className="topbar-meta">
-            <span className="period">Demo books · USD</span>
+            <span className="period">Demo books · GHS</span>
             <span className="top-user">{user?.name || user?.email || "Account"}</span>
             <button type="button" className="ghost-btn" onClick={handleSignOut}>
               Log out

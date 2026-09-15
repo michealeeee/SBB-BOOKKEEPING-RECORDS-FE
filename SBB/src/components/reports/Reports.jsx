@@ -34,7 +34,7 @@ export default function Reports() {
 
   const downloadCsv = () => {
     const rows = [
-      ["Type", "Date", "Description", "Category", "Amount"],
+      ["Type", "Date", "Description", "Category", "Amount (GHS)"],
       ...transactions.map((item) => [
         item.type,
         item.date,

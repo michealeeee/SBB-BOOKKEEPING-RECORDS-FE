@@ -44,7 +44,7 @@ export default function CategoryBarChart({ title, rows, emptyLabel = "No activit
         beginAtZero: true,
         ticks: {
           callback(value) {
-            return `$${Number(value).toLocaleString()}`;
+            return formatMoney(value);
           },
         },
         grid: { color: "#eef1f4" },

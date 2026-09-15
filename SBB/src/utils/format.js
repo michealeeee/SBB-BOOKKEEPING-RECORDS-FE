@@ -1,9 +1,18 @@
 export function formatMoney(value) {
   const amount = Number(value) || 0;
+  return amount.toLocaleString("en-GH", {
+    style: "currency",
+    currency: "GHS",
+    maximumFractionDigits: 2,
+  });
+}
+
+export function formatUsd(value) {
+  const amount = Number(value) || 0;
   return amount.toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
-    maximumFractionDigits: 2,
+    maximumFractionDigits: 0,
   });
 }
 

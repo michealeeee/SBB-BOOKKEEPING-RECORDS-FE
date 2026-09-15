@@ -40,7 +40,7 @@ export default function Subscribers() {
   return (
     <div className="app-page">
       <header className="page-header">
-        <p>Basic and Premium plans. Billing is not connected.</p>
+        <p>Starter, Business, and Professional plans are billed in USD. Billing is not connected.</p>
       </header>
 
       <section className="panel">

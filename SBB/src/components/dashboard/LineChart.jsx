@@ -10,7 +10,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { useApp } from "../../context/AppContext";
-import { lastSixMonths, monthKey } from "../../utils/format";
+import { formatMoney, lastSixMonths, monthKey } from "../../utils/format";
 
 ChartJS.register(
   LineElement,
@@ -64,9 +64,23 @@ export default function LineChart() {
     maintainAspectRatio: false,
     plugins: {
       legend: { position: "top" },
+      tooltip: {
+        callbacks: {
+          label(context) {
+            return `${context.dataset.label}: ${formatMoney(context.raw)}`;
+          },
+        },
+      },
     },
     scales: {
-      y: { beginAtZero: true },
+      y: {
+        beginAtZero: true,
+        ticks: {
+          callback(value) {
+            return formatMoney(value);
+          },
+        },
+      },
     },
   };
 

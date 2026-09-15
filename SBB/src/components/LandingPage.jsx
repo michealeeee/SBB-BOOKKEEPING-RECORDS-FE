@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { formatMoney, formatUsd } from "../utils/format";
 import "../styles/landing.css";
 
 export default function LandingPage() {
@@ -109,23 +110,23 @@ export default function LandingPage() {
         <aside className="ledger-card" aria-hidden="true">
           <div className="ledger-head">
             <strong>September ledger</strong>
-            <span>USD</span>
+            <span>GHS</span>
           </div>
           <div className="ledger-row">
             <span>Retainer — Northwind</span>
-            <b className="pos">+$2,100.00</b>
+            <b className="pos">+{formatMoney(2100)}</b>
           </div>
           <div className="ledger-row">
             <span>Office supplies</span>
-            <b className="neg">−$96.00</b>
+            <b className="neg">−{formatMoney(96)}</b>
           </div>
           <div className="ledger-row">
             <span>Product sales</span>
-            <b className="pos">+$3,120.00</b>
+            <b className="pos">+{formatMoney(3120)}</b>
           </div>
           <div className="ledger-foot">
             <span>Net</span>
-            <b>+$5,124.00</b>
+            <b>+{formatMoney(5124)}</b>
           </div>
         </aside>
       </header>
@@ -164,7 +165,7 @@ export default function LandingPage() {
         <div className="lp-plans">
           <div className="lp-plan">
             <h3>Starter</h3>
-            <p className="lp-price">$9 / month</p>
+            <p className="lp-price">{formatUsd(9)} / month</p>
             <ul>
               <li>100 customers</li>
               <li>500 invoices</li>
@@ -176,7 +177,7 @@ export default function LandingPage() {
           </div>
           <div className="lp-plan featured">
             <h3>Business</h3>
-            <p className="lp-price">$19 / month</p>
+            <p className="lp-price">{formatUsd(19)} / month</p>
             <ul>
               <li>Unlimited customers</li>
               <li>Unlimited invoices</li>
@@ -188,7 +189,7 @@ export default function LandingPage() {
           </div>
           <div className="lp-plan">
             <h3>Professional</h3>
-            <p className="lp-price">$39 / month</p>
+            <p className="lp-price">{formatUsd(39)} / month</p>
             <ul>
               <li>Everything in Business</li>
               <li>Priority support</li>
@@ -199,7 +200,9 @@ export default function LandingPage() {
             </button>
           </div>
         </div>
-        <p className="lp-note">Checkout is not connected. Plans open a local demo account.</p>
+        <p className="lp-note">
+          Subscriptions are priced in USD. Checkout is not connected. Plans open a local demo account.
+        </p>
       </section>
 
       <footer className="lp-footer">
