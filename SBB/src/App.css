@@ -35,7 +35,7 @@
 
 .auth-kicker {
   margin: 0 0 18px;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -45,9 +45,9 @@
 }
 
 .auth-brand-panel h2 {
-  margin: 0 0 14px;
+  margin: 0 0 16px;
   max-width: 16ch;
-  font-size: 34px;
+  font-size: 44px;
   line-height: 1.15;
   letter-spacing: -0.03em;
   font-weight: 700;
@@ -57,7 +57,7 @@
   margin: 0 0 28px;
   max-width: 36ch;
   color: #b7c6d4;
-  font-size: 15px;
+  font-size: 18px;
   line-height: 1.55;
 }
 
@@ -66,7 +66,7 @@
   padding: 0;
   list-style: none;
   color: #d5dee7;
-  font-size: 14px;
+  font-size: 17px;
 }
 
 .auth-brand-panel li {
@@ -78,9 +78,9 @@
   content: "";
   position: absolute;
   left: 0;
-  top: 16px;
-  width: 7px;
-  height: 7px;
+  top: 18px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: #1b6b4a;
 }
@@ -219,7 +219,7 @@
   }
 
   .auth-brand-panel h2 {
-    font-size: 26px;
+    font-size: 32px;
     max-width: none;
   }
 
