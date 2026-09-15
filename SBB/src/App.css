@@ -1,19 +1,62 @@
 .auth-container {
+  --auth-navy: #16324f;
+  --auth-navy-deep: #0f2236;
+  --auth-green: #1b6b4a;
   min-height: 100vh;
   display: grid;
   place-items: center;
   padding: 24px;
-  background: var(--paper);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 90% 70% at 8% 12%, rgba(27, 107, 74, 0.32) 0%, transparent 58%),
+    radial-gradient(ellipse 70% 55% at 92% 88%, rgba(27, 107, 74, 0.22) 0%, transparent 52%),
+    radial-gradient(ellipse 50% 42% at 82% 16%, rgba(45, 90, 130, 0.4) 0%, transparent 56%),
+    linear-gradient(165deg, var(--auth-navy-deep) 0%, var(--auth-navy) 46%, #1a3d5c 74%, #12263c 100%);
+}
+
+.auth-container::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 18% 72%, rgba(27, 107, 74, 0.22) 0 9%, transparent 42%),
+    radial-gradient(circle at 74% 28%, rgba(255, 255, 255, 0.08) 0 8%, transparent 38%),
+    radial-gradient(circle at 88% 64%, rgba(22, 50, 79, 0.55) 0 12%, transparent 44%);
+  filter: blur(8px);
+}
+
+.auth-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+  background-size: 44px 44px, 44px 44px, 140px 140px;
+  opacity: 0.45;
+  mix-blend-mode: overlay;
+  mask-image: radial-gradient(ellipse 78% 72% at 50% 48%, #000 30%, transparent 82%);
 }
 
 .auth-card {
   width: 100%;
   max-width: 420px;
+  position: relative;
+  z-index: 1;
   background: var(--white);
   padding: 36px 32px;
   border-radius: 16px;
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow);
+  border: 1px solid rgba(227, 232, 238, 0.9);
+  box-shadow:
+    0 1px 2px rgba(8, 18, 32, 0.12),
+    0 22px 48px rgba(8, 18, 32, 0.28);
 }
 
 .auth-card h1 {
