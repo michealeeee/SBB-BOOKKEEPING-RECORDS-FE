@@ -70,6 +70,7 @@ export default function App() {
             <Route path="customers" element={<Customers />} />
             <Route path="taxes" element={<Taxes />} />
             <Route path="subscribers" element={<Subscribers />} />
+            <Route path="*" element={<Navigate to="/app" replace />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

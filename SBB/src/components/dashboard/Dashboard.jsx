@@ -6,7 +6,7 @@ import SummaryBoxes from "./SummaryBoxes";
 
 export default function Dashboard() {
   const { totals, user } = useApp();
-  const name = user.name || "there";
+  const name = user?.name || "there";
 
   return (
     <div className="app-page">
