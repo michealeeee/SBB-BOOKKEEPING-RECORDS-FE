@@ -12,8 +12,8 @@ export default function Dashboard() {
     <div className="app-page">
       <header className="page-header">
         <p>
-          Welcome back, {name}. This page is the snapshot of your books. The
-          sidebar on the left stays put — use it to open each register.
+          Welcome back, {name}. This page is the snapshot of your books. Use the
+          menu across the top to open each register.
         </p>
       </header>
 

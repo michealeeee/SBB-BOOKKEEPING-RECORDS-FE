@@ -1,8 +1,23 @@
 import { useEffect, useState } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
 import Sidebar from "./Sidebar";
+import "../../styles/dashboard.css";
+import "../../styles/app-pages.css";
 import "../../styles/app.css";
+import "./Sidebar.css";
+
+const NAV_ITEMS = [
+  { to: "/app", label: "Dashboard", end: true },
+  { to: "/app/transactions", label: "Transactions" },
+  { to: "/app/invoices", label: "Invoices" },
+  { to: "/app/reports", label: "Reports" },
+  { to: "/app/expenses", label: "Expenses" },
+  { to: "/app/vendors", label: "Vendors" },
+  { to: "/app/customers", label: "Customers" },
+  { to: "/app/taxes", label: "Taxes" },
+  { to: "/app/subscribers", label: "Subscribers" },
+];
 
 const TITLES = {
   "/app": "Dashboard",
@@ -21,7 +36,7 @@ export default function AppLayout() {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
-  const page = TITLES[location.pathname] || "Books";
+  const page = TITLES[location.pathname] || "App";
 
   useEffect(() => {
     document.title = `${page} · Bookkeeply`;
@@ -48,15 +63,51 @@ export default function AppLayout() {
   };
 
   return (
-    <div className="app-shell">
+    <div className="dashboard-shell">
       <a className="skip-link" href="#main-content">
         Skip to main content
       </a>
 
+      <nav className="dashboard-navbar" aria-label="Application">
+        <div className="dashboard-logo">Bookkeeply</div>
+
+        <div className="dashboard-desktop-menu">
+          {NAV_ITEMS.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.end}
+              className={({ isActive }) =>
+                isActive ? "nav-link active" : "nav-link"
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
+        </div>
+
+        <div className="dashboard-navbar-actions">
+          <span className="dashboard-user">{user?.name || user?.email || "Account"}</span>
+          <button type="button" className="dashboard-logout" onClick={handleSignOut}>
+            Log out
+          </button>
+          <button
+            type="button"
+            className="dashboard-toggle"
+            aria-expanded={mobileOpen}
+            aria-controls="app-sidebar"
+            onClick={() => setMobileOpen((open) => !open)}
+          >
+            <span aria-hidden="true">{mobileOpen ? "✕" : "☰"}</span>
+            <span className="sr-only">{mobileOpen ? "Close menu" : "Open menu"}</span>
+          </button>
+        </div>
+      </nav>
+
       {mobileOpen ? (
         <button
           type="button"
-          className="nav-overlay show"
+          className="sidebar-overlay show"
           aria-label="Close menu"
           onClick={() => setMobileOpen(false)}
         />
@@ -68,35 +119,9 @@ export default function AppLayout() {
         onSignOut={handleSignOut}
       />
 
-      <div className="app-frame">
-        <header className="app-topbar">
-          <button
-            type="button"
-            className="menu-btn"
-            aria-expanded={mobileOpen}
-            aria-controls="app-sidebar"
-            onClick={() => setMobileOpen((open) => !open)}
-          >
-            <span aria-hidden="true">{mobileOpen ? "✕" : "☰"}</span>
-            <span className="sr-only">{mobileOpen ? "Close menu" : "Open menu"}</span>
-          </button>
-          <div>
-            <p className="eyebrow">Books</p>
-            <h1>{page}</h1>
-          </div>
-          <div className="topbar-meta">
-            <span className="period">Demo books · USD</span>
-            <span className="top-user">{user?.name || user?.email || "Account"}</span>
-            <button type="button" className="ghost-btn" onClick={handleSignOut}>
-              Log out
-            </button>
-          </div>
-        </header>
-
-        <main id="main-content" className="app-main" tabIndex={-1}>
-          <Outlet />
-        </main>
-      </div>
+      <main id="main-content" className="dashboard-main-content" tabIndex={-1}>
+        <Outlet />
+      </main>
     </div>
   );
 }
