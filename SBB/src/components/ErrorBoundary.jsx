@@ -10,6 +10,10 @@ export default class ErrorBoundary extends Component {
     return { error };
   }
 
+  componentDidCatch(error) {
+    this.setState({ error });
+  }
+
   render() {
     if (!this.state.error) {
       return this.props.children;
