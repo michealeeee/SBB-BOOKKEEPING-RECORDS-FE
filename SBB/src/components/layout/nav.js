@@ -5,6 +5,7 @@ const NAV_GROUPS = [
       { to: "/app", label: "Dashboard", end: true },
       { to: "/app/transactions", label: "Transactions" },
       { to: "/app/expenses", label: "Expenses" },
+      { to: "/app/bank", label: "Bank" },
     ],
   },
   {

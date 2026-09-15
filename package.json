@@ -1,0 +1,10 @@
+{
+  "name": "sbb-bookkeeping-records-fe",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev --prefix SBB",
+    "build": "npm run build --prefix SBB",
+    "lint": "npm run lint --prefix SBB",
+    "preview": "npm run preview --prefix SBB"
+  }
+}

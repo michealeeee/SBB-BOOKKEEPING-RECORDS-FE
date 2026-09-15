@@ -72,11 +72,16 @@
 }
 
 .lp-overlay {
+  display: none;
   position: fixed;
   inset: 0;
   background: rgba(18, 35, 58, 0.4);
   border: 0;
   z-index: 30;
+}
+
+.lp-overlay.show {
+  display: block;
 }
 
 .lp-drawer {

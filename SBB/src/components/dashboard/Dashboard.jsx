@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
 import { formatMoney } from "../../utils/format";
 import LineChart from "./LineChart";
@@ -6,28 +7,71 @@ import SummaryBoxes from "./SummaryBoxes";
 
 export default function Dashboard() {
   const { totals, user } = useApp();
+  const name = user.name || "there";
 
   return (
     <div className="app-page">
       <header className="page-header">
-        <p>Welcome back, {user.name}. These figures come from the books stored in this browser.</p>
+        <p>
+          Welcome back, {name}. This page is the snapshot of your books. The
+          sidebar on the left stays put — use it to open each register.
+        </p>
       </header>
+
+      <section className="panel dash-guide" aria-labelledby="dash-walkthrough">
+        <h2 id="dash-walkthrough">Dashboard walkthrough</h2>
+        <ol>
+          <li>
+            <strong>Income</strong> is money already posted to the ledger
+            (sales, invoices marked in Transactions).
+          </li>
+          <li>
+            <strong>Expenses</strong> is money going out. Add bills on Expenses
+            and they also hit the ledger.
+          </li>
+          <li>
+            <strong>Net profit</strong> is income minus expenses — your books
+            result, not cash in the bank.
+          </li>
+          <li>
+            <strong>Bank cash</strong> is the balance of accounts on{" "}
+            <Link to="/app/bank">Bank</Link>. Keep this next to profit so you
+            can see cash versus earnings.
+          </li>
+          <li>
+            <strong>Open invoices</strong> is what customers still owe. Collect
+            it from Invoices.
+          </li>
+          <li>
+            The <strong>cash flow</strong> chart is the last six months of
+            ledger totals. The ring chart splits income vs expenses.
+          </li>
+          <li>
+            <strong>Recent entries</strong> and <strong>unpaid invoices</strong>{" "}
+            are shortcuts into the ledger and sales list.
+          </li>
+        </ol>
+      </section>
 
       <div className="stats-grid">
         <article className="stat-card income">
-          <span>Income</span>
+          <span>1 · Income</span>
           <strong className="num">{formatMoney(totals.income)}</strong>
         </article>
         <article className="stat-card expense">
-          <span>Expenses</span>
+          <span>2 · Expenses</span>
           <strong className="num">{formatMoney(totals.expenses)}</strong>
         </article>
         <article className="stat-card net">
-          <span>Net profit</span>
+          <span>3 · Net profit</span>
           <strong className="num">{formatMoney(totals.net)}</strong>
         </article>
+        <article className="stat-card bank">
+          <span>4 · Bank cash</span>
+          <strong className="num">{formatMoney(totals.cash)}</strong>
+        </article>
         <article className="stat-card open">
-          <span>Open invoices</span>
+          <span>5 · Open invoices</span>
           <strong className="num">{formatMoney(totals.outstanding)}</strong>
         </article>
       </div>

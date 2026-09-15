@@ -4,12 +4,15 @@ import NAV_GROUPS from "./nav";
 
 export default function Sidebar({ mobileOpen, onClose, onSignOut }) {
   const { user } = useApp();
-  const initials = user.name
-    .split(" ")
-    .map((part) => part[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
+  const displayName = user?.name?.trim() || user?.email || "Account";
+  const initials =
+    displayName
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((part) => part[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase() || "BK";
 
   return (
     <aside
@@ -54,8 +57,8 @@ export default function Sidebar({ mobileOpen, onClose, onSignOut }) {
             {initials}
           </span>
           <div>
-            <strong>{user.name}</strong>
-            <span>{user.email}</span>
+            <strong>{displayName}</strong>
+            <span>{user?.email || ""}</span>
           </div>
         </div>
         <button type="button" className="side-logout" onClick={onSignOut}>

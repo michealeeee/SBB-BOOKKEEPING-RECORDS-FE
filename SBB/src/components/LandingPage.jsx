@@ -59,13 +59,14 @@ export default function LandingPage() {
         </button>
       </nav>
 
-      <button
-        type="button"
-        className={`lp-overlay ${menuOpen ? "show" : ""}`}
-        onClick={() => setMenuOpen(false)}
-        hidden={!menuOpen}
-        aria-label="Close menu"
-      />
+      {menuOpen ? (
+        <button
+          type="button"
+          className="lp-overlay show"
+          onClick={() => setMenuOpen(false)}
+          aria-label="Close menu"
+        />
+      ) : null}
 
       <div
         id="landing-drawer"
@@ -162,27 +163,39 @@ export default function LandingPage() {
         <h2>Monthly plans</h2>
         <div className="lp-plans">
           <div className="lp-plan">
-            <h3>Basic</h3>
+            <h3>Starter</h3>
             <p className="lp-price">$9 / month</p>
             <ul>
               <li>100 customers</li>
               <li>500 invoices</li>
-              <li>Ledger and reports</li>
+              <li>Ledger and bank accounts</li>
             </ul>
-            <button type="button" onClick={() => navigate("/signup?plan=basic")}>
-              Start Basic
+            <button type="button" onClick={() => navigate("/signup?plan=starter")}>
+              Start Starter
             </button>
           </div>
           <div className="lp-plan featured">
-            <h3>Premium</h3>
+            <h3>Business</h3>
             <p className="lp-price">$19 / month</p>
             <ul>
               <li>Unlimited customers</li>
               <li>Unlimited invoices</li>
-              <li>Advanced reports</li>
+              <li>Reports and tax estimate</li>
             </ul>
-            <button type="button" onClick={() => navigate("/signup?plan=premium")}>
-              Start Premium
+            <button type="button" onClick={() => navigate("/signup?plan=business")}>
+              Start Business
+            </button>
+          </div>
+          <div className="lp-plan">
+            <h3>Professional</h3>
+            <p className="lp-price">$39 / month</p>
+            <ul>
+              <li>Everything in Business</li>
+              <li>Priority support</li>
+              <li>Multi-account books</li>
+            </ul>
+            <button type="button" onClick={() => navigate("/signup?plan=professional")}>
+              Start Professional
             </button>
           </div>
         </div>

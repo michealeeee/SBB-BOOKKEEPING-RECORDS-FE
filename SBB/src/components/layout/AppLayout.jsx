@@ -10,6 +10,7 @@ const TITLES = {
   "/app/invoices": "Invoices",
   "/app/reports": "Reports",
   "/app/expenses": "Expenses",
+  "/app/bank": "Bank",
   "/app/vendors": "Vendors",
   "/app/customers": "Customers",
   "/app/taxes": "Taxes",
@@ -56,7 +57,7 @@ export default function AppLayout() {
       {mobileOpen ? (
         <button
           type="button"
-          className="nav-overlay"
+          className="nav-overlay show"
           aria-label="Close menu"
           onClick={() => setMobileOpen(false)}
         />
@@ -86,7 +87,7 @@ export default function AppLayout() {
           </div>
           <div className="topbar-meta">
             <span className="period">Demo books · USD</span>
-            <span className="top-user">{user.name}</span>
+            <span className="top-user">{user?.name || user?.email || "Account"}</span>
             <button type="button" className="ghost-btn" onClick={handleSignOut}>
               Log out
             </button>
