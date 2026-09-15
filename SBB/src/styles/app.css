@@ -767,27 +767,6 @@
   color: var(--warn);
 }
 
-.meter-wide {
-  max-width: none;
-  width: 100%;
-  display: block;
-  margin: 0;
-}
-
-.mix-row {
-  display: grid;
-  grid-template-columns: 88px 1fr 48px;
-  gap: 12px;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--line);
-  font-size: 14px;
-}
-
-.mix-row .num {
-  text-align: right;
-}
-
 .tax-visual {
   display: flex;
   gap: 28px;
@@ -859,6 +838,28 @@
   display: inline-block;
   vertical-align: middle;
   margin-right: 8px;
+}
+
+.meter.meter-wide,
+.mix-row .meter {
+  max-width: none;
+  width: 100%;
+  display: block;
+  margin: 0;
+}
+
+.mix-row {
+  display: grid;
+  grid-template-columns: 88px 1fr 48px;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+
+.mix-row .num {
+  text-align: right;
 }
 
 .meter-fill {
