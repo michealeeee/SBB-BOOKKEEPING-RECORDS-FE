@@ -7,6 +7,44 @@ export function formatMoney(value) {
   });
 }
 
+export function toISODate(value = new Date()) {
+  const date = value instanceof Date ? new Date(value.getTime()) : new Date(`${value}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return "";
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+export function todayISO() {
+  return toISODate(new Date());
+}
+
+export function addDaysISO(iso, days) {
+  const date = new Date(`${iso}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return "";
+  date.setDate(date.getDate() + days);
+  return toISODate(date);
+}
+
+export function startOfWeekISO(iso) {
+  const date = new Date(`${iso}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return "";
+  const weekday = date.getDay();
+  const toMonday = weekday === 0 ? -6 : 1 - weekday;
+  date.setDate(date.getDate() + toMonday);
+  return toISODate(date);
+}
+
+export function weekDaysISO(weekStart) {
+  return Array.from({ length: 7 }, (_, index) => addDaysISO(weekStart, index));
+}
+
+export function inWeek(iso, weekStart) {
+  const end = addDaysISO(weekStart, 6);
+  return Boolean(iso && weekStart && iso >= weekStart && iso <= end);
+}
+
 export function formatDate(value) {
   if (!value) return "—";
   const date = new Date(`${value}T00:00:00`);
@@ -16,6 +54,42 @@ export function formatDate(value) {
     day: "numeric",
     year: "numeric",
   });
+}
+
+export function formatWeekdayDate(value) {
+  if (!value) return "—";
+  const date = new Date(`${value}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+export function formatWeekRange(weekStart) {
+  const start = new Date(`${weekStart}T00:00:00`);
+  const end = new Date(start);
+  end.setDate(end.getDate() + 6);
+  if (Number.isNaN(start.getTime())) return "";
+  const startLabel = start.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  const endLabel = end.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+  return `${startLabel} – ${endLabel}`;
+}
+
+export function summarizeLedger(items) {
+  const income = items
+    .filter((item) => item.type === "income")
+    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
+  const expenses = items
+    .filter((item) => item.type === "expense")
+    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
+  return { income, expenses, net: income - expenses, count: items.length };
 }
 
 export function badgeClass(status) {
