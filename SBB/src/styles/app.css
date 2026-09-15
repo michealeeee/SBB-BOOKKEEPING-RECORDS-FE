@@ -8,7 +8,7 @@
 .app-sidebar {
   width: var(--sidebar);
   background: var(--navy);
-  color: #e8eef5;
+  color: #eef3ee;
   display: flex;
   flex-direction: column;
   position: sticky;
@@ -45,7 +45,7 @@
 .app-brand span {
   display: block;
   font-size: 12px;
-  color: #9fb0c3;
+  color: #a8b8ae;
 }
 
 .app-side-nav {
@@ -63,12 +63,12 @@
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #8aa0b8;
+  color: #8fa396;
 }
 
 .side-link {
   display: block;
-  color: #d7e2ee;
+  color: #dce8df;
   text-decoration: none;
   padding: 9px 12px;
   border-radius: 8px;
@@ -105,7 +105,7 @@
 }
 
 .side-user span {
-  color: #9fb0c3;
+  color: #a8b8ae;
   word-break: break-all;
 }
 
@@ -113,7 +113,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #2c5278;
+  background: #2d5340;
   display: grid;
   place-items: center;
   font-size: 12px;
@@ -124,7 +124,7 @@
 .ghost-btn {
   width: 100%;
   background: transparent;
-  color: #d7e2ee;
+  color: #dce8df;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 8px;
   padding: 8px 10px;
@@ -219,8 +219,8 @@
   grid-template-columns: 1fr auto;
   gap: 12px 20px;
   align-items: start;
-  background: linear-gradient(135deg, #16324f 0%, #1d4a3a 100%);
-  color: #eef4f8;
+  background: linear-gradient(135deg, #1c3328 0%, #1b6b4a 100%);
+  color: #eef3ee;
   border-radius: 16px;
   padding: 22px 24px 20px;
   margin-bottom: 16px;
@@ -276,7 +276,7 @@
   font-size: 11px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #9fb0c3;
+  color: #a8b8ae;
   margin-bottom: 4px;
 }
 
@@ -421,7 +421,7 @@
 .field label {
   font-size: 13px;
   font-weight: 650;
-  color: #334155;
+  color: #3d4a40;
 }
 
 .field input,
@@ -528,8 +528,8 @@
 
 .badge-sent,
 .badge-draft {
-  background: #e8eef6;
-  color: #1e3a5f;
+  background: #e7efe9;
+  color: #2d5340;
 }
 
 .badge-overdue,
@@ -571,7 +571,7 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(18, 35, 58, 0.5);
+  background: rgba(28, 51, 40, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -909,8 +909,8 @@
 }
 
 .status-chip.status-sent {
-  background: #e8eef5;
-  color: #2c5278;
+  background: #e7efe9;
+  color: #2d5340;
 }
 
 .status-chip.status-overdue {
@@ -1037,7 +1037,7 @@
 
 .meter-fill.status-sent,
 .meter-fill.status-draft {
-  background: #2c5278;
+  background: #2d5340;
 }
 
 .pl-section td {
@@ -1095,7 +1095,7 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(15, 23, 42, 0.45);
+    background: rgba(28, 51, 40, 0.45);
     border: 0;
     z-index: 25;
   }

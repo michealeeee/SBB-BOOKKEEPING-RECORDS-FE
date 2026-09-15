@@ -4,7 +4,7 @@ import { formatMoney } from "../../utils/format";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip);
 
-const COLORS = ["#1b6b4a", "#16324f", "#b45309", "#b42318", "#2c5278", "#5b6b7c"];
+const COLORS = ["#1b6b4a", "#1c3328", "#b45309", "#b42318", "#4d6b45", "#6b5b4a"];
 
 export default function CategoryBarChart({ title, rows, emptyLabel = "No activity yet" }) {
   const labels = rows.map(([name]) => name);

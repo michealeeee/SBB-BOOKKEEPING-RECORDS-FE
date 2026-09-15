@@ -1,7 +1,7 @@
 .landing {
   min-height: 100vh;
   background: #f7f5ef;
-  color: #12233a;
+  color: #1b241c;
 }
 
 .lp-nav {
@@ -19,7 +19,7 @@
 .lp-logo {
   font-weight: 800;
   font-size: 20px;
-  color: #16324f;
+  color: #1c3328;
 }
 
 .lp-links {
@@ -28,7 +28,7 @@
 }
 
 .lp-links a {
-  color: #334155;
+  color: #3d4a40;
   text-decoration: none;
   font-weight: 600;
 }
@@ -57,14 +57,14 @@
 
 .btn-outline {
   background: transparent;
-  color: #16324f;
-  border: 1px solid #c9d3de;
+  color: #1c3328;
+  border: 1px solid #d5d0c4;
 }
 
 .lp-menu {
   display: none;
   margin-left: auto;
-  border: 1px solid #c9d3de;
+  border: 1px solid #d5d0c4;
   background: #fff;
   width: 40px;
   height: 40px;
@@ -75,7 +75,7 @@
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(18, 35, 58, 0.4);
+  background: rgba(28, 51, 40, 0.4);
   border: 0;
   z-index: 30;
 }
@@ -104,7 +104,7 @@
 }
 
 .lp-drawer a {
-  color: #12233a;
+  color: #1b241c;
   text-decoration: none;
   font-weight: 650;
   padding: 8px 0;
@@ -137,7 +137,7 @@
 }
 
 .lp-hero p {
-  color: #5b6b7c;
+  color: #5a675e;
   font-size: 18px;
   line-height: 1.55;
   margin: 0 0 22px;
@@ -154,7 +154,7 @@
   border: 1px solid #e6e1d4;
   border-radius: 16px;
   padding: 20px;
-  box-shadow: 0 16px 40px rgba(18, 35, 58, 0.08);
+  box-shadow: 0 16px 40px rgba(28, 51, 40, 0.08);
 }
 
 .ledger-head,
@@ -167,7 +167,7 @@
 
 .ledger-head {
   margin-bottom: 16px;
-  color: #5b6b7c;
+  color: #5a675e;
 }
 
 .ledger-row {
@@ -211,12 +211,12 @@
 
 .lp-features p {
   margin: 0;
-  color: #5b6b7c;
+  color: #5a675e;
 }
 
 .lp-product {
-  background: #16324f;
-  color: #eef3f8;
+  background: #1c3328;
+  color: #eef3ee;
   padding: 48px 24px;
 }
 
@@ -264,7 +264,7 @@
 
 .lp-plan ul {
   padding-left: 18px;
-  color: #5b6b7c;
+  color: #5a675e;
 }
 
 .lp-plan button {
@@ -274,7 +274,7 @@
 
 .lp-note,
 .lp-footer {
-  color: #5b6b7c;
+  color: #5a675e;
   text-align: center;
 }
 

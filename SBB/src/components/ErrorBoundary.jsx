@@ -16,7 +16,7 @@ export default class ErrorBoundary extends Component {
     }
 
     return (
-      <div style={{ padding: 32, fontFamily: "Segoe UI, sans-serif", color: "#12233a" }}>
+      <div style={{ padding: 32, fontFamily: "Segoe UI, sans-serif", color: "#1b241c" }}>
         <h1 style={{ fontSize: 22 }}>Bookkeeply could not load</h1>
         <p>Reload the page. If this continues, sign out of the demo and try again.</p>
         <pre style={{ whiteSpace: "pre-wrap", color: "#b42318" }}>

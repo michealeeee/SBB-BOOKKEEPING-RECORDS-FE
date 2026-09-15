@@ -267,7 +267,7 @@ export default function Reports() {
             framed={false}
             labels={invoiceMix.map(([status]) => status)}
             values={invoiceMix.map(([, amount]) => amount)}
-            colors={["#1b6b4a", "#2c5278", "#b42318", "#b45309"]}
+            colors={["#1b6b4a", "#3d6b52", "#b42318", "#b45309"]}
             centerValue={String(invoices.length)}
             centerLabel="invoices"
           />
