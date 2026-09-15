@@ -215,8 +215,8 @@
 }
 
 .lp-product {
-  background: #1c3328;
-  color: #eef3ee;
+  background: var(--navy);
+  color: #e8eef5;
   padding: 48px 24px;
 }
 
