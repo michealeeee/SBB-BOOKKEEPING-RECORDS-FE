@@ -1,67 +1,114 @@
-.auth-container {
-  --auth-navy: #16324f;
-  --auth-navy-deep: #0f2236;
-  --auth-green: #1b6b4a;
+.auth-shell {
   min-height: 100vh;
   display: grid;
-  place-items: center;
-  padding: 24px;
+  grid-template-columns: minmax(280px, 0.92fr) minmax(320px, 1.08fr);
+  background: #efece4;
+}
+
+.auth-brand-panel {
   position: relative;
-  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px 52px;
+  color: #e8eef5;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 42%),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 31px,
+      rgba(247, 244, 234, 0.06) 31px 32px
+    ),
+    #16324f;
   overflow: hidden;
-  background:
-    radial-gradient(ellipse 90% 70% at 8% 12%, rgba(27, 107, 74, 0.32) 0%, transparent 58%),
-    radial-gradient(ellipse 70% 55% at 92% 88%, rgba(27, 107, 74, 0.22) 0%, transparent 52%),
-    radial-gradient(ellipse 50% 42% at 82% 16%, rgba(45, 90, 130, 0.4) 0%, transparent 56%),
-    linear-gradient(165deg, var(--auth-navy-deep) 0%, var(--auth-navy) 46%, #1a3d5c 74%, #12263c 100%);
 }
 
-.auth-container::before {
+.auth-brand-panel::before {
   content: "";
   position: absolute;
-  inset: -20%;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 18% 72%, rgba(27, 107, 74, 0.22) 0 9%, transparent 42%),
-    radial-gradient(circle at 74% 28%, rgba(255, 255, 255, 0.08) 0 8%, transparent 38%),
-    radial-gradient(circle at 88% 64%, rgba(22, 50, 79, 0.55) 0 12%, transparent 44%);
-  filter: blur(8px);
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #1b6b4a;
 }
 
-.auth-container::after {
+.auth-kicker {
+  margin: 0 0 18px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #9ec9b3;
+  text-decoration: none;
+  width: fit-content;
+}
+
+.auth-brand-panel h2 {
+  margin: 0 0 14px;
+  max-width: 16ch;
+  font-size: 34px;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+
+.auth-brand-panel p {
+  margin: 0 0 28px;
+  max-width: 36ch;
+  color: #b7c6d4;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.auth-brand-panel ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: #d5dee7;
+  font-size: 14px;
+}
+
+.auth-brand-panel li {
+  position: relative;
+  padding: 8px 0 8px 18px;
+}
+
+.auth-brand-panel li::before {
   content: "";
   position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(238, 243, 248, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(238, 243, 248, 0.07) 1px, transparent 1px),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
-  background-size: 48px 48px, 48px 48px, 140px 140px;
-  opacity: 0.55;
-  mask-image: radial-gradient(ellipse 78% 72% at 50% 48%, #000 30%, transparent 82%);
+  left: 0;
+  top: 16px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #1b6b4a;
+}
+
+.auth-stage {
+  display: grid;
+  place-items: center;
+  padding: 32px 24px;
+  background:
+    radial-gradient(ellipse at 80% 10%, rgba(27, 107, 74, 0.06), transparent 42%),
+    #efece4;
 }
 
 .auth-card {
   width: 100%;
   max-width: 420px;
-  position: relative;
-  z-index: 1;
-  background: var(--white);
+  background: #fff;
   padding: 36px 32px;
-  border-radius: 16px;
-  border: 1px solid rgba(227, 232, 238, 0.9);
-  box-shadow:
-    0 1px 2px rgba(8, 18, 32, 0.12),
-    0 22px 48px rgba(8, 18, 32, 0.28);
+  border-radius: 12px;
+  border: 1px solid #ddd6c8;
+  box-shadow: 0 12px 32px rgba(22, 50, 79, 0.08);
 }
 
 .auth-card h1 {
   text-align: center;
   font-size: 24px;
   margin: 0 0 6px;
+  color: #16324f;
 }
 
 .auth-card .auth-lead {
@@ -79,6 +126,7 @@
   font-size: 13px;
   font-weight: 650;
   margin-bottom: 6px;
+  color: #16324f;
 }
 
 .auth-card input {
@@ -151,4 +199,30 @@
   font-size: 13px;
   color: var(--muted);
   margin: 12px 0 0;
+}
+
+@media (min-width: 861px) {
+  .auth-home {
+    display: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .auth-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-brand-panel {
+    padding: 28px 24px 24px;
+    min-height: auto;
+  }
+
+  .auth-brand-panel h2 {
+    font-size: 26px;
+    max-width: none;
+  }
+
+  .auth-brand-panel ul {
+    display: none;
+  }
 }

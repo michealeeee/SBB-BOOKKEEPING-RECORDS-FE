@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useApp } from "../context/AppContext";
+import AuthShell from "./AuthShell";
 
 function SignIn() {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ function SignIn() {
   };
 
   return (
-    <div className="auth-container">
+    <AuthShell>
       <div className="auth-card">
         <Link className="auth-home" to="/">
           Bookkeeply
@@ -91,7 +92,7 @@ function SignIn() {
           <Link to="/signup"> Create Account</Link>
         </p>
       </div>
-    </div>
+    </AuthShell>
   );
 }
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useApp } from "../context/AppContext";
+import AuthShell from "./AuthShell";
 
 function SignUp() {
   const navigate = useNavigate();
@@ -53,7 +54,7 @@ function SignUp() {
   };
 
   return (
-    <div className="auth-container">
+    <AuthShell>
       <div className="auth-card">
         <Link className="auth-home" to="/">
           Bookkeeply
@@ -129,7 +130,7 @@ function SignUp() {
           <Link to="/signin"> Sign In</Link>
         </p>
       </div>
-    </div>
+    </AuthShell>
   );
 }
 
