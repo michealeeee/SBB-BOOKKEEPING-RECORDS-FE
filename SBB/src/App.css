@@ -109,7 +109,7 @@
   text-align: center;
   font-size: 24px;
   margin: 0 0 6px;
-  color: var(--navy);
+  color: #1c3328;
 }
 
 .auth-card .auth-lead {
@@ -127,7 +127,7 @@
   font-size: 13px;
   font-weight: 650;
   margin-bottom: 6px;
-  color: var(--navy);
+  color: #1c3328;
 }
 
 .auth-card input {
