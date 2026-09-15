@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "postinstall": "npm install --prefix SBB",
-    "dev": "npm run dev --prefix SBB",
+    "dev": "node scripts/dev.mjs",
     "build": "npm run build --prefix SBB",
     "lint": "npm run lint --prefix SBB",
     "preview": "npm run preview --prefix SBB"
