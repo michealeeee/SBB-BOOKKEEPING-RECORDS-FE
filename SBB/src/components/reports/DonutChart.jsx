@@ -11,6 +11,7 @@ export default function DonutChart({
   colors,
   centerLabel,
   centerValue,
+  framed = true,
 }) {
   const safeValues = values.length ? values : [0];
   const data = {
@@ -45,7 +46,7 @@ export default function DonutChart({
   };
 
   return (
-    <div className="chart-box">
+    <div className={framed === false ? "donut-block" : "chart-box"}>
       <h3>{title}</h3>
       <div className="donut-wrap">
         <div className="chart-frame">
