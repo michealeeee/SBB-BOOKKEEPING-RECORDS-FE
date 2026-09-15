@@ -1,55 +1,68 @@
 import { NavLink } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
-
-const menuItems = [
-  { to: "/app", label: "Dashboard", icon: "▦", end: true },
-  { to: "/app/transactions", label: "Transactions", icon: "↔" },
-  { to: "/app/invoices", label: "Invoices", icon: "▤" },
-  { to: "/app/reports", label: "Reports", icon: "▥" },
-  { to: "/app/expenses", label: "Expenses", icon: "−" },
-  { to: "/app/vendors", label: "Vendors", icon: "♙" },
-  { to: "/app/customers", label: "Customers", icon: "♟" },
-  { to: "/app/taxes", label: "Taxes", icon: "%" },
-  { to: "/app/subscribers", label: "Subscribers", icon: "★" },
-];
+import NAV_GROUPS from "./nav";
 
 export default function Sidebar({ mobileOpen, onClose, onSignOut }) {
-  const { signOut } = useApp();
+  const { user } = useApp();
+  const displayName = user?.name?.trim() || user?.email || "Account";
+  const initials =
+    displayName
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((part) => part[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase() || "BK";
 
   return (
     <aside
       id="app-sidebar"
-      className={mobileOpen ? "dashboard-sidebar mobile-open" : "dashboard-sidebar"}
-      aria-label="Sidebar"
+      className={mobileOpen ? "app-sidebar open" : "app-sidebar"}
+      aria-label="Books navigation"
     >
-      <div className="dashboard-sidebar-brand">Bookkeeply</div>
+      <div className="app-brand">
+        <span className="app-mark" aria-hidden="true">
+          Bk
+        </span>
+        <div>
+          <strong>Bookkeeply</strong>
+          <span>General ledger</span>
+        </div>
+      </div>
 
-      <nav className="dashboard-sidebar-nav">
-        {menuItems.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            end={item.end}
-            className={({ isActive }) =>
-              isActive ? "dashboard-sidebar-link active" : "dashboard-sidebar-link"
-            }
-            onClick={onClose}
-          >
-            <span className="dashboard-sidebar-icon" aria-hidden="true">
-              {item.icon}
-            </span>
-            <span>{item.label}</span>
-          </NavLink>
+      <nav className="app-side-nav">
+        {NAV_GROUPS.map((group) => (
+          <div className="nav-group" key={group.label}>
+            <p className="nav-group-label">{group.label}</p>
+            {group.items.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.end}
+                className={({ isActive }) =>
+                  isActive ? "side-link active" : "side-link"
+                }
+                onClick={onClose}
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </div>
         ))}
       </nav>
 
-      <div className="dashboard-sidebar-footer">
-        <button
-          type="button"
-          className="dashboard-sidebar-logout"
-          onClick={onSignOut || signOut}
-        >
-          Log Out
+      <div className="app-side-footer">
+        <div className="side-user">
+          <span className="avatar" aria-hidden="true">
+            {initials}
+          </span>
+          <div>
+            <strong>{displayName}</strong>
+            <span>{user?.email || ""}</span>
+          </div>
+        </div>
+        <button type="button" className="side-logout" onClick={onSignOut}>
+          Log out
         </button>
       </div>
     </aside>
