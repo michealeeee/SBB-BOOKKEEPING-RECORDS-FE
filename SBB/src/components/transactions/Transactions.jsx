@@ -71,7 +71,7 @@ function LedgerTable({ items, emptyMessage, onRemove }) {
 
 export default function Transactions() {
   const { transactions, addTransaction, removeTransaction } = useApp();
-  const [view, setView] = useState("all");
+  const [view, setView] = useState("daily");
   const [selectedDate, setSelectedDate] = useState(todayISO);
   const [form, setForm] = useState(emptyForm);
   const [query, setQuery] = useState("");
@@ -183,7 +183,10 @@ export default function Transactions() {
   return (
     <div className="app-page">
       <header className="page-header">
-        <p>Record income and expenses by day or week. Your ledger is saved in this browser.</p>
+        <p>Record income and expenses for a day, a week, or the full ledger.</p>
+      </header>
+      <div className="record-bar">
+        <span>Record by</span>
         <div className="view-toggle" role="tablist" aria-label="Ledger period">
           {VIEWS.map((item) => (
             <button
@@ -198,7 +201,7 @@ export default function Transactions() {
             </button>
           ))}
         </div>
-      </header>
+      </div>
 
       {view !== "all" ? (
         <section className="panel period-panel">

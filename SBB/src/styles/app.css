@@ -324,12 +324,26 @@
   flex-shrink: 0;
 }
 
+.record-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: -8px 0 16px;
+  flex-wrap: wrap;
+}
+
+.record-bar > span {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
 .view-toggle button {
   border: none;
   background: transparent;
-  padding: 8px 16px;
+  padding: 10px 20px;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--muted);
   cursor: pointer;
 }
