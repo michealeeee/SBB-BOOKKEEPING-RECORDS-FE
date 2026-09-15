@@ -50,10 +50,6 @@ const seed = {
     { id: "s2", name: "John D.", plan: "Starter", status: "Active", renew: "2026-09-25" },
     { id: "s3", name: "Northwind Ltd", plan: "Business", status: "Suspended", renew: "2026-08-30" },
   ],
-  banks: [
-    { id: "b1", name: "Operating checking", bank: "First National", last4: "4412", balance: 18420 },
-    { id: "b2", name: "Tax savings", bank: "First National", last4: "8891", balance: 3600 },
-  ],
 };
 
 function readAuth() {
@@ -86,7 +82,6 @@ function loadBooks() {
         vendors: parsed.vendors ?? seed.vendors,
         customers: parsed.customers ?? seed.customers,
         subscribers: parsed.subscribers ?? seed.subscribers,
-        banks: parsed.banks ?? seed.banks,
       };
     }
   } catch {
@@ -99,7 +94,7 @@ export function AppProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(readAuth);
   const [user, setUser] = useState(readUser);
   const [books, setBooks] = useState(loadBooks);
-  const { transactions, invoices, expenses, vendors, customers, subscribers, banks = [] } = books;
+  const { transactions, invoices, expenses, vendors, customers, subscribers } = books;
 
   useEffect(() => {
     try {
@@ -237,20 +232,6 @@ export function AppProvider({ children }) {
     }));
   };
 
-  const addBank = (item) => {
-    setBooks((current) => ({
-      ...current,
-      banks: [{ id: createId(), ...item }, ...(current.banks || [])],
-    }));
-  };
-
-  const removeBank = (id) => {
-    setBooks((current) => ({
-      ...current,
-      banks: (current.banks || []).filter((item) => item.id !== id),
-    }));
-  };
-
   const totals = useMemo(() => {
     const income = transactions
       .filter((item) => item.type === "income")
@@ -261,16 +242,13 @@ export function AppProvider({ children }) {
     const outstanding = invoices
       .filter((item) => item.status !== "Paid")
       .reduce((sum, item) => sum + Number(item.amount || 0), 0);
-    const cash = (books.banks || [])
-      .reduce((sum, item) => sum + Number(item.balance || 0), 0);
     return {
       income,
       expenses: expenseTotal,
       net: income - expenseTotal,
       outstanding,
-      cash,
     };
-  }, [transactions, invoices, books.banks]);
+  }, [transactions, invoices]);
 
   const value = {
     isAuthenticated,
@@ -283,7 +261,6 @@ export function AppProvider({ children }) {
     vendors,
     customers,
     subscribers,
-    banks,
     totals,
     addTransaction,
     removeTransaction,
@@ -297,8 +274,6 @@ export function AppProvider({ children }) {
     removeCustomer,
     addSubscriber,
     updateSubscriberStatus,
-    addBank,
-    removeBank,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

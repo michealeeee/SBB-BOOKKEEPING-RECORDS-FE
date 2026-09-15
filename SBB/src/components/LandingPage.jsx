@@ -168,7 +168,7 @@ export default function LandingPage() {
             <ul>
               <li>100 customers</li>
               <li>500 invoices</li>
-              <li>Ledger and bank accounts</li>
+              <li>Ledger and reports</li>
             </ul>
             <button type="button" onClick={() => navigate("/signup?plan=starter")}>
               Start Starter

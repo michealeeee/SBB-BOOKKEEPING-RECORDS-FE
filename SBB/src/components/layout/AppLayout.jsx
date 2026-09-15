@@ -10,7 +10,6 @@ const TITLES = {
   "/app/invoices": "Invoices",
   "/app/reports": "Reports",
   "/app/expenses": "Expenses",
-  "/app/bank": "Bank",
   "/app/vendors": "Vendors",
   "/app/customers": "Customers",
   "/app/taxes": "Taxes",

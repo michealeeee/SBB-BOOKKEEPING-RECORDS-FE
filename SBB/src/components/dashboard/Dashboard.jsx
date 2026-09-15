@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
 import { formatMoney } from "../../utils/format";
 import LineChart from "./LineChart";
@@ -23,7 +22,7 @@ export default function Dashboard() {
         <ol>
           <li>
             <strong>Income</strong> is money already posted to the ledger
-            (sales, invoices marked in Transactions).
+            (sales and other inflows from Transactions).
           </li>
           <li>
             <strong>Expenses</strong> is money going out. Add bills on Expenses
@@ -31,12 +30,7 @@ export default function Dashboard() {
           </li>
           <li>
             <strong>Net profit</strong> is income minus expenses — your books
-            result, not cash in the bank.
-          </li>
-          <li>
-            <strong>Bank cash</strong> is the balance of accounts on{" "}
-            <Link to="/app/bank">Bank</Link>. Keep this next to profit so you
-            can see cash versus earnings.
+            result.
           </li>
           <li>
             <strong>Open invoices</strong> is what customers still owe. Collect
@@ -66,12 +60,8 @@ export default function Dashboard() {
           <span>3 · Net profit</span>
           <strong className="num">{formatMoney(totals.net)}</strong>
         </article>
-        <article className="stat-card bank">
-          <span>4 · Bank cash</span>
-          <strong className="num">{formatMoney(totals.cash)}</strong>
-        </article>
         <article className="stat-card open">
-          <span>5 · Open invoices</span>
+          <span>4 · Open invoices</span>
           <strong className="num">{formatMoney(totals.outstanding)}</strong>
         </article>
       </div>
