@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useApp } from "../../context/AppContext";
 import {
   addDaysISO,
+  formatDate,
   formatMoney,
   formatWeekRange,
   formatWeekdayDate,
@@ -9,6 +10,7 @@ import {
   startOfWeekISO,
   summarizeLedger,
   todayISO,
+  weekDaysISO,
 } from "../../utils/format";
 import LineChart from "./LineChart";
 import IncomeExpenseChart from "./IncomeExpenseChart";
@@ -27,6 +29,37 @@ const emptyForm = (date = todayISO()) => ({
   type: "income",
   amount: "",
 });
+
+function PeriodTable({ rows }) {
+  return (
+    <table className="data-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Type</th>
+          <th className="num">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((item) => (
+          <tr key={item.id}>
+            <td>{formatDate(item.date)}</td>
+            <td>{item.description}</td>
+            <td>{item.category}</td>
+            <td>
+              <span className={`badge badge-${item.type}`}>{item.type}</span>
+            </td>
+            <td className={`num ${item.type === "income" ? "amount-pos" : "amount-neg"}`}>
+              {formatMoney(item.amount)}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
 
 export default function Dashboard() {
   const { totals, user, transactions, addTransaction } = useApp();
@@ -272,7 +305,46 @@ export default function Dashboard() {
         </div>
       ) : null}
 
-      <SummaryBoxes entries={periodRows} />
+      <section className="panel">
+        <h2>
+          {view === "daily"
+            ? "Daily transactions"
+            : view === "weekly"
+              ? "Weekly transactions"
+              : "All transactions"}
+        </h2>
+        {view === "weekly" ? (
+          periodRows.length === 0 ? (
+            <p className="empty-state">No transactions recorded this week.</p>
+          ) : (
+            <div className="week-groups">
+              {weekDaysISO(weekStart).map((date) => {
+                const items = periodRows.filter((item) => item.date === date);
+                if (items.length === 0) return null;
+                return (
+                  <div className="week-day" key={date}>
+                    <h3>{formatWeekdayDate(date)}</h3>
+                    <PeriodTable rows={items} />
+                  </div>
+                );
+              })}
+            </div>
+          )
+        ) : periodRows.length === 0 ? (
+          <p className="empty-state">
+            {view === "daily" ? "No transactions recorded on this day." : "No transactions yet."}
+          </p>
+        ) : (
+          <>
+            {view === "all" && periodRows.length > 12 ? (
+              <p className="muted form-hint">Showing the 12 most recent entries.</p>
+            ) : null}
+            <PeriodTable rows={view === "all" ? periodRows.slice(0, 12) : periodRows} />
+          </>
+        )}
+      </section>
+
+      <SummaryBoxes />
     </div>
   );
 }
