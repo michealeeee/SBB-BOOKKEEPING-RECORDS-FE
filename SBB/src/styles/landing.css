@@ -279,18 +279,13 @@
   font-weight: 700;
 }
 
-.in-app-plans .lp-every li {
-  background: #eef7f1;
-  color: #1c3328;
-}
-
 .lp-plan-badge {
   display: inline-block;
-  margin: 0 0 10px;
+  margin: 16px 20px 0;
   padding: 4px 10px;
   border-radius: 999px;
-  background: #f4c95d;
-  color: #1c3328;
+  background: #1b6b4a;
+  color: #fff;
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.02em;
@@ -305,10 +300,6 @@
   font-weight: 600;
 }
 
-.lp-plan.featured .lp-plan-for {
-  color: #d5eadf;
-}
-
 .lp-plans {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -319,7 +310,7 @@
 .lp-plan {
   background: #fff;
   color: #1b241c;
-  border: 1px solid #d7e3db;
+  border: 1px solid #e6e1d4;
   border-radius: 18px;
   padding: 0 0 20px;
   text-align: left;
@@ -340,11 +331,7 @@
 }
 
 .lp-plan.featured {
-  background: #163528;
-  color: #eef3ee;
-  border-color: #f4c95d;
-  transform: translateY(-8px);
-  box-shadow: 0 18px 32px rgba(0, 0, 0, 0.22);
+  border-color: #1b6b4a;
 }
 
 .lp-price {
@@ -353,22 +340,10 @@
   color: #1b6b4a;
 }
 
-.lp-plan.featured .lp-price {
-  color: #f4c95d;
-}
-
 .lp-price-term {
   font-size: 15px;
   font-weight: 700;
   color: #5a675e;
-}
-
-.lp-plan.featured .lp-price-term {
-  color: #c5d4cb;
-}
-
-.lp-plan-badge {
-  margin: 16px 20px 0;
 }
 
 .lp-plan ul {
@@ -409,26 +384,11 @@
   text-align: center;
 }
 
-.lp-plan.featured li {
-  background: #214536;
-  color: #eef3ee;
-}
-
-.lp-plan.featured li::before {
-  background: #f4c95d;
-  color: #1c3328;
-}
-
 .lp-plan button {
   width: calc(100% - 40px);
   margin: auto 20px 0;
   padding: 12px 16px;
   font-size: 15px;
-}
-
-.lp-plan.featured button {
-  background: #f4c95d;
-  color: #1c3328;
 }
 
 .lp-note {
@@ -465,9 +425,5 @@
 
   .lp-hero h1 {
     font-size: 32px;
-  }
-
-  .lp-plan.featured {
-    transform: none;
   }
 }
