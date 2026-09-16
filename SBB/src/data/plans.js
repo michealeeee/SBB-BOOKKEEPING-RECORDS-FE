@@ -38,3 +38,10 @@ export function getPlan(value) {
   const id = resolvePlanId(value);
   return PLANS.find((plan) => plan.id === id);
 }
+
+export const DEFAULT_PLAN_ID = PLANS.find((plan) => plan.featured)?.id ?? PLANS[0].id;
+
+export function signupPath(planId = DEFAULT_PLAN_ID) {
+  const id = resolvePlanId(planId) || DEFAULT_PLAN_ID;
+  return `/signup?plan=${id}`;
+}

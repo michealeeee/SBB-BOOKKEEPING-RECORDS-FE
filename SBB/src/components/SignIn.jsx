@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useApp } from "../context/AppContext";
+import { signupPath } from "../data/plans";
 import AuthShell from "./AuthShell";
 
 function SignIn() {
@@ -89,7 +90,7 @@ function SignIn() {
 
         <p className="auth-footer">
           Don&apos;t have an account?
-          <Link to="/signup"> Create Account</Link>
+          <Link to={signupPath()}> Sign up</Link>
         </p>
       </div>
     </AuthShell>

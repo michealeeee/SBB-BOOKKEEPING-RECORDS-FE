@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { PLANS } from "../data/plans";
+import { PLANS, signupPath } from "../data/plans";
 import { formatMoney, formatUsd } from "../utils/format";
 import "../styles/landing.css";
 
@@ -45,8 +45,8 @@ export default function LandingPage() {
           <button type="button" className="btn-outline" onClick={() => navigate("/signin")}>
             Sign in
           </button>
-          <button type="button" className="btn-fill" onClick={() => navigate("/signup")}>
-            Start demo
+          <button type="button" className="btn-fill" onClick={() => navigate(signupPath())}>
+            Sign up
           </button>
         </div>
         <button
@@ -86,8 +86,8 @@ export default function LandingPage() {
         <button type="button" className="btn-outline" onClick={() => navigate("/signin")}>
           Sign in
         </button>
-        <button type="button" className="btn-fill" onClick={() => navigate("/signup")}>
-          Start demo
+        <button type="button" className="btn-fill" onClick={() => navigate(signupPath())}>
+          Sign up
         </button>
       </div>
 
@@ -100,8 +100,8 @@ export default function LandingPage() {
             transactions, send invoice records, and see profit at a glance.
           </p>
           <div className="lp-hero-actions">
-            <button type="button" className="btn-fill" onClick={() => navigate("/signup")}>
-              Open the demo books
+            <button type="button" className="btn-fill" onClick={() => navigate(signupPath())}>
+              Sign up
             </button>
             <button type="button" className="btn-outline" onClick={goPricing}>
               View plans
@@ -173,14 +173,14 @@ export default function LandingPage() {
                   <li key={feature}>{feature}</li>
                 ))}
               </ul>
-              <button type="button" onClick={() => navigate(`/signup?plan=${plan.id}`)}>
-                Start {plan.name}
+              <button type="button" onClick={() => navigate(signupPath(plan.id))}>
+                Sign up
               </button>
             </div>
           ))}
         </div>
         <p className="lp-note">
-          Subscriptions are priced in USD. Checkout is not connected. Plans open a local demo account.
+          Sign up starts that plan immediately. Prices are in USD. Checkout is not connected.
         </p>
       </section>
 

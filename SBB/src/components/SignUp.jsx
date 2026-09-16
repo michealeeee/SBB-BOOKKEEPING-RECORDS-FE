@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useApp } from "../context/AppContext";
-import { PLANS, getPlan, resolvePlanId } from "../data/plans";
+import { PLANS, DEFAULT_PLAN_ID, getPlan, resolvePlanId } from "../data/plans";
+import { formatUsd } from "../utils/format";
 import AuthShell from "./AuthShell";
 
 function SignUp() {
   const navigate = useNavigate();
   const { signIn } = useApp();
   const [params] = useSearchParams();
-  const urlPlan = resolvePlanId(params.get("plan")) || "";
+  const urlPlan = resolvePlanId(params.get("plan")) || DEFAULT_PLAN_ID;
   const [planOverride, setPlanOverride] = useState(undefined);
   const planId = planOverride !== undefined ? planOverride : urlPlan;
   const selectedPlan = getPlan(planId);
@@ -48,11 +49,16 @@ function SignUp() {
       return;
     }
 
+    if (!selectedPlan) {
+      setError("Pick a plan to subscribe when you sign up.");
+      return;
+    }
+
     setSubmitting(true);
     signIn({
       name: name.trim(),
       email: email.trim(),
-      plan: planId || undefined,
+      plan: selectedPlan.id,
     });
     navigate("/app/subscription", { replace: true });
   };
@@ -66,8 +72,8 @@ function SignUp() {
         <h1>Create Account</h1>
         <p className="auth-lead">
           {selectedPlan
-            ? `Register for the ${selectedPlan.name} plan`
-            : "Register, then choose a subscription in the app"}
+            ? `Sign up subscribes you to ${selectedPlan.name} (${formatUsd(selectedPlan.price)} / month)`
+            : "Pick a plan. Sign up starts that subscription."}
         </p>
 
         {error ? (
@@ -118,16 +124,7 @@ function SignUp() {
           />
 
           <fieldset className="auth-plans">
-            <legend>Subscription</legend>
-            <label className="auth-plan-option">
-              <input
-                type="radio"
-                name="signup-plan"
-                checked={!planId}
-                onChange={() => setPlanOverride("")}
-              />
-              Choose later
-            </label>
+            <legend>Subscribe now</legend>
             {PLANS.map((item) => (
               <label className="auth-plan-option" key={item.id}>
                 <input
@@ -136,19 +133,23 @@ function SignUp() {
                   checked={planId === item.id}
                   onChange={() => setPlanOverride(item.id)}
                 />
-                {item.name}
+                {item.name} · {formatUsd(item.price)} / month
               </label>
             ))}
           </fieldset>
 
           <button className="auth-submit" type="submit" disabled={submitting}>
-            {submitting ? "Creating account…" : "Sign Up"}
+            {submitting
+              ? "Subscribing…"
+              : selectedPlan
+                ? `Sign up & subscribe to ${selectedPlan.name}`
+                : "Sign up & subscribe"}
           </button>
         </form>
 
         <p className="auth-hint">
-          Demo only — no server is connected. Your session stays in this
-          browser until you log out.
+          Demo only — no server is connected. Clicking Sign up saves this
+          plan in the browser until you log out.
         </p>
 
         <p className="auth-footer">

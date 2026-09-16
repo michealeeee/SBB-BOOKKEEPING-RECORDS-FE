@@ -23,8 +23,8 @@ export default function Subscription() {
           <h2>Your Bookkeeply subscription</h2>
           <p>
             {current
-              ? `This demo account is on the ${current.name} plan (${formatUsd(current.price)} / month).`
-              : "Signup does not add a plan by itself. Pick Starter, Business, or Professional here."}
+              ? `This demo account is on the ${current.name} plan (${formatUsd(current.price)} / month). Sign up already subscribed you to this plan.`
+              : "Pick Starter, Business, or Professional to finish subscribing."}
           </p>
         </div>
       </header>
