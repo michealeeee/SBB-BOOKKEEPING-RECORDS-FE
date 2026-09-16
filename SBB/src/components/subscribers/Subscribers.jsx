@@ -46,7 +46,7 @@ export default function Subscribers() {
       </header>
 
       <section className="panel in-app-plans">
-        <h2>Choose a plan</h2>
+        <h2>Same books on every plan</h2>
         <p className="muted">
           Starter, Business, and Professional all include the same books. The plans differ by price, not by features.
         </p>

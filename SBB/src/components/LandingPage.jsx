@@ -167,8 +167,8 @@ export default function LandingPage() {
 
       <section id="pricing" className="lp-pricing">
         <div className="lp-pricing-inner">
-          <p className="lp-kicker lp-pricing-kicker">Plans</p>
-          <h2>Choose a plan</h2>
+          <p className="lp-kicker lp-pricing-kicker">Same tools</p>
+          <h2>Same books on every plan</h2>
           <p className="lp-pricing-lead">
             Starter, Business, and Professional all include the same Bookkeeply
             books: ledger, invoices, contacts, reports, tax estimate, and charts.

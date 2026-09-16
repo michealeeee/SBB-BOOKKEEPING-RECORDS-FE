@@ -2,25 +2,31 @@
 
 Simple bookkeeping for small businesses. The React app lives in `SBB/`.
 
-## If `git pull` says “not a git repository”
+## Show the latest page (use this if the UI “did not change”)
 
-You are in your home folder, not the project. The prompt looks like `mike@Michael:~$` — the `~` means home.
-
-Run this **entire block** from that same terminal:
+An old `npm run dev` keeps showing the old cards. Stop it, then replace your local files with GitHub `main`:
 
 ```bash
-cd ~
-if [ ! -d SBB-BOOKKEEPING-RECORDS-FE ]; then
-  git clone https://github.com/michealeeee/SBB-BOOKKEEPING-RECORDS-FE.git
-fi
-cd SBB-BOOKKEEPING-RECORDS-FE
+cd ~/SBB-BOOKKEEPING-RECORDS-FE
 git checkout main
-git pull origin main
+git fetch origin
+git reset --hard origin/main
+```
+
+Press **Ctrl+C** in every terminal that is running the app. Then:
+
+```bash
 npm install
 npm run dev
 ```
 
-Stop any old `npm run dev` first (Ctrl+C in that terminal), then start it again. When it prints `Local: http://localhost:5173/`, open **that** URL and hard-refresh (Ctrl+Shift+R). Scroll to **Choose a plan** — the pricing block is dark green with a gold Business card. If you are already signed in, open **Subscriptions** in the app; it uses the same cards.
+Open **http://localhost:5173/** (not GitHub, not `index.html`). Hard-refresh with **Ctrl+Shift+R**.
+
+You should see **Same books on every plan**. Starter, Business, and Professional must list the **same four bullets**. There is no gold/dark Business card.
+
+## If `git pull` says “not a git repository”
+
+You are in your home folder (`~`), not the project. Clone or `cd` into `SBB-BOOKKEEPING-RECORDS-FE` first, then run the block above.
 
 ## What will not show the app
 
@@ -28,5 +34,6 @@ Stop any old `npm run dev` first (Ctrl+C in that terminal), then start it again.
 - Double-clicking `index.html`
 - VS Code / Live Server on `index.html`
 - `npm run dev` while you are still in `~`
+- A Vite server that was started before you pulled
 
 Sign in with any valid email and a password of 6+ characters, for example `demo@business.com` / `demo1234`.
