@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
 import Sidebar from "./Sidebar";
 import "../../styles/app.css";
@@ -87,9 +87,6 @@ export default function AppLayout() {
           </div>
           <div className="topbar-meta">
             <span className="period">Demo books · GHS</span>
-            <Link className="ghost-btn" to="/app/subscriptions">
-              Subscriptions
-            </Link>
             <span className="top-user">{user?.name || user?.email || "Account"}</span>
             <button type="button" className="ghost-btn" onClick={handleSignOut}>
               Log out
