@@ -217,17 +217,26 @@
 .lp-product {
   background: #1c3328;
   color: #eef3ee;
-  padding: 48px 24px;
+  padding: 64px 24px;
 }
 
 .lp-product div {
-  max-width: 720px;
+  max-width: 760px;
   margin: 0 auto;
 }
 
 .lp-product h2 {
-  font-size: 32px;
-  margin: 0 0 12px;
+  font-size: 40px;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin: 0 0 14px;
+}
+
+.lp-product p {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.55;
+  color: #c5d4cb;
 }
 
 .lp-pricing {
@@ -421,5 +430,9 @@
 
   .lp-hero h1 {
     font-size: 32px;
+  }
+
+  .lp-product h2 {
+    font-size: 30px;
   }
 }
