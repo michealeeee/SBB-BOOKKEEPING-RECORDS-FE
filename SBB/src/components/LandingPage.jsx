@@ -157,11 +157,11 @@ export default function LandingPage() {
 
       <section id="product" className="lp-product">
         <div>
-          <h2>One ledger for income, expenses, and invoices.</h2>
+          <h2>A clear ledger for every sale, bill, and invoice.</h2>
           <p>
-            Customers and vendors sit next to the transactions they belong to.
-            Reports, a tax estimate, and charts use the same numbers — not a
-            separate spreadsheet.
+            Keep customers and vendors beside the money that belongs to them.
+            Profit, charts, and a tax estimate come from those same books — so
+            the month is never rebuilt in a spreadsheet.
           </p>
         </div>
       </section>

@@ -217,7 +217,7 @@
 .lp-product {
   background: #1c3328;
   color: #eef3ee;
-  padding: 48px 24px;
+  padding: 56px 24px;
 }
 
 .lp-product div {
@@ -226,8 +226,17 @@
 }
 
 .lp-product h2 {
-  font-size: 32px;
-  margin: 0 0 12px;
+  font-size: 34px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0 0 14px;
+}
+
+.lp-product p {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.6;
+  color: #d5e4db;
 }
 
 .lp-pricing {
