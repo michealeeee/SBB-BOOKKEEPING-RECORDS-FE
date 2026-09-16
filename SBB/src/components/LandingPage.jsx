@@ -175,7 +175,10 @@ export default function LandingPage() {
           <div className="lp-plan">
             <h3>Starter</h3>
             <p className="lp-plan-for">For sole traders who want one clean set of books.</p>
-            <p className="lp-price">{formatUsd(9)} / month</p>
+            <p className="lp-price">
+              <s className="lp-price-was">{formatUsd(9)}</s>
+              {formatUsd(5)} / month
+            </p>
             <ul>
               <li>Income and expense ledger with categories, dates, and running totals</li>
               <li>Customer invoices you can mark paid as money comes in</li>
@@ -190,7 +193,10 @@ export default function LandingPage() {
             <p className="lp-plan-badge">Most popular</p>
             <h3>Business</h3>
             <p className="lp-plan-for">For shops that live in their books every week.</p>
-            <p className="lp-price">{formatUsd(19)} / month</p>
+            <p className="lp-price">
+              <s className="lp-price-was">{formatUsd(19)}</s>
+              {formatUsd(12)} / month
+            </p>
             <ul>
               <li>The full ledger, invoices, customers, and vendor records in one place</li>
               <li>Dashboard charts that make income versus expenses obvious in seconds</li>
@@ -204,7 +210,10 @@ export default function LandingPage() {
           <div className="lp-plan">
             <h3>Professional</h3>
             <p className="lp-plan-for">For owners who want the complete toolkit named out.</p>
-            <p className="lp-price">{formatUsd(39)} / month</p>
+            <p className="lp-price">
+              <s className="lp-price-was">{formatUsd(39)}</s>
+              {formatUsd(25)} / month
+            </p>
             <ul>
               <li>Ledger, sales, purchases, and contacts under one Bookkeeply login</li>
               <li>Dashboard charts plus a tax estimate next to the live numbers</li>
