@@ -10,6 +10,7 @@ import Vendors from "./components/vendors/Vendors";
 import Customers from "./components/customers/Customers";
 import Taxes from "./components/taxes/Taxes";
 import Subscribers from "./components/subscribers/Subscribers";
+import Subscription from "./components/subscription/Subscription";
 import LandingPage from "./components/LandingPage";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
@@ -69,6 +70,7 @@ export default function App() {
             <Route path="vendors" element={<Vendors />} />
             <Route path="customers" element={<Customers />} />
             <Route path="taxes" element={<Taxes />} />
+            <Route path="subscription" element={<Subscription />} />
             <Route path="subscribers" element={<Subscribers />} />
             <Route path="*" element={<Navigate to="/app" replace />} />
           </Route>

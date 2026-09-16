@@ -4,7 +4,7 @@ import { badgeClass, formatDate } from "../../utils/format";
 
 const emptyForm = {
   name: "",
-  plan: "Basic",
+  plan: "Starter",
   status: "Active",
   renew: "",
 };
@@ -40,7 +40,10 @@ export default function Subscribers() {
   return (
     <div className="app-page">
       <header className="page-header">
-        <p>Starter, Business, and Professional plans are billed in USD. Billing is not connected.</p>
+        <p>
+          Customer plan records for people you bill. Your own Bookkeeply plan is under
+          Account → Subscription.
+        </p>
       </header>
 
       <section className="panel">
@@ -63,8 +66,9 @@ export default function Subscribers() {
               value={form.plan}
               onChange={(e) => setForm({ ...form, plan: e.target.value })}
             >
-              <option>Basic</option>
-              <option>Premium</option>
+              <option>Starter</option>
+              <option>Business</option>
+              <option>Professional</option>
             </select>
           </div>
           <div className="field">

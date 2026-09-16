@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { resolvePlanId } from "../data/plans";
 
 /* Context files export the provider and a hook together. */
 /* eslint-disable react-refresh/only-export-components */
@@ -106,15 +107,39 @@ export function AppProvider({ children }) {
     }
   }, [books]);
 
-  const signIn = (profile) => {
+  const persistUser = (profile) => {
     setUser(profile);
-    setIsAuthenticated(true);
     try {
-      sessionStorage.setItem(AUTH_KEY, "1");
       sessionStorage.setItem(USER_KEY, JSON.stringify(profile));
     } catch {
       /* ignore */
     }
+  };
+
+  const signIn = (profile) => {
+    const stored = readUser();
+    const incoming = resolvePlanId(profile.plan);
+    const kept =
+      stored.email && stored.email === profile.email ? resolvePlanId(stored.plan) : undefined;
+    const next = {
+      name: profile.name,
+      email: profile.email,
+      plan: incoming || kept,
+    };
+    persistUser(next);
+    setIsAuthenticated(true);
+    try {
+      sessionStorage.setItem(AUTH_KEY, "1");
+    } catch {
+      /* ignore */
+    }
+  };
+
+  const setPlan = (planValue) => {
+    persistUser({
+      ...user,
+      plan: resolvePlanId(planValue),
+    });
   };
 
   const signOut = () => {
@@ -256,6 +281,7 @@ export function AppProvider({ children }) {
     isAuthenticated,
     user,
     signIn,
+    setPlan,
     signOut,
     transactions,
     invoices,

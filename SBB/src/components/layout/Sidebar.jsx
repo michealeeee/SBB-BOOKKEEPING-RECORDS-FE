@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
+import { getPlan } from "../../data/plans";
 import NAV_GROUPS from "./nav";
 
 export default function Sidebar({ mobileOpen, onClose, onSignOut }) {
@@ -26,7 +27,7 @@ export default function Sidebar({ mobileOpen, onClose, onSignOut }) {
         </span>
         <div>
           <strong>Bookkeeply</strong>
-          <span>General ledger</span>
+          <span>{user?.plan ? `${getPlan(user.plan)?.name || "Account"} plan` : "No subscription"}</span>
         </div>
       </div>
 

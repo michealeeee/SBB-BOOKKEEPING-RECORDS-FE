@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useApp } from "../context/AppContext";
+import { PLANS, getPlan, resolvePlanId } from "../data/plans";
 import AuthShell from "./AuthShell";
 
 function SignUp() {
   const navigate = useNavigate();
   const { signIn } = useApp();
   const [params] = useSearchParams();
-  const plan = params.get("plan");
+  const [planId, setPlanId] = useState(() => resolvePlanId(params.get("plan")) || "");
+  const selectedPlan = getPlan(planId);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -19,6 +21,11 @@ function SignUp() {
   useEffect(() => {
     document.title = "Create Account · Bookkeeply";
   }, []);
+
+  useEffect(() => {
+    const fromUrl = resolvePlanId(params.get("plan"));
+    if (fromUrl) setPlanId(fromUrl);
+  }, [params]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -48,9 +55,9 @@ function SignUp() {
     signIn({
       name: name.trim(),
       email: email.trim(),
-      plan: plan === "premium" ? "Premium" : plan === "basic" ? "Basic" : undefined,
+      plan: planId || undefined,
     });
-    navigate("/app", { replace: true });
+    navigate("/app/subscription", { replace: true });
   };
 
   return (
@@ -61,11 +68,9 @@ function SignUp() {
         </Link>
         <h1>Create Account</h1>
         <p className="auth-lead">
-          {plan === "premium"
-            ? "Register for the Premium plan"
-            : plan === "basic"
-              ? "Register for the Basic plan"
-              : "Register to get started"}
+          {selectedPlan
+            ? `Register for the ${selectedPlan.name} plan`
+            : "Register, then choose a subscription in the app"}
         </p>
 
         {error ? (
@@ -114,6 +119,30 @@ function SignUp() {
             onChange={(event) => setConfirm(event.target.value)}
             placeholder="Re-enter password"
           />
+
+          <fieldset className="auth-plans">
+            <legend>Subscription</legend>
+            <label className="auth-plan-option">
+              <input
+                type="radio"
+                name="signup-plan"
+                checked={!planId}
+                onChange={() => setPlanId("")}
+              />
+              Choose later
+            </label>
+            {PLANS.map((item) => (
+              <label className="auth-plan-option" key={item.id}>
+                <input
+                  type="radio"
+                  name="signup-plan"
+                  checked={planId === item.id}
+                  onChange={() => setPlanId(item.id)}
+                />
+                {item.name}
+              </label>
+            ))}
+          </fieldset>
 
           <button className="auth-submit" type="submit" disabled={submitting}>
             {submitting ? "Creating account…" : "Sign Up"}

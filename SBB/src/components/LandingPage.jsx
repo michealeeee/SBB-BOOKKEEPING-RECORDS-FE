@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { PLANS } from "../data/plans";
 import { formatMoney, formatUsd } from "../utils/format";
 import "../styles/landing.css";
 
@@ -163,42 +164,20 @@ export default function LandingPage() {
       <section id="pricing" className="lp-pricing">
         <h2>Monthly plans</h2>
         <div className="lp-plans">
-          <div className="lp-plan">
-            <h3>Starter</h3>
-            <p className="lp-price">{formatUsd(9)} / month</p>
-            <ul>
-              <li>100 customers</li>
-              <li>500 invoices</li>
-              <li>Ledger and reports</li>
-            </ul>
-            <button type="button" onClick={() => navigate("/signup?plan=starter")}>
-              Start Starter
-            </button>
-          </div>
-          <div className="lp-plan featured">
-            <h3>Business</h3>
-            <p className="lp-price">{formatUsd(19)} / month</p>
-            <ul>
-              <li>Unlimited customers</li>
-              <li>Unlimited invoices</li>
-              <li>Reports and tax estimate</li>
-            </ul>
-            <button type="button" onClick={() => navigate("/signup?plan=business")}>
-              Start Business
-            </button>
-          </div>
-          <div className="lp-plan">
-            <h3>Professional</h3>
-            <p className="lp-price">{formatUsd(39)} / month</p>
-            <ul>
-              <li>Everything in Business</li>
-              <li>Priority support</li>
-              <li>Multi-account books</li>
-            </ul>
-            <button type="button" onClick={() => navigate("/signup?plan=professional")}>
-              Start Professional
-            </button>
-          </div>
+          {PLANS.map((plan) => (
+            <div className={`lp-plan${plan.featured ? " featured" : ""}`} key={plan.id}>
+              <h3>{plan.name}</h3>
+              <p className="lp-price">{formatUsd(plan.price)} / month</p>
+              <ul>
+                {plan.features.map((feature) => (
+                  <li key={feature}>{feature}</li>
+                ))}
+              </ul>
+              <button type="button" onClick={() => navigate(`/signup?plan=${plan.id}`)}>
+                Start {plan.name}
+              </button>
+            </div>
+          ))}
         </div>
         <p className="lp-note">
           Subscriptions are priced in USD. Checkout is not connected. Plans open a local demo account.

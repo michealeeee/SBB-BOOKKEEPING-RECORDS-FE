@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
+import { getPlan } from "../../data/plans";
 import Sidebar from "./Sidebar";
 import "../../styles/app.css";
 
@@ -13,11 +14,13 @@ const TITLES = {
   "/app/vendors": "Vendors",
   "/app/customers": "Customers",
   "/app/taxes": "Taxes",
+  "/app/subscription": "Subscription",
   "/app/subscribers": "Subscribers",
 };
 
 export default function AppLayout() {
   const { user, signOut } = useApp();
+  const planName = getPlan(user?.plan)?.name;
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
@@ -85,7 +88,9 @@ export default function AppLayout() {
             <h1>{page}</h1>
           </div>
           <div className="topbar-meta">
-            <span className="period">Demo books · GHS</span>
+            <span className="period">
+              {planName ? `${planName} · demo books · GHS` : "No plan · demo books · GHS"}
+            </span>
             <span className="top-user">{user?.name || user?.email || "Account"}</span>
             <button type="button" className="ghost-btn" onClick={handleSignOut}>
               Log out

@@ -26,7 +26,11 @@ const NAV_GROUPS = [
     ],
   },
   {
-    label: "Plans",
+    label: "Account",
+    items: [{ to: "/app/subscription", label: "Subscription" }],
+  },
+  {
+    label: "Customer plans",
     items: [{ to: "/app/subscribers", label: "Subscribers" }],
   },
 ];

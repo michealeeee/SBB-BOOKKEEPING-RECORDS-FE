@@ -97,7 +97,7 @@
 
 .auth-card {
   width: 100%;
-  max-width: 420px;
+  max-width: 460px;
   background: #fff;
   padding: 36px 32px;
   border-radius: 12px;
@@ -200,6 +200,34 @@
   font-size: 13px;
   color: var(--muted);
   margin: 12px 0 0;
+}
+
+.auth-plans {
+  border: 1px solid #e6e1d4;
+  border-radius: 8px;
+  padding: 10px 12px 4px;
+  margin: 0 0 14px;
+}
+
+.auth-plans legend {
+  font-size: 13px;
+  font-weight: 650;
+  padding: 0 4px;
+  color: #1c3328;
+}
+
+.auth-plan-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.auth-plan-option input {
+  width: auto;
+  margin: 0;
 }
 
 @media (min-width: 861px) {
