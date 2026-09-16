@@ -8,9 +8,9 @@ export default function PlanCards({ onChoose }) {
       {PLAN_OFFERS.map((plan) => (
         <article
           key={plan.id}
-          className={`lp-plan ${plan.featured ? "featured" : ""}`}
+          className="lp-plan"
         >
-          {plan.featured ? <p className="lp-plan-badge">Most popular</p> : null}
+          {plan.featured ? <p className="lp-plan-tag">Most popular</p> : null}
           <h3>{plan.name}</h3>
           <p className="lp-plan-for">{plan.audience}</p>
           <p className="lp-price">

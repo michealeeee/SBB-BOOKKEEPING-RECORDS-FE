@@ -279,7 +279,7 @@
   font-weight: 700;
 }
 
-.lp-plan-badge {
+.lp-plan-tag {
   display: inline-block;
   margin: 16px 20px 0;
   padding: 4px 10px;
@@ -328,10 +328,6 @@
 .lp-price {
   margin-left: 20px;
   margin-right: 20px;
-}
-
-.lp-plan.featured {
-  border-color: #1b6b4a;
 }
 
 .lp-price {
