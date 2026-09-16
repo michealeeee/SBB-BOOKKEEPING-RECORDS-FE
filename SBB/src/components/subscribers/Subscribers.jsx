@@ -48,7 +48,7 @@ export default function Subscribers() {
       <section className="panel in-app-plans">
         <h2>Choose a plan</h2>
         <p className="muted">
-          Same offers as the landing page. Every plan includes the full Bookkeeply books.
+          Starter, Business, and Professional all include the same books. The plans differ by price, not by features.
         </p>
         <ul className="lp-every">
           {EVERY_PLAN.map((item) => (

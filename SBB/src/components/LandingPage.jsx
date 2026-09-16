@@ -170,8 +170,9 @@ export default function LandingPage() {
           <p className="lp-kicker lp-pricing-kicker">Plans</p>
           <h2>Choose a plan</h2>
           <p className="lp-pricing-lead">
-            Every plan opens the full Bookkeeply books. Pick Starter, Business, or
-            Professional — same ledger, invoices, contacts, reports, tax estimate, and charts.
+            Starter, Business, and Professional all include the same Bookkeeply
+            books: ledger, invoices, contacts, reports, tax estimate, and charts.
+            The plans differ by price, not by features.
           </p>
           <ul className="lp-every">
             {EVERY_PLAN.map((item) => (
