@@ -10,9 +10,9 @@ const emptyForm = {
 };
 
 const PLANS = [
-  { name: "Starter", price: 5, detail: "Full books for a sole trader" },
-  { name: "Business", price: 12, detail: "Full books for weekly shop use" },
-  { name: "Professional", price: 25, detail: "Full books billed as a professional plan" },
+  { name: "Starter", price: 9, detail: "Full books for a sole trader" },
+  { name: "Business", price: 19, detail: "Full books for weekly shop use" },
+  { name: "Professional", price: 39, detail: "Full books billed as a professional plan" },
 ];
 
 export default function Subscribers() {
