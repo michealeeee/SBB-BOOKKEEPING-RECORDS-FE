@@ -8,7 +8,9 @@ function SignUp() {
   const navigate = useNavigate();
   const { signIn } = useApp();
   const [params] = useSearchParams();
-  const [planId, setPlanId] = useState(() => resolvePlanId(params.get("plan")) || "");
+  const urlPlan = resolvePlanId(params.get("plan")) || "";
+  const [planOverride, setPlanOverride] = useState(undefined);
+  const planId = planOverride !== undefined ? planOverride : urlPlan;
   const selectedPlan = getPlan(planId);
 
   const [name, setName] = useState("");
@@ -21,11 +23,6 @@ function SignUp() {
   useEffect(() => {
     document.title = "Create Account · Bookkeeply";
   }, []);
-
-  useEffect(() => {
-    const fromUrl = resolvePlanId(params.get("plan"));
-    if (fromUrl) setPlanId(fromUrl);
-  }, [params]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -127,7 +124,7 @@ function SignUp() {
                 type="radio"
                 name="signup-plan"
                 checked={!planId}
-                onChange={() => setPlanId("")}
+                onChange={() => setPlanOverride("")}
               />
               Choose later
             </label>
@@ -137,7 +134,7 @@ function SignUp() {
                   type="radio"
                   name="signup-plan"
                   checked={planId === item.id}
-                  onChange={() => setPlanId(item.id)}
+                  onChange={() => setPlanOverride(item.id)}
                 />
                 {item.name}
               </label>
