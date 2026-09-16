@@ -172,9 +172,10 @@ export default function LandingPage() {
             <h3>Starter</h3>
             <p className="lp-price">{formatUsd(9)} / month</p>
             <ul>
-              <li>100 customers</li>
-              <li>500 invoices</li>
-              <li>Ledger and reports</li>
+              <li>Record daily and weekly income and expenses in one clean ledger</li>
+              <li>Keep up to 100 customers with balances you can actually follow</li>
+              <li>Create up to 500 invoices and mark them paid as money comes in</li>
+              <li>See profit and loss at a glance, then export a CSV for your accountant</li>
             </ul>
             <button type="button" onClick={() => navigate("/signup?plan=starter")}>
               Register
@@ -184,9 +185,10 @@ export default function LandingPage() {
             <h3>Business</h3>
             <p className="lp-price">{formatUsd(19)} / month</p>
             <ul>
-              <li>Unlimited customers</li>
-              <li>Unlimited invoices</li>
-              <li>Reports and tax estimate</li>
+              <li>Everything in Starter, with no cap on customers or invoices</li>
+              <li>Unlimited invoices, customers, and vendor records beside your purchases</li>
+              <li>A tax estimate built from the same books, not a separate spreadsheet</li>
+              <li>Dashboard charts that make income versus expenses obvious in seconds</li>
             </ul>
             <button type="button" onClick={() => navigate("/signup?plan=business")}>
               Register
@@ -196,9 +198,10 @@ export default function LandingPage() {
             <h3>Professional</h3>
             <p className="lp-price">{formatUsd(39)} / month</p>
             <ul>
-              <li>Everything in Business</li>
-              <li>Priority support</li>
-              <li>Multi-account books</li>
+              <li>Everything in Business, plus room to grow past a single set of books</li>
+              <li>Priority support when figures look off and you need a fast answer</li>
+              <li>Multi-account books under one login for more than one business</li>
+              <li>The full report set for reviews, tax season, and owner check-ins</li>
             </ul>
             <button type="button" onClick={() => navigate("/signup?plan=professional")}>
               Register
