@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { SUPER_ADMIN, normalizeEmail } from "../data/admin";
 import { getPlan, resolvePlanId } from "../data/plans";
+import { addDaysISO, todayISO } from "../utils/format";
 
 /* Context files export the provider and a hook together. */
 /* eslint-disable react-refresh/only-export-components */
@@ -53,9 +54,9 @@ const seed = {
     { id: "s3", name: "Northwind Ltd", plan: "Business", status: "Suspended", renew: "2026-08-30" },
   ],
   accounts: [
-    { id: "a1", name: "Ama K.", email: "ama@example.com", plan: "Professional", status: "Active", renew: "2026-09-10" },
-    { id: "a2", name: "John D.", email: "john@example.com", plan: "Starter", status: "Active", renew: "2026-09-25" },
-    { id: "a3", name: "Northwind Ltd", email: "ap@northwind.com", plan: "Business", status: "Suspended", renew: "2026-08-30" },
+    { id: "a1", name: "Ama K.", email: "ama@example.com", plan: "Professional", status: "Active", renew: "2026-09-10", termMonths: 12 },
+    { id: "a2", name: "John D.", email: "john@example.com", plan: "Starter", status: "Active", renew: "2026-09-25", termMonths: 1 },
+    { id: "a3", name: "Northwind Ltd", email: "ap@northwind.com", plan: "Business", status: "Suspended", renew: "2026-08-30", termMonths: 3 },
   ],
 };
 
@@ -143,15 +144,18 @@ export function AppProvider({ children }) {
     }
 
     const stored = readUser();
+    const sameUser = stored.email && stored.email === email;
     const incoming = resolvePlanId(profile.plan);
-    const kept =
-      stored.email && stored.email === email ? resolvePlanId(stored.plan) : undefined;
+    const kept = sameUser ? resolvePlanId(stored.plan) : undefined;
     const account = books.accounts.find((item) => normalizeEmail(item.email) === normalizeEmail(email));
     persistUser({
       name: profile.name,
       email,
       role: "customer",
       plan: incoming || kept || resolvePlanId(account?.plan),
+      termMonths:
+        Number(profile.termMonths || (sameUser && stored.termMonths) || account?.termMonths) || 1,
+      renew: profile.renew || (sameUser && stored.renew) || account?.renew || "",
     });
     setIsAuthenticated(true);
     try {
@@ -161,35 +165,45 @@ export function AppProvider({ children }) {
     }
   };
 
-  const setPlan = (planValue) => {
-    const planId = resolvePlanId(planValue);
+  const setSubscription = ({ plan, termMonths, renew } = {}) => {
+    const planId = resolvePlanId(plan) ?? resolvePlanId(user?.plan);
+    const months =
+      termMonths != null ? Number(termMonths) : Number(user?.termMonths) || 1;
+    const renewDate =
+      renew ||
+      (termMonths != null ? addDaysISO(todayISO(), months * 30) : user?.renew) ||
+      addDaysISO(todayISO(), months * 30);
+    const planName = getPlan(planId)?.name;
     persistUser({
       ...user,
       plan: planId,
+      termMonths: months,
+      renew: renewDate,
     });
-    const planName = getPlan(planId)?.name;
     if (!planName || !user?.email) return;
+    const record = {
+      name: user.name,
+      email: user.email,
+      plan: planName,
+      status: "Active",
+      termMonths: months,
+      renew: renewDate,
+    };
     setBooks((current) => ({
       ...current,
-      accounts: current.accounts.some((item) => normalizeEmail(item.email) === normalizeEmail(user.email))
+      accounts: current.accounts.some(
+        (item) => normalizeEmail(item.email) === normalizeEmail(user.email)
+      )
         ? current.accounts.map((item) =>
             normalizeEmail(item.email) === normalizeEmail(user.email)
-              ? { ...item, plan: planName, status: item.status || "Active" }
+              ? { ...item, ...record, id: item.id }
               : item
           )
-        : [
-            {
-              id: createId(),
-              name: user.name,
-              email: user.email,
-              plan: planName,
-              status: "Active",
-              renew: "",
-            },
-            ...current.accounts,
-          ],
+        : [{ id: createId(), ...record }, ...current.accounts],
     }));
   };
+
+  const setPlan = (planValue) => setSubscription({ plan: planValue });
 
   const signOut = () => {
     setIsAuthenticated(false);
@@ -315,12 +329,15 @@ export function AppProvider({ children }) {
     }));
   };
 
-  const updateAccountPlan = (id, plan) => {
-    const planName = getPlan(plan)?.name || plan;
+  const updateAccount = (id, patch) => {
     setBooks((current) => ({
       ...current,
-      accounts: current.accounts.map((item) => (item.id === id ? { ...item, plan: planName } : item)),
+      accounts: current.accounts.map((item) => (item.id === id ? { ...item, ...patch } : item)),
     }));
+  };
+
+  const updateAccountPlan = (id, plan) => {
+    updateAccount(id, { plan: getPlan(plan)?.name || plan });
   };
 
   const upsertAccount = (item) => {
@@ -365,6 +382,7 @@ export function AppProvider({ children }) {
     user,
     signIn,
     setPlan,
+    setSubscription,
     signOut,
     transactions,
     invoices,
@@ -389,6 +407,7 @@ export function AppProvider({ children }) {
     upsertAccount,
     updateAccountStatus,
     updateAccountPlan,
+    updateAccount,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

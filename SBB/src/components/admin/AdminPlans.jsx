@@ -1,12 +1,14 @@
-import { PLANS } from "../../data/plans";
+import { PLANS, termPrice } from "../../data/plans";
 import { formatUsd } from "../../utils/format";
+import PlanFeatureList from "../plans/PlanFeatureList";
 
 export default function AdminPlans() {
   return (
     <div className="app-page">
       <header className="page-header">
         <p>
-          Customer-facing monthly plans. Prices are USD. Checkout is not connected.
+          These are the features customers see. Owners can upgrade and change
+          billing time after they register. Prices are USD.
         </p>
       </header>
       <div className="billing-plans">
@@ -17,11 +19,9 @@ export default function AdminPlans() {
           >
             <h3>{plan.name}</h3>
             <p className="billing-price">{formatUsd(plan.price)} / month</p>
-            <ul>
-              {plan.features.map((feature) => (
-                <li key={feature}>{feature}</li>
-              ))}
-            </ul>
+            <p className="muted">{plan.summary}</p>
+            <p className="muted">{formatUsd(termPrice(plan, 12))} for 12 months</p>
+            <PlanFeatureList features={plan.features} />
           </article>
         ))}
       </div>

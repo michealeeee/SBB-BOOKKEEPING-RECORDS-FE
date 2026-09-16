@@ -262,9 +262,22 @@
   color: #1b6b4a;
 }
 
-.lp-plan ul {
+.lp-plan ul,
+.plan-feature-list {
   padding-left: 18px;
   color: #5a675e;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.lp-term-note,
+.lp-pricing-lead {
+  color: #5a675e;
+}
+
+.lp-pricing-lead {
+  max-width: 640px;
+  margin: 8px auto 0;
 }
 
 .lp-plan button {

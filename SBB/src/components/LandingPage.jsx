@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { PLANS, signupPath } from "../data/plans";
+import { PLANS, signupPath, termPrice } from "../data/plans";
 import { formatMoney, formatUsd } from "../utils/format";
+import PlanFeatureList from "./plans/PlanFeatureList";
 import "../styles/landing.css";
 
 export default function LandingPage() {
@@ -169,17 +170,20 @@ export default function LandingPage() {
       </section>
 
       <section id="pricing" className="lp-pricing">
-        <h2>Monthly plans</h2>
+        <h2>Plans</h2>
+        <p className="lp-pricing-lead">
+          Read every feature, then register on a card. After you own the account you can upgrade the plan and change billing time (1, 3, or 12 months).
+        </p>
         <div className="lp-plans">
           {PLANS.map((plan) => (
             <div className={`lp-plan${plan.featured ? " featured" : ""}`} key={plan.id}>
               <h3>{plan.name}</h3>
               <p className="lp-price">{formatUsd(plan.price)} / month</p>
-              <ul>
-                {plan.features.map((feature) => (
-                  <li key={feature}>{feature}</li>
-                ))}
-              </ul>
+              <p>{plan.summary}</p>
+              <p className="lp-term-note">
+                {formatUsd(termPrice(plan, 12))} billed for 12 months (10% off)
+              </p>
+              <PlanFeatureList features={plan.features} />
               <button type="button" onClick={() => navigate(signupPath(plan.id))}>
                 Register
               </button>

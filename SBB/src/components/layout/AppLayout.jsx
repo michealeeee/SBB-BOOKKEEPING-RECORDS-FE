@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
-import { getPlan } from "../../data/plans";
+import { getPlan, termLabel } from "../../data/plans";
 import { isSuperAdmin } from "../../data/admin";
 import Sidebar from "./Sidebar";
 import "../../styles/app.css";
@@ -98,7 +98,7 @@ export default function AppLayout() {
               {admin
                 ? "SaaS console · USD plans"
                 : planName
-                  ? `${planName} · demo books · GHS`
+                  ? `${planName} · ${termLabel(user?.termMonths || 1)} · demo books · GHS`
                   : "No plan · demo books · GHS"}
             </span>
             <span className="top-user">{user?.name || user?.email || "Account"}</span>

@@ -67,12 +67,15 @@ function SignUp() {
       email: email.trim(),
       plan: selectedPlan.id,
       role: "customer",
+      termMonths: 1,
+      renew: addDaysISO(todayISO(), 30),
     });
     upsertAccount({
       name: name.trim(),
       email: email.trim(),
       plan: selectedPlan.name,
       status: "Active",
+      termMonths: 1,
       renew: addDaysISO(todayISO(), 30),
     });
     navigate("/app", { replace: true });

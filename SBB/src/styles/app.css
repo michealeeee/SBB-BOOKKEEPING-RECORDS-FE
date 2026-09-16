@@ -376,11 +376,14 @@
   color: var(--accent);
 }
 
-.billing-plan ul {
+.billing-plan ul,
+.plan-feature-list {
   margin: 0 0 16px;
   padding-left: 18px;
   color: var(--muted);
   flex: 1;
+  font-size: 14px;
+  line-height: 1.45;
 }
 
 .billing-plan .btn {

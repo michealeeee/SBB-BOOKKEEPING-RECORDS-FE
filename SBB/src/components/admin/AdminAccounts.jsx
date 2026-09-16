@@ -1,18 +1,19 @@
 import { useMemo, useState } from "react";
 import { useApp } from "../../context/AppContext";
-import { PLANS, getPlan } from "../../data/plans";
-import { badgeClass, formatDate } from "../../utils/format";
+import { BILLING_TERMS, PLANS, getPlan, termLabel } from "../../data/plans";
+import { badgeClass } from "../../utils/format";
 
 const emptyForm = {
   name: "",
   email: "",
   plan: "Business",
   status: "Active",
+  termMonths: 1,
   renew: "",
 };
 
 export default function AdminAccounts() {
-  const { accounts, upsertAccount, updateAccountStatus, updateAccountPlan } = useApp();
+  const { accounts, upsertAccount, updateAccountStatus, updateAccountPlan, updateAccount } = useApp();
   const [form, setForm] = useState(emptyForm);
   const [query, setQuery] = useState("");
   const [error, setError] = useState("");
@@ -94,6 +95,20 @@ export default function AdminAccounts() {
             </select>
           </div>
           <div className="field">
+            <label htmlFor="acct-term">Time</label>
+            <select
+              id="acct-term"
+              value={form.termMonths}
+              onChange={(e) => setForm({ ...form, termMonths: Number(e.target.value) })}
+            >
+              {BILLING_TERMS.map((term) => (
+                <option key={term.months} value={term.months}>
+                  {term.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="field">
             <label htmlFor="acct-status">Status</label>
             <select
               id="acct-status"
@@ -142,6 +157,7 @@ export default function AdminAccounts() {
                   <th>Name</th>
                   <th>Email</th>
                   <th>Plan</th>
+                  <th>Time</th>
                   <th>Status</th>
                   <th>Renewal</th>
                   <th>Actions</th>
@@ -164,9 +180,29 @@ export default function AdminAccounts() {
                       </select>
                     </td>
                     <td>
+                      <select
+                        aria-label={`Billing time for ${item.name}`}
+                        value={Number(item.termMonths) || 1}
+                        onChange={(e) => updateAccount(item.id, { termMonths: Number(e.target.value) })}
+                      >
+                        {BILLING_TERMS.map((term) => (
+                          <option key={term.months} value={term.months}>
+                            {termLabel(term.months)}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td>
                       <span className={badgeClass(item.status)}>{item.status}</span>
                     </td>
-                    <td>{formatDate(item.renew)}</td>
+                    <td>
+                      <input
+                        type="date"
+                        aria-label={`Renewal date for ${item.name}`}
+                        value={item.renew || ""}
+                        onChange={(e) => updateAccount(item.id, { renew: e.target.value })}
+                      />
+                    </td>
                     <td>
                       {item.status === "Active" ? (
                         <button
