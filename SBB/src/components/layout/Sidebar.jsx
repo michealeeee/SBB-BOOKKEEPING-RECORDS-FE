@@ -1,10 +1,12 @@
 import { NavLink } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
-import { getPlan } from "../../data/plans";
+import { getPlan, hasSubscription } from "../../data/plans";
 import NAV_GROUPS from "./nav";
 
 export default function Sidebar({ mobileOpen, onClose, onSignOut }) {
   const { user } = useApp();
+  const subscribed = hasSubscription(user);
+  const groups = NAV_GROUPS.filter((group) => subscribed || !group.requiresPlan);
   const displayName = user?.name?.trim() || user?.email || "Account";
   const initials =
     displayName
@@ -32,7 +34,7 @@ export default function Sidebar({ mobileOpen, onClose, onSignOut }) {
       </div>
 
       <nav className="app-side-nav">
-        {NAV_GROUPS.map((group) => (
+        {groups.map((group) => (
           <div className="nav-group" key={group.label}>
             <p className="nav-group-label">{group.label}</p>
             {group.items.map((item) => (

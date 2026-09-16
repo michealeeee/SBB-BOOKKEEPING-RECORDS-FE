@@ -60,7 +60,7 @@ function SignUp() {
       email: email.trim(),
       plan: selectedPlan.id,
     });
-    navigate("/app/subscription", { replace: true });
+    navigate("/app", { replace: true });
   };
 
   return (

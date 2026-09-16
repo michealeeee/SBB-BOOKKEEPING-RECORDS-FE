@@ -39,6 +39,13 @@ export function getPlan(value) {
   return PLANS.find((plan) => plan.id === id);
 }
 
+export function hasSubscription(userOrPlan) {
+  if (userOrPlan && typeof userOrPlan === "object") {
+    return Boolean(getPlan(userOrPlan.plan));
+  }
+  return Boolean(getPlan(userOrPlan));
+}
+
 export const DEFAULT_PLAN_ID = PLANS.find((plan) => plan.featured)?.id ?? PLANS[0].id;
 
 export function signupPath(planId = DEFAULT_PLAN_ID) {

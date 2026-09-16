@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
 import { PLANS, getPlan } from "../../data/plans";
 import { formatUsd } from "../../utils/format";
 
 export default function Subscription() {
   const { user, setPlan } = useApp();
+  const navigate = useNavigate();
   const current = getPlan(user?.plan);
   const [notice, setNotice] = useState("");
 
@@ -12,8 +14,9 @@ export default function Subscription() {
     setPlan(planId);
     const next = getPlan(planId);
     setNotice(
-      `Demo ${next.name} plan saved for this browser session. Checkout is not connected.`
+      `Demo ${next.name} plan saved. Opening the books.`
     );
+    navigate("/app", { replace: true });
   };
 
   return (
@@ -23,8 +26,8 @@ export default function Subscription() {
           <h2>Your Bookkeeply subscription</h2>
           <p>
             {current
-              ? `This demo account is on the ${current.name} plan (${formatUsd(current.price)} / month). Sign up already subscribed you to this plan.`
-              : "Pick Starter, Business, or Professional to finish subscribing."}
+              ? `This demo account is on the ${current.name} plan (${formatUsd(current.price)} / month).`
+              : "The books stay locked until you subscribe. Pick Starter, Business, or Professional."}
           </p>
         </div>
       </header>
@@ -33,7 +36,9 @@ export default function Subscription() {
         <p className="eyebrow">Current plan</p>
         <p className="plan-status-name">{current ? current.name : "None"}</p>
         <p className="muted">
-          Billing is demo-only and stays in this browser until you log out.
+          {current
+            ? "Billing is demo-only and stays in this browser until you log out."
+            : "Choose a plan to unlock the dashboard, ledger, invoices, and reports."}
         </p>
         {notice ? (
           <p className="form-success" role="status">
@@ -63,7 +68,7 @@ export default function Subscription() {
                 onClick={() => choose(plan.id)}
                 disabled={selected}
               >
-                {selected ? "Current plan" : `Choose ${plan.name}`}
+                {selected ? "Current plan" : `Subscribe to ${plan.name}`}
               </button>
             </article>
           );

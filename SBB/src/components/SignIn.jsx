@@ -49,7 +49,7 @@ function SignIn() {
           Bookkeeply
         </Link>
         <h1>Welcome Back</h1>
-        <p className="auth-lead">Sign in to your account</p>
+        <p className="auth-lead">Sign in. The books open only after you have a plan.</p>
 
         {error ? (
           <p className="auth-error" role="alert">
@@ -84,8 +84,8 @@ function SignIn() {
         </form>
 
         <p className="auth-hint">
-          Demo only — no server is connected. Any valid email and password (6+
-          characters) will sign you in locally.
+          Demo only — no server is connected. If this account has no plan,
+          you will be asked to subscribe before the books open.
         </p>
 
         <p className="auth-footer">

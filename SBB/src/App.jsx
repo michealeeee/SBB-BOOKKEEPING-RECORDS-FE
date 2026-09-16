@@ -1,5 +1,6 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { AppProvider, useApp } from "./context/AppContext";
+import { hasSubscription } from "./data/plans";
 import AppLayout from "./components/layout/AppLayout";
 import Dashboard from "./components/dashboard/Dashboard";
 import Transactions from "./components/transactions/Transactions";
@@ -24,12 +25,20 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
-function PublicOnly({ children, redirectTo = "/app" }) {
-  const { isAuthenticated } = useApp();
+function PublicOnly({ children }) {
+  const { isAuthenticated, user } = useApp();
   if (isAuthenticated) {
-    return <Navigate to={redirectTo} replace />;
+    return <Navigate to={hasSubscription(user) ? "/app" : "/app/subscription"} replace />;
   }
   return children;
+}
+
+function SubscribedRoute() {
+  const { user } = useApp();
+  if (!hasSubscription(user)) {
+    return <Navigate to="/app/subscription" replace />;
+  }
+  return <Outlet />;
 }
 
 export default function App() {
@@ -49,7 +58,7 @@ export default function App() {
           <Route
             path="/signup"
             element={
-              <PublicOnly redirectTo="/app/subscription">
+              <PublicOnly>
                 <SignUp />
               </PublicOnly>
             }
@@ -62,17 +71,19 @@ export default function App() {
               </ProtectedRoute>
             }
           >
-            <Route index element={<Dashboard />} />
-            <Route path="transactions" element={<Transactions />} />
-            <Route path="invoices" element={<Invoices />} />
-            <Route path="reports" element={<Reports />} />
-            <Route path="expenses" element={<Expenses />} />
-            <Route path="vendors" element={<Vendors />} />
-            <Route path="customers" element={<Customers />} />
-            <Route path="taxes" element={<Taxes />} />
             <Route path="subscription" element={<Subscription />} />
-            <Route path="subscribers" element={<Subscribers />} />
-            <Route path="*" element={<Navigate to="/app" replace />} />
+            <Route element={<SubscribedRoute />}>
+              <Route index element={<Dashboard />} />
+              <Route path="transactions" element={<Transactions />} />
+              <Route path="invoices" element={<Invoices />} />
+              <Route path="reports" element={<Reports />} />
+              <Route path="expenses" element={<Expenses />} />
+              <Route path="vendors" element={<Vendors />} />
+              <Route path="customers" element={<Customers />} />
+              <Route path="taxes" element={<Taxes />} />
+              <Route path="subscribers" element={<Subscribers />} />
+              <Route path="*" element={<Navigate to="/app" replace />} />
+            </Route>
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

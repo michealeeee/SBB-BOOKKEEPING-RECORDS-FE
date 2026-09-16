@@ -1,6 +1,7 @@
 const NAV_GROUPS = [
   {
     label: "Books",
+    requiresPlan: true,
     items: [
       { to: "/app", label: "Dashboard", end: true },
       { to: "/app/transactions", label: "Transactions" },
@@ -9,6 +10,7 @@ const NAV_GROUPS = [
   },
   {
     label: "Sales",
+    requiresPlan: true,
     items: [
       { to: "/app/invoices", label: "Invoices" },
       { to: "/app/customers", label: "Customers" },
@@ -16,10 +18,12 @@ const NAV_GROUPS = [
   },
   {
     label: "Purchases",
+    requiresPlan: true,
     items: [{ to: "/app/vendors", label: "Vendors" }],
   },
   {
     label: "Reports",
+    requiresPlan: true,
     items: [
       { to: "/app/reports", label: "Reports" },
       { to: "/app/taxes", label: "Taxes" },
@@ -31,6 +35,7 @@ const NAV_GROUPS = [
   },
   {
     label: "Customer plans",
+    requiresPlan: true,
     items: [{ to: "/app/subscribers", label: "Subscribers" }],
   },
 ];
