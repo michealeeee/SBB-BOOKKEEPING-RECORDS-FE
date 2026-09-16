@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
 import {
   addDaysISO,
@@ -160,7 +161,8 @@ export default function Dashboard() {
     <div className="app-page">
       <header className="page-header">
         <p>
-          Welcome back, {name}. Daily and weekly transactions are listed below.
+          Welcome back, {name}. Daily and weekly transactions are listed below.{" "}
+          <Link to="/app/subscriptions">Open subscriptions</Link>
         </p>
       </header>
       <div className="record-bar">

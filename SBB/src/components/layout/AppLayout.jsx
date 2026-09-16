@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
 import Sidebar from "./Sidebar";
 import "../../styles/app.css";
@@ -13,7 +13,8 @@ const TITLES = {
   "/app/vendors": "Vendors",
   "/app/customers": "Customers",
   "/app/taxes": "Taxes",
-  "/app/subscribers": "Subscribers",
+  "/app/subscribers": "Subscriptions",
+  "/app/subscriptions": "Subscriptions",
 };
 
 export default function AppLayout() {
@@ -86,6 +87,9 @@ export default function AppLayout() {
           </div>
           <div className="topbar-meta">
             <span className="period">Demo books · GHS</span>
+            <Link className="ghost-btn" to="/app/subscriptions">
+              Subscriptions
+            </Link>
             <span className="top-user">{user?.name || user?.email || "Account"}</span>
             <button type="button" className="ghost-btn" onClick={handleSignOut}>
               Log out

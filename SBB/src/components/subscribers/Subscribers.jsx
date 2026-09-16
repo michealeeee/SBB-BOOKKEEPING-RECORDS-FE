@@ -1,13 +1,19 @@
 import { useMemo, useState } from "react";
 import { useApp } from "../../context/AppContext";
-import { badgeClass, formatDate } from "../../utils/format";
+import { badgeClass, formatDate, formatUsd } from "../../utils/format";
 
 const emptyForm = {
   name: "",
-  plan: "Basic",
+  plan: "Starter",
   status: "Active",
   renew: "",
 };
+
+const PLANS = [
+  { name: "Starter", price: 9, detail: "Ledger and reports" },
+  { name: "Business", price: 19, detail: "Unlimited invoices and tax estimate" },
+  { name: "Professional", price: 39, detail: "Priority support and multi-account books" },
+];
 
 export default function Subscribers() {
   const { subscribers, addSubscriber, updateSubscriberStatus } = useApp();
@@ -40,8 +46,21 @@ export default function Subscribers() {
   return (
     <div className="app-page">
       <header className="page-header">
-        <p>Starter, Business, and Professional plans are billed in USD. Billing is not connected.</p>
+        <p>Open this page anytime from Subscriptions in the left menu or the header. Plans are billed in USD.</p>
       </header>
+
+      <section className="panel">
+        <h2>USD plans</h2>
+        <div className="plan-strip">
+          {PLANS.map((plan) => (
+            <article className="plan-card" key={plan.name}>
+              <h3>{plan.name}</h3>
+              <p className="plan-price">{formatUsd(plan.price)} / month</p>
+              <p className="muted">{plan.detail}</p>
+            </article>
+          ))}
+        </div>
+      </section>
 
       <section className="panel">
         <h2>Add subscriber</h2>
@@ -63,8 +82,9 @@ export default function Subscribers() {
               value={form.plan}
               onChange={(e) => setForm({ ...form, plan: e.target.value })}
             >
-              <option>Basic</option>
-              <option>Premium</option>
+              <option>Starter</option>
+              <option>Business</option>
+              <option>Professional</option>
             </select>
           </div>
           <div className="field">
