@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
+import { getPlan } from "../../data/plans";
 import {
   addDaysISO,
   formatDate,
@@ -72,6 +73,7 @@ function pickLedgerDate(items) {
 export default function Dashboard() {
   const { totals, user, transactions, addTransaction } = useApp();
   const name = user?.name || "there";
+  const accountPlan = getPlan(user?.plan);
   const [view, setView] = useState("daily");
   const [selectedDate, setSelectedDate] = useState(() => pickLedgerDate(transactions));
   const [form, setForm] = useState(() => emptyForm(pickLedgerDate(transactions)));
@@ -165,6 +167,17 @@ export default function Dashboard() {
           <Link to="/app/subscriptions">Open subscriptions</Link>
         </p>
       </header>
+      {accountPlan ? (
+        <p className="plan-banner">
+          Bookkeeply plan: {accountPlan.name}.{" "}
+          <Link to="/app/subscription">Manage subscription</Link>
+        </p>
+      ) : (
+        <p className="plan-banner plan-banner-warn">
+          This account has no Bookkeeply subscription yet.{" "}
+          <Link to="/app/subscription">Choose a plan</Link>
+        </p>
+      )}
       <div className="record-bar">
         <span>Show</span>
         <div className="view-toggle" role="tablist" aria-label="Dashboard period">

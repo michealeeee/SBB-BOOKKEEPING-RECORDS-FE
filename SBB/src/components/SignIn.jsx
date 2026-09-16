@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useApp } from "../context/AppContext";
+import {
+  SUPER_ADMIN,
+  isAdminPassword,
+  isSuperAdminEmail,
+} from "../data/admin";
 import AuthShell from "./AuthShell";
 
 function SignIn() {
   const navigate = useNavigate();
   const { signIn } = useApp();
-  const [email, setEmail] = useState("");
+  const [params] = useSearchParams();
+  const [email, setEmail] = useState(() =>
+    params.get("admin") === "1" ? SUPER_ADMIN.email : ""
+  );
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -34,10 +42,25 @@ function SignIn() {
       return;
     }
 
+    if (isSuperAdminEmail(email)) {
+      if (!isAdminPassword(password)) {
+        setError("That super admin password is not correct.");
+        return;
+      }
+      setSubmitting(true);
+      signIn({
+        name: SUPER_ADMIN.name,
+        email: SUPER_ADMIN.email,
+        role: "super_admin",
+      });
+      navigate("/admin", { replace: true });
+      return;
+    }
+
     setSubmitting(true);
     const localName = email.split("@")[0];
     const name = localName.charAt(0).toUpperCase() + localName.slice(1);
-    signIn({ name, email: email.trim() });
+    signIn({ name, email: email.trim(), role: "customer" });
     navigate("/app", { replace: true });
   };
 
@@ -48,7 +71,11 @@ function SignIn() {
           Bookkeeply
         </Link>
         <h1>Welcome Back</h1>
-        <p className="auth-lead">Sign in to your account</p>
+        <p className="auth-lead">
+          {params.get("admin") === "1"
+            ? "Super admin sign in"
+            : "Sign in. The books open only after you have a plan."}
+        </p>
 
         {error ? (
           <p className="auth-error" role="alert">
@@ -83,13 +110,16 @@ function SignIn() {
         </form>
 
         <p className="auth-hint">
-          Demo only — no server is connected. Any valid email and password (6+
-          characters) will sign you in locally.
+          Super admin demo: {SUPER_ADMIN.email} / {SUPER_ADMIN.password}. Customer
+          accounts still use any other valid email.
         </p>
 
         <p className="auth-footer">
           Don&apos;t have an account?
-          <Link to="/signup"> Create Account</Link>
+          <Link to="/#pricing"> Get started</Link>
+        </p>
+        <p className="auth-footer">
+          <Link to="/signin?admin=1"> Super admin</Link>
         </p>
       </div>
     </AuthShell>

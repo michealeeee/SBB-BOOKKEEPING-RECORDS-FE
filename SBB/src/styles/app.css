@@ -344,6 +344,81 @@
   max-width: 640px;
 }
 
+.plan-banner {
+  margin: -8px 0 18px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ink);
+}
+
+.plan-banner a {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.plan-banner-warn {
+  border-color: #f5d0a6;
+  background: #fff8ee;
+}
+
+.plan-status-name {
+  margin: 4px 0 8px;
+  font-size: 28px;
+  letter-spacing: -0.03em;
+}
+
+.billing-plans {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.billing-plan {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+}
+
+.billing-plan.featured {
+  border-color: var(--accent);
+}
+
+.billing-plan.selected {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.billing-plan h3 {
+  margin: 0 0 6px;
+}
+
+.billing-price {
+  margin: 0 0 12px;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.billing-plan ul,
+.plan-feature-list {
+  margin: 0 0 16px;
+  padding-left: 18px;
+  color: var(--muted);
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.billing-plan .btn {
+  width: 100%;
+}
+
 .view-toggle {
   display: inline-flex;
   border: 1px solid var(--line);
@@ -1171,7 +1246,8 @@
   .charts-row,
   .summary-grid,
   .tax-stats,
-  .report-hero-metrics {
+  .report-hero-metrics,
+  .billing-plans {
     grid-template-columns: 1fr 1fr;
   }
 }
@@ -1200,5 +1276,9 @@
 
   .period {
     display: none;
+  }
+
+  .billing-plans {
+    grid-template-columns: 1fr;
   }
 }

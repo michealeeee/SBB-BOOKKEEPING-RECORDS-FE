@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useApp } from "../context/AppContext";
+import { isSuperAdminEmail } from "../data/admin";
+import { PLANS, DEFAULT_PLAN_ID, getPlan, resolvePlanId } from "../data/plans";
+import { addDaysISO, todayISO } from "../utils/format";
+import { formatUsd } from "../utils/format";
 import AuthShell from "./AuthShell";
 
 function SignUp() {
   const navigate = useNavigate();
-  const { signIn } = useApp();
+  const { signIn, upsertAccount } = useApp();
   const [params] = useSearchParams();
-  const plan = params.get("plan");
+  const urlPlan = resolvePlanId(params.get("plan")) || DEFAULT_PLAN_ID;
+  const [planOverride, setPlanOverride] = useState(undefined);
+  const planId = planOverride !== undefined ? planOverride : urlPlan;
+  const selectedPlan = getPlan(planId);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -44,11 +51,32 @@ function SignUp() {
       return;
     }
 
+    if (isSuperAdminEmail(email)) {
+      setError("That email is reserved for the super admin.");
+      return;
+    }
+
+    if (!selectedPlan) {
+      setError("Pick a plan to subscribe when you sign up.");
+      return;
+    }
+
     setSubmitting(true);
     signIn({
       name: name.trim(),
       email: email.trim(),
-      plan: plan === "premium" ? "Premium" : plan === "basic" ? "Basic" : undefined,
+      plan: selectedPlan.id,
+      role: "customer",
+      termMonths: 1,
+      renew: addDaysISO(todayISO(), 30),
+    });
+    upsertAccount({
+      name: name.trim(),
+      email: email.trim(),
+      plan: selectedPlan.name,
+      status: "Active",
+      termMonths: 1,
+      renew: addDaysISO(todayISO(), 30),
     });
     navigate("/app", { replace: true });
   };
@@ -61,11 +89,9 @@ function SignUp() {
         </Link>
         <h1>Create Account</h1>
         <p className="auth-lead">
-          {plan === "premium"
-            ? "Register for the Premium plan"
-            : plan === "basic"
-              ? "Register for the Basic plan"
-              : "Register to get started"}
+          {selectedPlan
+            ? `Sign up subscribes you to ${selectedPlan.name} (${formatUsd(selectedPlan.price)} / month)`
+            : "Pick a plan. Sign up starts that subscription."}
         </p>
 
         {error ? (
@@ -115,14 +141,33 @@ function SignUp() {
             placeholder="Re-enter password"
           />
 
+          <fieldset className="auth-plans">
+            <legend>Subscribe now</legend>
+            {PLANS.map((item) => (
+              <label className="auth-plan-option" key={item.id}>
+                <input
+                  type="radio"
+                  name="signup-plan"
+                  checked={planId === item.id}
+                  onChange={() => setPlanOverride(item.id)}
+                />
+                {item.name} · {formatUsd(item.price)} / month
+              </label>
+            ))}
+          </fieldset>
+
           <button className="auth-submit" type="submit" disabled={submitting}>
-            {submitting ? "Creating account…" : "Sign Up"}
+            {submitting
+              ? "Subscribing…"
+              : selectedPlan
+                ? `Sign up & subscribe to ${selectedPlan.name}`
+                : "Sign up & subscribe"}
           </button>
         </form>
 
         <p className="auth-hint">
-          Demo only — no server is connected. Your session stays in this
-          browser until you log out.
+          Demo only — no server is connected. Clicking Sign up saves this
+          plan in the browser until you log out.
         </p>
 
         <p className="auth-footer">

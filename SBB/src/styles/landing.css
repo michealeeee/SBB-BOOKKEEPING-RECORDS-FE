@@ -262,9 +262,22 @@
   color: #1b6b4a;
 }
 
-.lp-plan ul {
+.lp-plan ul,
+.plan-feature-list {
   padding-left: 18px;
   color: #5a675e;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.lp-term-note,
+.lp-pricing-lead {
+  color: #5a675e;
+}
+
+.lp-pricing-lead {
+  max-width: 640px;
+  margin: 8px auto 0;
 }
 
 .lp-plan button {
@@ -281,6 +294,15 @@
 .lp-footer {
   padding: 20px;
   border-top: 1px solid #e6e1d4;
+}
+
+.lp-admin-link {
+  background: none;
+  border: none;
+  color: #5a675e;
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
 }
 
 @media (max-width: 900px) {

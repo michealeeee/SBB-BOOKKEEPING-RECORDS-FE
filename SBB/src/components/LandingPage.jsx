@@ -1,15 +1,23 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { PLANS, signupPath, termPrice } from "../data/plans";
 import { formatMoney, formatUsd } from "../utils/format";
+import PlanFeatureList from "./plans/PlanFeatureList";
 import "../styles/landing.css";
 
 export default function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     document.title = "Bookkeeply — Simple books for small businesses";
   }, []);
+
+  useEffect(() => {
+    if (location.hash !== "#pricing") return;
+    document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" });
+  }, [location.hash]);
 
   useEffect(() => {
     const onKeyDown = (event) => {
@@ -24,7 +32,12 @@ export default function LandingPage() {
   }, [menuOpen]);
 
   const goPricing = () => {
-    document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" });
+    setMenuOpen(false);
+    const section = document.getElementById("pricing");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+      window.history.replaceState(null, "", "#pricing");
+    }
   };
 
   return (
@@ -44,8 +57,8 @@ export default function LandingPage() {
           <button type="button" className="btn-outline" onClick={() => navigate("/signin")}>
             Sign in
           </button>
-          <button type="button" className="btn-fill" onClick={() => navigate("/signup")}>
-            Start demo
+          <button type="button" className="btn-fill" onClick={goPricing}>
+            Get started
           </button>
         </div>
         <button
@@ -85,8 +98,8 @@ export default function LandingPage() {
         <button type="button" className="btn-outline" onClick={() => navigate("/signin")}>
           Sign in
         </button>
-        <button type="button" className="btn-fill" onClick={() => navigate("/signup")}>
-          Start demo
+        <button type="button" className="btn-fill" onClick={goPricing}>
+          Get started
         </button>
       </div>
 
@@ -99,8 +112,8 @@ export default function LandingPage() {
             transactions, send invoice records, and see profit at a glance.
           </p>
           <div className="lp-hero-actions">
-            <button type="button" className="btn-fill" onClick={() => navigate("/signup")}>
-              Open the demo books
+            <button type="button" className="btn-fill" onClick={goPricing}>
+              Get started
             </button>
             <button type="button" className="btn-outline" onClick={goPricing}>
               View plans
@@ -162,51 +175,37 @@ export default function LandingPage() {
 
       <section id="pricing" className="lp-pricing">
         <h2>Subscriptions</h2>
+        <p className="lp-pricing-lead">
+          Read every feature, then register on a card. After you own the account you can upgrade the plan and change billing time (1, 3, or 12 months).
+        </p>
         <div className="lp-plans">
-          <div className="lp-plan">
-            <h3>Starter</h3>
-            <p className="lp-price">{formatUsd(9)} / month</p>
-            <ul>
-              <li>100 customers</li>
-              <li>500 invoices</li>
-              <li>Ledger and reports</li>
-            </ul>
-            <button type="button" onClick={() => navigate("/signup?plan=starter")}>
-              Start Starter
-            </button>
-          </div>
-          <div className="lp-plan featured">
-            <h3>Business</h3>
-            <p className="lp-price">{formatUsd(19)} / month</p>
-            <ul>
-              <li>Unlimited customers</li>
-              <li>Unlimited invoices</li>
-              <li>Reports and tax estimate</li>
-            </ul>
-            <button type="button" onClick={() => navigate("/signup?plan=business")}>
-              Start Business
-            </button>
-          </div>
-          <div className="lp-plan">
-            <h3>Professional</h3>
-            <p className="lp-price">{formatUsd(39)} / month</p>
-            <ul>
-              <li>Everything in Business</li>
-              <li>Priority support</li>
-              <li>Multi-account books</li>
-            </ul>
-            <button type="button" onClick={() => navigate("/signup?plan=professional")}>
-              Start Professional
-            </button>
-          </div>
+          {PLANS.map((plan) => (
+            <div className={`lp-plan${plan.featured ? " featured" : ""}`} key={plan.id}>
+              <h3>{plan.name}</h3>
+              <p className="lp-price">{formatUsd(plan.price)} / month</p>
+              <p>{plan.summary}</p>
+              <p className="lp-term-note">
+                {formatUsd(termPrice(plan, 12))} billed for 12 months (10% off)
+              </p>
+              <PlanFeatureList features={plan.features} />
+              <button type="button" onClick={() => navigate(signupPath(plan.id))}>
+                Register
+              </button>
+            </div>
+          ))}
         </div>
         <p className="lp-note">
-          Subscriptions are priced in USD. Checkout is not connected. Plans open a local demo account.
+          Choose a plan to register. Prices are in USD. Checkout is not connected.
         </p>
       </section>
 
       <footer className="lp-footer">
         <p>© 2026 Bookkeeply. All rights reserved.</p>
+        <p>
+          <button type="button" className="lp-admin-link" onClick={() => navigate("/signin?admin=1")}>
+            Super admin
+          </button>
+        </p>
       </footer>
     </div>
   );

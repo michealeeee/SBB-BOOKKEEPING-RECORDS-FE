@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useApp } from "../../context/AppContext";
+import { PLANS } from "../../data/plans";
 import { badgeClass, formatDate, formatUsd } from "../../utils/format";
 
 const emptyForm = {
@@ -8,12 +9,6 @@ const emptyForm = {
   status: "Active",
   renew: "",
 };
-
-const PLANS = [
-  { name: "Starter", price: 9, detail: "Ledger and reports" },
-  { name: "Business", price: 19, detail: "Unlimited invoices and tax estimate" },
-  { name: "Professional", price: 39, detail: "Priority support and multi-account books" },
-];
 
 export default function Subscribers() {
   const { subscribers, addSubscriber, updateSubscriberStatus } = useApp();
@@ -46,7 +41,10 @@ export default function Subscribers() {
   return (
     <div className="app-page">
       <header className="page-header">
-        <p>Open this page anytime from Subscriptions in the left menu or the header. Plans are billed in USD.</p>
+        <p>
+          Customer plan records for people you bill. Your own Bookkeeply plan is
+          under Account → Your plan, or the Your plan shortcut in the header.
+        </p>
       </header>
 
       <section className="panel">
@@ -56,7 +54,7 @@ export default function Subscribers() {
             <article className="plan-card" key={plan.name}>
               <h3>{plan.name}</h3>
               <p className="plan-price">{formatUsd(plan.price)} / month</p>
-              <p className="muted">{plan.detail}</p>
+              <p className="muted">{plan.summary}</p>
             </article>
           ))}
         </div>
