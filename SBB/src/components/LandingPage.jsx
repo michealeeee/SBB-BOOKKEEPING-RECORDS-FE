@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { formatMoney, formatUsd } from "../utils/format";
+import PlanCards from "./PlanCards";
+import { EVERY_PLAN } from "../data/planOffers";
+import { formatMoney } from "../utils/format";
 import "../styles/landing.css";
 
 export default function LandingPage() {
@@ -166,59 +168,23 @@ export default function LandingPage() {
       </section>
 
       <section id="pricing" className="lp-pricing">
-        <h2>Subscriptions</h2>
-        <p className="lp-pricing-lead">
-          Every plan opens the full Bookkeeply books. Choose how you want to pay
-          for the same ledger, invoices, contacts, reports, tax estimate, and charts.
-        </p>
-        <div className="lp-plans">
-          <div className="lp-plan">
-            <h3>Starter</h3>
-            <p className="lp-plan-for">For sole traders who want one clean set of books.</p>
-            <p className="lp-price">{formatUsd(9)} / month</p>
-            <ul>
-              <li>Income and expense ledger with categories, dates, and running totals</li>
-              <li>Customer invoices you can mark paid as money comes in</li>
-              <li>Customers and vendors kept beside the transactions they belong to</li>
-              <li>Profit and loss plus a CSV export for your accountant</li>
-            </ul>
-            <button type="button" onClick={() => navigate("/signup?plan=starter")}>
-              Register
-            </button>
-          </div>
-          <div className="lp-plan featured">
-            <p className="lp-plan-badge">Most popular</p>
-            <h3>Business</h3>
-            <p className="lp-plan-for">For shops that live in their books every week.</p>
-            <p className="lp-price">{formatUsd(19)} / month</p>
-            <ul>
-              <li>The full ledger, invoices, customers, and vendor records in one place</li>
-              <li>Dashboard charts that make income versus expenses obvious in seconds</li>
-              <li>A tax estimate built from the same books, not a separate spreadsheet</li>
-              <li>Weekly profit and loss, with CSV ready when you need a review</li>
-            </ul>
-            <button type="button" onClick={() => navigate("/signup?plan=business")}>
-              Register
-            </button>
-          </div>
-          <div className="lp-plan">
-            <h3>Professional</h3>
-            <p className="lp-plan-for">For owners who want the complete toolkit named out.</p>
-            <p className="lp-price">{formatUsd(39)} / month</p>
-            <ul>
-              <li>Ledger, sales, purchases, and contacts under one Bookkeeply login</li>
-              <li>Dashboard charts plus a tax estimate next to the live numbers</li>
-              <li>Profit and loss, CSV export, and owner check-ins from the same reports</li>
-              <li>The full books for tax season — same tools, billed as a professional plan</li>
-            </ul>
-            <button type="button" onClick={() => navigate("/signup?plan=professional")}>
-              Register
-            </button>
-          </div>
+        <div className="lp-pricing-inner">
+          <p className="lp-kicker lp-pricing-kicker">Plans</p>
+          <h2>Choose a plan</h2>
+          <p className="lp-pricing-lead">
+            Every plan opens the full Bookkeeply books. Pick Starter, Business, or
+            Professional — same ledger, invoices, contacts, reports, tax estimate, and charts.
+          </p>
+          <ul className="lp-every">
+            {EVERY_PLAN.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+          <PlanCards onChoose={(plan) => navigate(`/signup?plan=${plan}`)} />
+          <p className="lp-note">
+            Subscriptions are priced in USD. Checkout is not connected. Plans open a local demo account.
+          </p>
         </div>
-        <p className="lp-note">
-          Subscriptions are priced in USD. Checkout is not connected. Plans open a local demo account.
-        </p>
       </section>
 
       <footer className="lp-footer">

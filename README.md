@@ -20,7 +20,7 @@ npm install
 npm run dev
 ```
 
-Leave that terminal open. When it prints `Local: http://localhost:5173/`, open **that** URL in the browser.
+Stop any old `npm run dev` first (Ctrl+C in that terminal), then start it again. When it prints `Local: http://localhost:5173/`, open **that** URL and hard-refresh (Ctrl+Shift+R). Scroll to **Choose a plan** — the pricing block is dark green with a gold Business card. If you are already signed in, open **Subscriptions** in the app; it uses the same cards.
 
 ## What will not show the app
 

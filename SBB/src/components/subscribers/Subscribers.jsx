@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { useApp } from "../../context/AppContext";
-import { badgeClass, formatDate, formatUsd } from "../../utils/format";
+import PlanCards from "../PlanCards";
+import { EVERY_PLAN } from "../../data/planOffers";
+import { badgeClass, formatDate } from "../../utils/format";
 
 const emptyForm = {
   name: "",
@@ -8,12 +10,6 @@ const emptyForm = {
   status: "Active",
   renew: "",
 };
-
-const PLANS = [
-  { name: "Starter", price: 9, detail: "Full books for a sole trader" },
-  { name: "Business", price: 19, detail: "Full books for weekly shop use" },
-  { name: "Professional", price: 39, detail: "Full books billed as a professional plan" },
-];
 
 export default function Subscribers() {
   const { subscribers, addSubscriber, updateSubscriberStatus } = useApp();
@@ -49,17 +45,17 @@ export default function Subscribers() {
         <p>Open this page anytime from Subscriptions in the left menu or the header. Plans are billed in USD.</p>
       </header>
 
-      <section className="panel">
-        <h2>USD plans</h2>
-        <div className="plan-strip">
-          {PLANS.map((plan) => (
-            <article className="plan-card" key={plan.name}>
-              <h3>{plan.name}</h3>
-              <p className="plan-price">{formatUsd(plan.price)} / month</p>
-              <p className="muted">{plan.detail}</p>
-            </article>
+      <section className="panel in-app-plans">
+        <h2>Choose a plan</h2>
+        <p className="muted">
+          Same offers as the landing page. Every plan includes the full Bookkeeply books.
+        </p>
+        <ul className="lp-every">
+          {EVERY_PLAN.map((item) => (
+            <li key={item}>{item}</li>
           ))}
-        </div>
+        </ul>
+        <PlanCards />
       </section>
 
       <section className="panel">
