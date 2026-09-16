@@ -24,7 +24,12 @@ export default function LandingPage() {
   }, [menuOpen]);
 
   const goPricing = () => {
-    document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" });
+    setMenuOpen(false);
+    const section = document.getElementById("pricing");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+      window.history.replaceState(null, "", "#pricing");
+    }
   };
 
   return (
@@ -44,8 +49,8 @@ export default function LandingPage() {
           <button type="button" className="btn-outline" onClick={() => navigate("/signin")}>
             Sign in
           </button>
-          <button type="button" className="btn-fill" onClick={() => navigate("/signup")}>
-            Start demo
+          <button type="button" className="btn-fill" onClick={goPricing}>
+            Get started
           </button>
         </div>
         <button
@@ -85,8 +90,8 @@ export default function LandingPage() {
         <button type="button" className="btn-outline" onClick={() => navigate("/signin")}>
           Sign in
         </button>
-        <button type="button" className="btn-fill" onClick={() => navigate("/signup")}>
-          Start demo
+        <button type="button" className="btn-fill" onClick={goPricing}>
+          Get started
         </button>
       </div>
 
@@ -99,8 +104,8 @@ export default function LandingPage() {
             transactions, send invoice records, and see profit at a glance.
           </p>
           <div className="lp-hero-actions">
-            <button type="button" className="btn-fill" onClick={() => navigate("/signup")}>
-              Open the demo books
+            <button type="button" className="btn-fill" onClick={goPricing}>
+              Get started
             </button>
             <button type="button" className="btn-outline" onClick={goPricing}>
               View plans
@@ -172,7 +177,7 @@ export default function LandingPage() {
               <li>Ledger and reports</li>
             </ul>
             <button type="button" onClick={() => navigate("/signup?plan=starter")}>
-              Start Starter
+              Register
             </button>
           </div>
           <div className="lp-plan featured">
@@ -184,7 +189,7 @@ export default function LandingPage() {
               <li>Reports and tax estimate</li>
             </ul>
             <button type="button" onClick={() => navigate("/signup?plan=business")}>
-              Start Business
+              Register
             </button>
           </div>
           <div className="lp-plan">
@@ -196,7 +201,7 @@ export default function LandingPage() {
               <li>Multi-account books</li>
             </ul>
             <button type="button" onClick={() => navigate("/signup?plan=professional")}>
-              Start Professional
+              Register
             </button>
           </div>
         </div>
