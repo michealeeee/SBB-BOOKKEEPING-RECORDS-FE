@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { PLANS, signupPath } from "../data/plans";
 import { formatMoney, formatUsd } from "../utils/format";
 import "../styles/landing.css";
@@ -7,10 +7,16 @@ import "../styles/landing.css";
 export default function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     document.title = "Bookkeeply — Simple books for small businesses";
   }, []);
+
+  useEffect(() => {
+    if (location.hash !== "#pricing") return;
+    document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" });
+  }, [location.hash]);
 
   useEffect(() => {
     const onKeyDown = (event) => {
@@ -25,6 +31,7 @@ export default function LandingPage() {
   }, [menuOpen]);
 
   const goPricing = () => {
+    setMenuOpen(false);
     document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -45,8 +52,8 @@ export default function LandingPage() {
           <button type="button" className="btn-outline" onClick={() => navigate("/signin")}>
             Sign in
           </button>
-          <button type="button" className="btn-fill" onClick={() => navigate(signupPath())}>
-            Sign up
+          <button type="button" className="btn-fill" onClick={goPricing}>
+            Get started
           </button>
         </div>
         <button
@@ -86,8 +93,8 @@ export default function LandingPage() {
         <button type="button" className="btn-outline" onClick={() => navigate("/signin")}>
           Sign in
         </button>
-        <button type="button" className="btn-fill" onClick={() => navigate(signupPath())}>
-          Sign up
+        <button type="button" className="btn-fill" onClick={goPricing}>
+          Get started
         </button>
       </div>
 
@@ -100,8 +107,8 @@ export default function LandingPage() {
             transactions, send invoice records, and see profit at a glance.
           </p>
           <div className="lp-hero-actions">
-            <button type="button" className="btn-fill" onClick={() => navigate(signupPath())}>
-              Sign up
+            <button type="button" className="btn-fill" onClick={goPricing}>
+              Get started
             </button>
             <button type="button" className="btn-outline" onClick={goPricing}>
               View plans
@@ -174,13 +181,13 @@ export default function LandingPage() {
                 ))}
               </ul>
               <button type="button" onClick={() => navigate(signupPath(plan.id))}>
-                Sign up
+                Register
               </button>
             </div>
           ))}
         </div>
         <p className="lp-note">
-          Sign up starts that plan immediately. Prices are in USD. Checkout is not connected.
+          Choose a plan to register. Prices are in USD. Checkout is not connected.
         </p>
       </section>
 

@@ -6,7 +6,6 @@ import {
   isAdminPassword,
   isSuperAdminEmail,
 } from "../data/admin";
-import { signupPath } from "../data/plans";
 import AuthShell from "./AuthShell";
 
 function SignIn() {
@@ -117,7 +116,7 @@ function SignIn() {
 
         <p className="auth-footer">
           Don&apos;t have an account?
-          <Link to={signupPath()}> Sign up</Link>
+          <Link to="/#pricing"> Get started</Link>
         </p>
         <p className="auth-footer">
           <Link to="/signin?admin=1"> Super admin</Link>
