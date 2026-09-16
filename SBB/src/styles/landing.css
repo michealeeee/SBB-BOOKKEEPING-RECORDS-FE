@@ -237,6 +237,34 @@
   text-align: center;
 }
 
+.lp-pricing-lead {
+  max-width: 640px;
+  margin: 10px auto 0;
+  color: #5a675e;
+  line-height: 1.5;
+}
+
+.lp-plan-badge {
+  display: inline-block;
+  margin: 0 0 10px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #1b6b4a;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.lp-plan-for {
+  margin: 0 0 8px;
+  color: #5a675e;
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
 .lp-plans {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
