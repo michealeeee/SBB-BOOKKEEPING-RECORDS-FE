@@ -33,7 +33,11 @@ export default function LandingPage() {
 
   const goPricing = () => {
     setMenuOpen(false);
-    document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" });
+    const section = document.getElementById("pricing");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+      window.history.replaceState(null, "", "#pricing");
+    }
   };
 
   return (
@@ -47,7 +51,7 @@ export default function LandingPage() {
         <div className="lp-links">
           <a href="#features">Features</a>
           <a href="#product">Product</a>
-          <a href="#pricing">Pricing</a>
+          <a href="#pricing">Subscriptions</a>
         </div>
         <div className="lp-actions">
           <button type="button" className="btn-outline" onClick={() => navigate("/signin")}>
@@ -90,7 +94,7 @@ export default function LandingPage() {
         </button>
         <a href="#features" onClick={() => setMenuOpen(false)}>Features</a>
         <a href="#product" onClick={() => setMenuOpen(false)}>Product</a>
-        <a href="#pricing" onClick={() => setMenuOpen(false)}>Pricing</a>
+        <a href="#pricing" onClick={() => setMenuOpen(false)}>Subscriptions</a>
         <button type="button" className="btn-outline" onClick={() => navigate("/signin")}>
           Sign in
         </button>
@@ -170,7 +174,7 @@ export default function LandingPage() {
       </section>
 
       <section id="pricing" className="lp-pricing">
-        <h2>Plans</h2>
+        <h2>Subscriptions</h2>
         <p className="lp-pricing-lead">
           Read every feature, then register on a card. After you own the account you can upgrade the plan and change billing time (1, 3, or 12 months).
         </p>

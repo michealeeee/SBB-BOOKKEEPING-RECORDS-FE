@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
 import { getPlan, termLabel } from "../../data/plans";
 import { isSuperAdmin } from "../../data/admin";
@@ -15,8 +15,9 @@ const TITLES = {
   "/app/vendors": "Vendors",
   "/app/customers": "Customers",
   "/app/taxes": "Taxes",
-  "/app/subscription": "Subscription",
-  "/app/subscribers": "Subscribers",
+  "/app/subscription": "Your plan",
+  "/app/subscribers": "Subscriptions",
+  "/app/subscriptions": "Subscriptions",
   "/app/suspended": "Account locked",
   "/admin": "Overview",
   "/admin/accounts": "Accounts",
@@ -101,6 +102,11 @@ export default function AppLayout() {
                   ? `${planName} · ${termLabel(user?.termMonths || 1)} · demo books · GHS`
                   : "No plan · demo books · GHS"}
             </span>
+            {admin ? null : (
+              <Link className="ghost-btn" to="/app/subscription">
+                Your plan
+              </Link>
+            )}
             <span className="top-user">{user?.name || user?.email || "Account"}</span>
             <button type="button" className="ghost-btn" onClick={handleSignOut}>
               Log out

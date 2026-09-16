@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useApp } from "../../context/AppContext";
-import { badgeClass, formatDate } from "../../utils/format";
+import { PLANS } from "../../data/plans";
+import { badgeClass, formatDate, formatUsd } from "../../utils/format";
 
 const emptyForm = {
   name: "",
@@ -41,10 +42,23 @@ export default function Subscribers() {
     <div className="app-page">
       <header className="page-header">
         <p>
-          Customer plan records for people you bill. Your own Bookkeeply plan is under
-          Account → Subscription.
+          Customer plan records for people you bill. Your own Bookkeeply plan is
+          under Account → Your plan, or the Your plan shortcut in the header.
         </p>
       </header>
+
+      <section className="panel">
+        <h2>USD plans</h2>
+        <div className="plan-strip">
+          {PLANS.map((plan) => (
+            <article className="plan-card" key={plan.name}>
+              <h3>{plan.name}</h3>
+              <p className="plan-price">{formatUsd(plan.price)} / month</p>
+              <p className="muted">{plan.summary}</p>
+            </article>
+          ))}
+        </div>
+      </section>
 
       <section className="panel">
         <h2>Add subscriber</h2>
