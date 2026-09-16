@@ -45,7 +45,6 @@ export default function LandingPage() {
         <div className="lp-links">
           <a href="#features">Features</a>
           <a href="#product">Product</a>
-          <a href="#pricing">Subscriptions</a>
         </div>
         <div className="lp-actions">
           <button type="button" className="btn-outline" onClick={() => navigate("/signin")}>
@@ -88,7 +87,6 @@ export default function LandingPage() {
         </button>
         <a href="#features" onClick={() => setMenuOpen(false)}>Features</a>
         <a href="#product" onClick={() => setMenuOpen(false)}>Product</a>
-        <a href="#pricing" onClick={() => setMenuOpen(false)}>Subscriptions</a>
         <button type="button" className="btn-outline" onClick={() => navigate("/signin")}>
           Sign in
         </button>
