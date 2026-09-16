@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useApp } from "../context/AppContext";
+import { isSuperAdminEmail } from "../data/admin";
 import { PLANS, DEFAULT_PLAN_ID, getPlan, resolvePlanId } from "../data/plans";
+import { addDaysISO, todayISO } from "../utils/format";
 import { formatUsd } from "../utils/format";
 import AuthShell from "./AuthShell";
 
 function SignUp() {
   const navigate = useNavigate();
-  const { signIn } = useApp();
+  const { signIn, upsertAccount } = useApp();
   const [params] = useSearchParams();
   const urlPlan = resolvePlanId(params.get("plan")) || DEFAULT_PLAN_ID;
   const [planOverride, setPlanOverride] = useState(undefined);
@@ -49,6 +51,11 @@ function SignUp() {
       return;
     }
 
+    if (isSuperAdminEmail(email)) {
+      setError("That email is reserved for the super admin.");
+      return;
+    }
+
     if (!selectedPlan) {
       setError("Pick a plan to subscribe when you sign up.");
       return;
@@ -59,6 +66,14 @@ function SignUp() {
       name: name.trim(),
       email: email.trim(),
       plan: selectedPlan.id,
+      role: "customer",
+    });
+    upsertAccount({
+      name: name.trim(),
+      email: email.trim(),
+      plan: selectedPlan.name,
+      status: "Active",
+      renew: addDaysISO(todayISO(), 30),
     });
     navigate("/app", { replace: true });
   };

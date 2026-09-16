@@ -186,6 +186,11 @@ export default function LandingPage() {
 
       <footer className="lp-footer">
         <p>© 2026 Bookkeeply. All rights reserved.</p>
+        <p>
+          <button type="button" className="lp-admin-link" onClick={() => navigate("/signin?admin=1")}>
+            Super admin
+          </button>
+        </p>
       </footer>
     </div>
   );

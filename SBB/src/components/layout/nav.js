@@ -40,4 +40,15 @@ const NAV_GROUPS = [
   },
 ];
 
+export const ADMIN_NAV_GROUPS = [
+  {
+    label: "SaaS",
+    items: [
+      { to: "/admin", label: "Overview", end: true },
+      { to: "/admin/accounts", label: "Accounts" },
+      { to: "/admin/plans", label: "Plans" },
+    ],
+  },
+];
+
 export default NAV_GROUPS;

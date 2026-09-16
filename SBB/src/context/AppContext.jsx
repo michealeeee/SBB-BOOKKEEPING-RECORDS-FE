@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { resolvePlanId } from "../data/plans";
+import { SUPER_ADMIN, normalizeEmail } from "../data/admin";
+import { getPlan, resolvePlanId } from "../data/plans";
 
 /* Context files export the provider and a hook together. */
 /* eslint-disable react-refresh/only-export-components */
@@ -51,6 +52,11 @@ const seed = {
     { id: "s2", name: "John D.", plan: "Starter", status: "Active", renew: "2026-09-25" },
     { id: "s3", name: "Northwind Ltd", plan: "Business", status: "Suspended", renew: "2026-08-30" },
   ],
+  accounts: [
+    { id: "a1", name: "Ama K.", email: "ama@example.com", plan: "Professional", status: "Active", renew: "2026-09-10" },
+    { id: "a2", name: "John D.", email: "john@example.com", plan: "Starter", status: "Active", renew: "2026-09-25" },
+    { id: "a3", name: "Northwind Ltd", email: "ap@northwind.com", plan: "Business", status: "Suspended", renew: "2026-08-30" },
+  ],
 };
 
 function readAuth() {
@@ -84,6 +90,9 @@ function loadBooks() {
           vendors: Array.isArray(parsed.vendors) ? parsed.vendors : seed.vendors,
           customers: Array.isArray(parsed.customers) ? parsed.customers : seed.customers,
           subscribers: Array.isArray(parsed.subscribers) ? parsed.subscribers : seed.subscribers,
+          accounts: Array.isArray(parsed.accounts) && parsed.accounts.length > 0
+            ? parsed.accounts
+            : seed.accounts,
         };
       }
     }
@@ -97,7 +106,7 @@ export function AppProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(readAuth);
   const [user, setUser] = useState(readUser);
   const [books, setBooks] = useState(loadBooks);
-  const { transactions, invoices, expenses, vendors, customers, subscribers } = books;
+  const { transactions, invoices, expenses, vendors, customers, subscribers, accounts } = books;
 
   useEffect(() => {
     try {
@@ -117,16 +126,33 @@ export function AppProvider({ children }) {
   };
 
   const signIn = (profile) => {
+    const email = String(profile.email || "").trim();
+    if (profile.role === "super_admin") {
+      persistUser({
+        name: SUPER_ADMIN.name,
+        email: SUPER_ADMIN.email,
+        role: "super_admin",
+      });
+      setIsAuthenticated(true);
+      try {
+        sessionStorage.setItem(AUTH_KEY, "1");
+      } catch {
+        /* ignore */
+      }
+      return;
+    }
+
     const stored = readUser();
     const incoming = resolvePlanId(profile.plan);
     const kept =
-      stored.email && stored.email === profile.email ? resolvePlanId(stored.plan) : undefined;
-    const next = {
+      stored.email && stored.email === email ? resolvePlanId(stored.plan) : undefined;
+    const account = books.accounts.find((item) => normalizeEmail(item.email) === normalizeEmail(email));
+    persistUser({
       name: profile.name,
-      email: profile.email,
-      plan: incoming || kept,
-    };
-    persistUser(next);
+      email,
+      role: "customer",
+      plan: incoming || kept || resolvePlanId(account?.plan),
+    });
     setIsAuthenticated(true);
     try {
       sessionStorage.setItem(AUTH_KEY, "1");
@@ -136,10 +162,33 @@ export function AppProvider({ children }) {
   };
 
   const setPlan = (planValue) => {
+    const planId = resolvePlanId(planValue);
     persistUser({
       ...user,
-      plan: resolvePlanId(planValue),
+      plan: planId,
     });
+    const planName = getPlan(planId)?.name;
+    if (!planName || !user?.email) return;
+    setBooks((current) => ({
+      ...current,
+      accounts: current.accounts.some((item) => normalizeEmail(item.email) === normalizeEmail(user.email))
+        ? current.accounts.map((item) =>
+            normalizeEmail(item.email) === normalizeEmail(user.email)
+              ? { ...item, plan: planName, status: item.status || "Active" }
+              : item
+          )
+        : [
+            {
+              id: createId(),
+              name: user.name,
+              email: user.email,
+              plan: planName,
+              status: "Active",
+              renew: "",
+            },
+            ...current.accounts,
+          ],
+    }));
   };
 
   const signOut = () => {
@@ -259,6 +308,40 @@ export function AppProvider({ children }) {
     }));
   };
 
+  const updateAccountStatus = (id, status) => {
+    setBooks((current) => ({
+      ...current,
+      accounts: current.accounts.map((item) => (item.id === id ? { ...item, status } : item)),
+    }));
+  };
+
+  const updateAccountPlan = (id, plan) => {
+    const planName = getPlan(plan)?.name || plan;
+    setBooks((current) => ({
+      ...current,
+      accounts: current.accounts.map((item) => (item.id === id ? { ...item, plan: planName } : item)),
+    }));
+  };
+
+  const upsertAccount = (item) => {
+    setBooks((current) => {
+      const email = normalizeEmail(item.email);
+      const existing = current.accounts.find((account) => normalizeEmail(account.email) === email);
+      if (existing) {
+        return {
+          ...current,
+          accounts: current.accounts.map((account) =>
+            account.id === existing.id ? { ...existing, ...item, id: existing.id } : account
+          ),
+        };
+      }
+      return {
+        ...current,
+        accounts: [{ id: createId(), ...item }, ...current.accounts],
+      };
+    });
+  };
+
   const totals = useMemo(() => {
     const income = transactions
       .filter((item) => item.type === "income")
@@ -289,6 +372,7 @@ export function AppProvider({ children }) {
     vendors,
     customers,
     subscribers,
+    accounts,
     totals,
     addTransaction,
     removeTransaction,
@@ -302,6 +386,9 @@ export function AppProvider({ children }) {
     removeCustomer,
     addSubscriber,
     updateSubscriberStatus,
+    upsertAccount,
+    updateAccountStatus,
+    updateAccountPlan,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

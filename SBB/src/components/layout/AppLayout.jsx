@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
 import { getPlan } from "../../data/plans";
+import { isSuperAdmin } from "../../data/admin";
 import Sidebar from "./Sidebar";
 import "../../styles/app.css";
 
@@ -16,10 +17,15 @@ const TITLES = {
   "/app/taxes": "Taxes",
   "/app/subscription": "Subscription",
   "/app/subscribers": "Subscribers",
+  "/app/suspended": "Account locked",
+  "/admin": "Overview",
+  "/admin/accounts": "Accounts",
+  "/admin/plans": "Plans",
 };
 
 export default function AppLayout() {
   const { user, signOut } = useApp();
+  const admin = isSuperAdmin(user);
   const planName = getPlan(user?.plan)?.name;
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -84,12 +90,16 @@ export default function AppLayout() {
             <span className="sr-only">{mobileOpen ? "Close menu" : "Open menu"}</span>
           </button>
           <div>
-            <p className="eyebrow">Books</p>
+            <p className="eyebrow">{admin ? "Super admin" : "Books"}</p>
             <h1>{page}</h1>
           </div>
           <div className="topbar-meta">
             <span className="period">
-              {planName ? `${planName} · demo books · GHS` : "No plan · demo books · GHS"}
+              {admin
+                ? "SaaS console · USD plans"
+                : planName
+                  ? `${planName} · demo books · GHS`
+                  : "No plan · demo books · GHS"}
             </span>
             <span className="top-user">{user?.name || user?.email || "Account"}</span>
             <button type="button" className="ghost-btn" onClick={handleSignOut}>

@@ -283,6 +283,15 @@
   border-top: 1px solid #e6e1d4;
 }
 
+.lp-admin-link {
+  background: none;
+  border: none;
+  color: #5a675e;
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+}
+
 @media (max-width: 900px) {
   .lp-links,
   .lp-actions {
