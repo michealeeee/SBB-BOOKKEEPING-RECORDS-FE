@@ -157,11 +157,11 @@ export default function LandingPage() {
 
       <section id="product" className="lp-product">
         <div>
-          <h2>Need a read on the shop? Open the books.</h2>
+          <h2>How’s the shop doing? Ask the books.</h2>
           <p>
-            One ledger holds income, expenses, and invoices. Customers and
-            vendors stay with those records. Profit, charts, and a tax estimate
-            are right there on the same numbers.
+            Income, expenses, invoices — one ledger. Contacts stay on the
+            records. Profit, charts, and a tax estimate from the same numbers.
+            No second spreadsheet.
           </p>
         </div>
       </section>
