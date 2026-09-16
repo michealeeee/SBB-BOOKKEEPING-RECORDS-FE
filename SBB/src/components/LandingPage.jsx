@@ -157,11 +157,11 @@ export default function LandingPage() {
 
       <section id="product" className="lp-product">
         <div>
-          <h2>From today’s entries to a clear picture of the shop.</h2>
+          <h2>When you need to know how the shop is doing, open the books.</h2>
           <p>
-            You log income, expenses, and invoices as they happen. Customers and
-            vendors stay with that work. Profit, charts, and a tax estimate are
-            the same ledger, read back to you.
+            Income, expenses, and invoices live in one ledger. Customers and
+            vendors stay on those entries. Profit, charts, and a tax estimate
+            are already waiting on the same page.
           </p>
         </div>
       </section>
