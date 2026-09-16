@@ -24,10 +24,10 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
-function PublicOnly({ children }) {
+function PublicOnly({ children, redirectTo = "/app" }) {
   const { isAuthenticated } = useApp();
   if (isAuthenticated) {
-    return <Navigate to="/app" replace />;
+    return <Navigate to={redirectTo} replace />;
   }
   return children;
 }
@@ -49,7 +49,7 @@ export default function App() {
           <Route
             path="/signup"
             element={
-              <PublicOnly>
+              <PublicOnly redirectTo="/app/subscription">
                 <SignUp />
               </PublicOnly>
             }
