@@ -142,10 +142,13 @@ export default function Income() {
             <table className="data-table">
               <thead>
                 <tr>
+                  <th>incomeid</th>
                   <th>Date</th>
                   <th>Source</th>
                   <th>Invoice</th>
                   <th>Description</th>
+                  <th>created_at</th>
+                  <th>updated_at</th>
                   <th className="num">Amount</th>
                   <th></th>
                 </tr>
@@ -153,10 +156,13 @@ export default function Income() {
               <tbody>
                 {visible.map((item) => (
                   <tr key={item.incomeid}>
+                    <td>{item.incomeid}</td>
                     <td>{formatDate(item.transaction_date)}</td>
                     <td>{item.source || "—"}</td>
                     <td>{item.invoiceid || "—"}</td>
                     <td>{item.description || "—"}</td>
+                    <td>{formatDate(item.created_at)}</td>
+                    <td>{formatDate(item.updated_at)}</td>
                     <td className="num amount-pos">{formatMoney(item.amount)}</td>
                     <td>
                       <button

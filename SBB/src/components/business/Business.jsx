@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useApp } from "../../context/AppContext";
+import { userLabel } from "../../utils/entities";
+import { formatDate } from "../../utils/format";
 
 export default function Business() {
-  const { business, membership, updateBusiness } = useApp();
+  const { business, membership, members, updateBusiness } = useApp();
   const [form, setForm] = useState({
     name: business?.name || "",
     email: business?.email || "",
@@ -11,6 +13,7 @@ export default function Business() {
   });
   const [success, setSuccess] = useState("");
   const canEdit = membership?.role === "owner" || membership?.role === "admin";
+  const creator = members.find((item) => item.userid === business?.created_by);
 
   const submit = (event) => {
     event.preventDefault();
@@ -36,7 +39,13 @@ export default function Business() {
 
       <section className="panel">
         <h2>Business profile</h2>
-        <p className="muted">Business ID: {business?.businessid}</p>
+        <p className="muted">businessid: {business?.businessid || "—"}</p>
+        <p className="muted">
+          created_by: {creator ? userLabel(creator) : business?.created_by || "—"} ({business?.created_by || "—"})
+        </p>
+        <p className="muted">
+          created_at: {formatDate(business?.created_at)} · updated_at: {formatDate(business?.updated_at)}
+        </p>
         {success ? <p className="form-success" role="status">{success}</p> : null}
         <form className="form-grid" onSubmit={submit}>
           <div className="field">

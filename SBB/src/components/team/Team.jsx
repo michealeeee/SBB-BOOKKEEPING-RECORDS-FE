@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { useApp } from "../../context/AppContext";
 import { userLabel } from "../../utils/entities";
-import { badgeClass } from "../../utils/format";
+import { badgeClass, formatDate } from "../../utils/format";
 
 const emptyForm = {
   first_name: "",
   last_name: "",
   email: "",
   role: "staff",
+  active: true,
 };
 
 export default function Team() {
-  const { members, membership, addMember, updateMember } = useApp();
+  const { user, members, membership, addMember, updateMember } = useApp();
   const [form, setForm] = useState(emptyForm);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -38,6 +39,7 @@ export default function Team() {
       last_name: form.last_name.trim(),
       email: form.email.trim(),
       role: form.role,
+      active: form.active,
     });
     if (result?.error) {
       setError(result.error);
@@ -54,6 +56,20 @@ export default function Team() {
           BusinessMember connects a user to this business with a role of owner, admin, or staff.
         </p>
       </header>
+
+      <section className="panel">
+        <h2>Signed-in user</h2>
+        <p className="muted">The frontend uses userid, first_name, last_name and email. Password is never stored here.</p>
+        <table className="data-table">
+          <tbody>
+            <tr><th>userid</th><td>{user?.userid || "—"}</td></tr>
+            <tr><th>first_name</th><td>{user?.first_name || "—"}</td></tr>
+            <tr><th>last_name</th><td>{user?.last_name || "—"}</td></tr>
+            <tr><th>email</th><td>{user?.email || "—"}</td></tr>
+            <tr><th>created_at</th><td>{formatDate(user?.created_at)}</td></tr>
+          </tbody>
+        </table>
+      </section>
 
       <section className="panel">
         <h2>Add member</h2>
@@ -97,6 +113,17 @@ export default function Team() {
               <option value="owner">Owner</option>
             </select>
           </div>
+          <div className="field">
+            <label htmlFor="mem-active">Active</label>
+            <select
+              id="mem-active"
+              value={form.active ? "true" : "false"}
+              onChange={(e) => setForm({ ...form, active: e.target.value === "true" })}
+            >
+              <option value="true">Active</option>
+              <option value="false">Inactive</option>
+            </select>
+          </div>
           <button className="btn" type="submit">
             Add member
           </button>
@@ -109,16 +136,20 @@ export default function Team() {
           <table className="data-table">
             <thead>
               <tr>
+                <th>userid</th>
                 <th>User</th>
                 <th>Email</th>
                 <th>Role</th>
                 <th>Access</th>
+                <th>created_at</th>
+                <th>updated_at</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               {members.map((item) => (
                 <tr key={item.userid}>
+                  <td>{item.userid}</td>
                   <td>{userLabel(item)}</td>
                   <td>{item.email}</td>
                   <td>
@@ -129,6 +160,8 @@ export default function Team() {
                       {item.active ? "active" : "inactive"}
                     </span>
                   </td>
+                  <td>{formatDate(item.created_at)}</td>
+                  <td>{formatDate(item.updated_at)}</td>
                   <td>
                     {canManage ? (
                       <button

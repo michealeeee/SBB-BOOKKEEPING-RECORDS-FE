@@ -155,7 +155,8 @@ export default function Invoices() {
                 <tr>
                   <th>Invoice no</th>
                   <th>Customer</th>
-                  <th>Created</th>
+                  <th>created_at</th>
+                  <th>updated_at</th>
                   <th>Due date</th>
                   <th className="num">Amount</th>
                   <th>Status</th>
@@ -168,6 +169,7 @@ export default function Invoices() {
                     <td>{item.invoice_no}</td>
                     <td>{customerLabel(findCustomer(item.customer_id))}</td>
                     <td>{formatDate(item.created_at)}</td>
+                    <td>{formatDate(item.updated_at)}</td>
                     <td>{item.due_date ? formatDate(item.due_date) : "—"}</td>
                     <td className="num">{formatMoney(item.amount)}</td>
                     <td>

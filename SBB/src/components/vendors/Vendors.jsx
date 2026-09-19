@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useApp } from "../../context/AppContext";
 import { vendorLabel } from "../../utils/entities";
+import { formatDate } from "../../utils/format";
 import ConfirmDialog from "../ConfirmDialog";
 
 const emptyForm = {
@@ -129,22 +130,28 @@ export default function Vendors() {
             <table className="data-table">
               <thead>
                 <tr>
+                  <th>vendorid</th>
                   <th>Business name</th>
                   <th>Contact person</th>
                   <th>Email</th>
                   <th>Phone</th>
                   <th>Address</th>
+                  <th>created_at</th>
+                  <th>updated_at</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
                 {visible.map((item) => (
                   <tr key={item.vendorid}>
+                    <td>{item.vendorid}</td>
                     <td>{item.business_name}</td>
                     <td>{item.contact_person || "—"}</td>
                     <td>{item.email || "—"}</td>
                     <td>{item.phone || "—"}</td>
                     <td>{item.address || "—"}</td>
+                    <td>{formatDate(item.created_at)}</td>
+                    <td>{formatDate(item.updated_at)}</td>
                     <td>
                       <button
                         type="button"

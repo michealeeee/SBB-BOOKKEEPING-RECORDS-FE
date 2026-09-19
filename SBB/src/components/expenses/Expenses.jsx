@@ -121,9 +121,12 @@ export default function Expenses() {
             <table className="data-table">
               <thead>
                 <tr>
+                  <th>expenseid</th>
                   <th>Date</th>
                   <th>Category</th>
                   <th>Description</th>
+                  <th>created_at</th>
+                  <th>updated_at</th>
                   <th className="num">Amount</th>
                   <th></th>
                 </tr>
@@ -131,9 +134,12 @@ export default function Expenses() {
               <tbody>
                 {visible.map((item) => (
                   <tr key={item.expenseid}>
+                    <td>{item.expenseid}</td>
                     <td>{formatDate(item.expense_date)}</td>
                     <td>{item.category || "—"}</td>
                     <td>{item.description || "—"}</td>
+                    <td>{formatDate(item.created_at)}</td>
+                    <td>{formatDate(item.updated_at)}</td>
                     <td className="num amount-neg">{formatMoney(item.amount)}</td>
                     <td>
                       <button

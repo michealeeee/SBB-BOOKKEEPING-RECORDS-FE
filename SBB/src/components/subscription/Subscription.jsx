@@ -53,6 +53,16 @@ export default function Subscription() {
       </div>
 
       <section className="panel">
+        <h2>Subscription</h2>
+        <p className="muted">
+          subscriptionid: {subscription?.subscriptionid || "—"} · planid: {subscription?.planid || plan?.planid || "—"} · businessid: {subscription?.businessid || business?.businessid || "—"}
+        </p>
+        <p className="muted">
+          start_date: {formatDate(subscription?.start_date)} · end_date: {formatDate(subscription?.end_date)} · created_at: {formatDate(subscription?.created_at)} · updated_at: {formatDate(subscription?.updated_at)}
+        </p>
+      </section>
+
+      <section className="panel">
         <h2>Plan limits</h2>
         <p className="muted">
           Billing cycle: {plan?.billing_cycle}. Usage is counted on this business.
@@ -101,6 +111,9 @@ export default function Subscription() {
             <table className="data-table">
               <thead>
                 <tr>
+                  <th>paymentid</th>
+                  <th>userid</th>
+                  <th>subscriptionid</th>
                   <th>Date</th>
                   <th>Method</th>
                   <th>Reference</th>
@@ -111,6 +124,9 @@ export default function Subscription() {
               <tbody>
                 {payments.map((item) => (
                   <tr key={item.paymentid}>
+                    <td>{item.paymentid}</td>
+                    <td>{item.userid || "—"}</td>
+                    <td>{item.subscriptionid || "—"}</td>
                     <td>{formatDate(item.created_at)}</td>
                     <td>{item.payment_method}</td>
                     <td>{item.transaction_reference}</td>

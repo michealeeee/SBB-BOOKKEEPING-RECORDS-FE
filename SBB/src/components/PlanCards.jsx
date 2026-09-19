@@ -9,7 +9,7 @@ export default function PlanCards({ onChoose }) {
           {plan.featured ? <p className="lp-plan-tag">Most popular</p> : null}
           <h3>{plan.name}</h3>
           <p className="lp-plan-for">
-            {plan.billing_cycle} billing for the whole business
+            planid: {plan.planid} · {plan.billing_cycle} billing · {plan.active ? "active" : "inactive"}
           </p>
           <p className="lp-price">
             {formatUsd(plan.price)} <span className="lp-price-term">/ month</span>
@@ -18,6 +18,7 @@ export default function PlanCards({ onChoose }) {
             <li>{limitLabel(plan.max_customers)} customers</li>
             <li>{limitLabel(plan.max_invoices)} invoices</li>
             <li>{limitLabel(plan.max_users)} users</li>
+            <li>created_at {plan.created_at || "—"}</li>
           </ul>
           {onChoose ? (
             <button type="button" onClick={() => onChoose(plan.planid)}>

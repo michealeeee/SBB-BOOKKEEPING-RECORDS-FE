@@ -17,6 +17,7 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [businessName, setBusinessName] = useState("");
+  const [businessEmail, setBusinessEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [error, setError] = useState("");
@@ -56,6 +57,7 @@ function SignUp() {
       last_name: lastName.trim(),
       email: email.trim(),
       business_name: businessName.trim(),
+      business_email: businessEmail.trim(),
       phone: phone.trim(),
       address: address.trim(),
       planid: selected.planid,
@@ -116,6 +118,15 @@ function SignUp() {
             value={businessName}
             onChange={(event) => setBusinessName(event.target.value)}
             placeholder="Northwind Books"
+          />
+
+          <label htmlFor="signup-biz-email">Business email</label>
+          <input
+            id="signup-biz-email"
+            type="email"
+            value={businessEmail}
+            onChange={(event) => setBusinessEmail(event.target.value)}
+            placeholder="hello@business.com"
           />
 
           <label htmlFor="signup-phone">Business phone</label>

@@ -8,6 +8,7 @@ export const PLANS = [
     max_invoices: 500,
     max_users: 2,
     active: true,
+    created_at: "2026-01-01",
   },
   {
     planid: "pro",
@@ -19,6 +20,7 @@ export const PLANS = [
     max_users: 10,
     active: true,
     featured: true,
+    created_at: "2026-01-01",
   },
   {
     planid: "enterprise",
@@ -29,6 +31,7 @@ export const PLANS = [
     max_invoices: 0,
     max_users: 0,
     active: true,
+    created_at: "2026-01-01",
   },
 ];
 

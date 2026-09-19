@@ -42,6 +42,7 @@ const seed = {
       role: "owner",
       active: true,
       created_at: "2026-07-01",
+      updated_at: "2026-07-01",
     },
     {
       userid: STAFF_ID,
@@ -52,6 +53,7 @@ const seed = {
       role: "staff",
       active: true,
       created_at: "2026-08-01",
+      updated_at: "2026-08-01",
     },
   ],
   customers: [
@@ -65,6 +67,7 @@ const seed = {
       phone_number: "024 000 0000",
       address: "East Legon, Accra",
       created_at: "2026-07-12",
+      updated_at: "2026-07-12",
     },
     {
       customerid: "cus-john",
@@ -76,6 +79,7 @@ const seed = {
       phone_number: "024 111 2222",
       address: "Tema",
       created_at: "2026-07-20",
+      updated_at: "2026-07-20",
     },
     {
       customerid: "cus-north",
@@ -87,6 +91,7 @@ const seed = {
       phone_number: "030 555 0100",
       address: "Airport City",
       created_at: "2026-07-04",
+      updated_at: "2026-07-04",
     },
   ],
   invoices: [
@@ -98,6 +103,7 @@ const seed = {
       due_date: "2026-08-15",
       status: "paid",
       created_at: "2026-08-01",
+      updated_at: "2026-08-08",
     },
     {
       invoice_no: "INV-1043",
@@ -107,6 +113,7 @@ const seed = {
       due_date: "2026-08-31",
       status: "unpaid",
       created_at: "2026-08-10",
+      updated_at: "2026-08-10",
     },
     {
       invoice_no: "INV-1044",
@@ -116,6 +123,7 @@ const seed = {
       due_date: "2026-08-12",
       status: "partial",
       created_at: "2026-07-12",
+      updated_at: "2026-07-20",
     },
   ],
   income: [
@@ -127,6 +135,8 @@ const seed = {
       amount: 4200,
       description: "Website redesign project",
       transaction_date: "2026-08-02",
+      created_at: "2026-08-02",
+      updated_at: "2026-08-02",
     },
     {
       incomeid: "inc-2",
@@ -136,6 +146,8 @@ const seed = {
       amount: 1850,
       description: "Payment for INV-1042",
       transaction_date: "2026-08-08",
+      created_at: "2026-08-08",
+      updated_at: "2026-08-08",
     },
     {
       incomeid: "inc-3",
@@ -145,6 +157,8 @@ const seed = {
       amount: 3120,
       description: "Product sales",
       transaction_date: "2026-08-18",
+      created_at: "2026-08-18",
+      updated_at: "2026-08-18",
     },
     {
       incomeid: "inc-4",
@@ -154,6 +168,8 @@ const seed = {
       amount: 2100,
       description: "Retainer — Northwind Ltd",
       transaction_date: "2026-09-03",
+      created_at: "2026-09-03",
+      updated_at: "2026-09-03",
     },
   ],
   expenses: [
@@ -164,6 +180,8 @@ const seed = {
       amount: 1200,
       description: "Office rent",
       expense_date: "2026-08-05",
+      created_at: "2026-08-05",
+      updated_at: "2026-08-05",
     },
     {
       expenseid: "exp-2",
@@ -172,6 +190,8 @@ const seed = {
       amount: 180,
       description: "Internet & utilities",
       expense_date: "2026-08-22",
+      created_at: "2026-08-22",
+      updated_at: "2026-08-22",
     },
     {
       expenseid: "exp-3",
@@ -180,6 +200,8 @@ const seed = {
       amount: 240,
       description: "Software subscriptions",
       expense_date: "2026-08-12",
+      created_at: "2026-08-12",
+      updated_at: "2026-08-12",
     },
     {
       expenseid: "exp-4",
@@ -188,6 +210,8 @@ const seed = {
       amount: 96,
       description: "Office supplies",
       expense_date: "2026-09-08",
+      created_at: "2026-09-08",
+      updated_at: "2026-09-08",
     },
   ],
   vendors: [
@@ -199,6 +223,8 @@ const seed = {
       email: "info@office.com",
       phone: "024 000 0000",
       address: "Kaneshie",
+      created_at: "2026-07-15",
+      updated_at: "2026-07-15",
     },
     {
       vendorid: "ven-2",
@@ -208,6 +234,8 @@ const seed = {
       email: "billing@cityutil.com",
       phone: "030 111 2222",
       address: "Accra Central",
+      created_at: "2026-07-18",
+      updated_at: "2026-07-18",
     },
   ],
   subscription: {
@@ -351,6 +379,7 @@ export function AppProvider({ children }) {
       first_name: profile.first_name || "",
       last_name: profile.last_name || "",
       email: profile.email,
+      created_at: profile.created_at || todayISO(),
     };
     setUser(nextUser);
     setIsAuthenticated(true);
@@ -374,6 +403,7 @@ export function AppProvider({ children }) {
       first_name: profile.first_name,
       last_name: profile.last_name,
       email: profile.email,
+      created_at: start,
     };
 
     setBooks({
@@ -466,8 +496,9 @@ export function AppProvider({ children }) {
           last_name: item.last_name,
           email: item.email,
           role: item.role || "staff",
-          active: true,
+          active: item.active !== false,
           created_at: todayISO(),
+          updated_at: todayISO(),
         },
         ...current.members,
       ],

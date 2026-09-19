@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useApp } from "../../context/AppContext";
 import { customerLabel } from "../../utils/entities";
-import { formatMoney } from "../../utils/format";
+import { formatDate, formatMoney } from "../../utils/format";
 import ConfirmDialog from "../ConfirmDialog";
 
 const emptyForm = {
@@ -24,7 +24,7 @@ export default function Customers() {
   const visible = useMemo(
     () =>
       customers.filter((item) =>
-        `${item.first_name} ${item.last_name} ${item.business_name} ${item.email}`
+        `${item.customerid} ${item.first_name} ${item.last_name} ${item.business_name} ${item.email} ${item.phone_number} ${item.address}`
           .toLowerCase()
           .includes(query.trim().toLowerCase())
       ),
@@ -149,10 +149,15 @@ export default function Customers() {
             <table className="data-table">
               <thead>
                 <tr>
-                  <th>Customer</th>
+                  <th>customerid</th>
+                  <th>First name</th>
+                  <th>Last name</th>
+                  <th>Business name</th>
                   <th>Email</th>
                   <th>Phone</th>
                   <th>Address</th>
+                  <th>created_at</th>
+                  <th>updated_at</th>
                   <th className="num">Open invoices</th>
                   <th></th>
                 </tr>
@@ -160,10 +165,15 @@ export default function Customers() {
               <tbody>
                 {visible.map((item) => (
                   <tr key={item.customerid}>
-                    <td>{customerLabel(item)}</td>
+                    <td>{item.customerid}</td>
+                    <td>{item.first_name || "—"}</td>
+                    <td>{item.last_name || "—"}</td>
+                    <td>{item.business_name || "—"}</td>
                     <td>{item.email || "—"}</td>
                     <td>{item.phone_number || "—"}</td>
                     <td>{item.address || "—"}</td>
+                    <td>{formatDate(item.created_at)}</td>
+                    <td>{formatDate(item.updated_at)}</td>
                     <td className="num">{formatMoney(openBalance(item.customerid))}</td>
                     <td>
                       <button
