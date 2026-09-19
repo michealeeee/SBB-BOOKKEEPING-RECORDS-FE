@@ -233,13 +233,25 @@ export default function LandingPage() {
     };
   }, [menuOpen]);
 
+  const goPricing = () => {
+    setMenuOpen(false);
+    const section = document.getElementById("pricing");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   const start = (plan) => {
     setMenuOpen(false);
     if (isAuthenticated) {
       navigate("/app");
       return;
     }
-    navigate(plan ? `/signup?plan=${plan}` : "/signup");
+    if (!plan) {
+      goPricing();
+      return;
+    }
+    navigate(`/signup?plan=${plan}`);
   };
 
   const goSignIn = () => {
