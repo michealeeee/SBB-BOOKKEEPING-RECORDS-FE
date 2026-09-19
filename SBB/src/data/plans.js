@@ -32,8 +32,15 @@ export const PLANS = [
   },
 ];
 
+const PLAN_ALIASES = {
+  starter: "basic",
+  business: "pro",
+  professional: "enterprise",
+};
+
 export function getPlan(planid) {
-  return PLANS.find((plan) => plan.planid === planid) || PLANS[0];
+  const id = PLAN_ALIASES[planid] || planid;
+  return PLANS.find((plan) => plan.planid === id) || PLANS[0];
 }
 
 export function limitLabel(value) {
