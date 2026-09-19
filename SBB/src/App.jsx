@@ -20,7 +20,7 @@ import "./App.css";
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useApp();
   if (!isAuthenticated) {
-    return <Navigate to="/signin" replace />;
+    return <Navigate to="/" replace />;
   }
   return children;
 }

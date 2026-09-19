@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useApp } from "../context/AppContext";
 import { COMPANY, whatsappHelpUrl } from "../data/company";
 import "../styles/landing.css";
 
@@ -207,6 +208,7 @@ export default function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
+  const { isAuthenticated } = useApp();
 
   useEffect(() => {
     document.title = "Bookkeeply — Smart Bookkeeping";
@@ -233,7 +235,16 @@ export default function LandingPage() {
 
   const start = (plan) => {
     setMenuOpen(false);
+    if (isAuthenticated) {
+      navigate("/app");
+      return;
+    }
     navigate(plan ? `/signup?plan=${plan}` : "/signup");
+  };
+
+  const goSignIn = () => {
+    setMenuOpen(false);
+    navigate(isAuthenticated ? "/app" : "/signin");
   };
 
   return (
@@ -252,11 +263,11 @@ export default function LandingPage() {
             <a href="#about">About</a>
           </nav>
           <div className="lp-actions">
-            <button type="button" className="lp-ghost" onClick={() => navigate("/signin")}>
-              Sign in
+            <button type="button" className="lp-ghost" onClick={goSignIn}>
+              {isAuthenticated ? "Open dashboard" : "Sign in"}
             </button>
             <button type="button" className="lp-primary" onClick={() => start()}>
-              Get Started Free
+              {isAuthenticated ? "Back to books" : "Get Started Free"}
             </button>
           </div>
           <button
@@ -280,8 +291,12 @@ export default function LandingPage() {
         <a href="#features" onClick={() => setMenuOpen(false)}>Features</a>
         <a href="#pricing" onClick={() => setMenuOpen(false)}>Pricing</a>
         <a href="#about" onClick={() => setMenuOpen(false)}>About</a>
-        <button type="button" className="lp-ghost" onClick={() => navigate("/signin")}>Sign in</button>
-        <button type="button" className="lp-primary" onClick={() => start()}>Get Started Free</button>
+        <button type="button" className="lp-ghost" onClick={goSignIn}>
+          {isAuthenticated ? "Open dashboard" : "Sign in"}
+        </button>
+        <button type="button" className="lp-primary" onClick={() => start()}>
+          {isAuthenticated ? "Back to books" : "Get Started Free"}
+        </button>
       </div>
 
       <section className="lp-hero">

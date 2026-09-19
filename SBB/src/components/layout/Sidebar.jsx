@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
 import { userLabel } from "../../utils/entities";
 import NAV_GROUPS from "./nav";
@@ -21,7 +21,7 @@ export default function Sidebar({ mobileOpen, onClose, onSignOut }) {
       className={mobileOpen ? "app-sidebar open" : "app-sidebar"}
       aria-label="Books navigation"
     >
-      <div className="app-brand">
+      <Link className="app-brand" to="/" onClick={onClose}>
         <span className="app-mark" aria-hidden="true">
           Bk
         </span>
@@ -29,7 +29,7 @@ export default function Sidebar({ mobileOpen, onClose, onSignOut }) {
           <strong>Bookkeeply</strong>
           <span>{business?.name || "Business books"}</span>
         </div>
-      </div>
+      </Link>
 
       <nav className="app-side-nav">
         {NAV_GROUPS.map((group) => (
@@ -62,6 +62,9 @@ export default function Sidebar({ mobileOpen, onClose, onSignOut }) {
             <span>{membership?.role || "member"} · {user?.email || ""}</span>
           </div>
         </div>
+        <Link className="side-home" to="/" onClick={onClose}>
+          ← Back to home
+        </Link>
         <button type="button" className="side-logout" onClick={onSignOut}>
           Log out
         </button>

@@ -94,6 +94,9 @@ export default function AppLayout() {
           <div className="topbar-meta">
             <span className="period">{business?.name || "Business"} · GHS</span>
             <span className="top-user">{userLabel(user)}</span>
+            <button type="button" className="ghost-btn" onClick={() => navigate("/")}>
+              Home
+            </button>
             <button type="button" className="ghost-btn" onClick={handleSignOut}>
               Log out
             </button>
@@ -108,14 +111,19 @@ export default function AppLayout() {
             <strong>{business?.name || COMPANY.name}</strong>
             <p>{business?.address || COMPANY.fullAddress}</p>
           </div>
-          <a
-            className="app-whatsapp"
-            href={whatsappHelpUrl(business?.name || "my Bookkeeply account")}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Chat super admin on WhatsApp
-          </a>
+          <div className="app-footer-actions">
+            <button type="button" className="ghost-btn" onClick={() => navigate("/")}>
+              Back to home
+            </button>
+            <a
+              className="app-whatsapp"
+              href={whatsappHelpUrl(business?.name || "my Bookkeeply account")}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Chat super admin on WhatsApp
+            </a>
+          </div>
         </footer>
       </div>
     </div>
