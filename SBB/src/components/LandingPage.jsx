@@ -91,8 +91,8 @@ const PLANS = [
     id: "starter",
     name: "Starter",
     description: "Perfect for getting started",
-    monthly: "GH₵0",
-    cta: "Get Started Free",
+    monthly: "$9",
+    cta: "Get Started",
     features: [
       "Up to 100 transactions/month",
       "5 invoices per month",
@@ -106,7 +106,7 @@ const PLANS = [
     id: "professional",
     name: "Professional",
     description: "Ideal for growing businesses",
-    monthly: "GH₵7,500",
+    monthly: "$19",
     cta: "Start Free Trial",
     popular: true,
     features: [
@@ -125,7 +125,7 @@ const PLANS = [
     id: "business",
     name: "Business",
     description: "For established businesses",
-    monthly: "GH₵15,000",
+    monthly: "$39",
     cta: "Start Free Trial",
     features: [
       "Everything in Professional, plus:",

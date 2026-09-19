@@ -9,9 +9,9 @@ export function formatMoney(value) {
 
 export function formatUsd(value) {
   const amount = Number(value) || 0;
-  return amount.toLocaleString("en-GH", {
+  return amount.toLocaleString("en-US", {
     style: "currency",
-    currency: "GHS",
+    currency: "USD",
     maximumFractionDigits: 0,
   });
 }
