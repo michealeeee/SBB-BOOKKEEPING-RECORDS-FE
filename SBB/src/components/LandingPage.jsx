@@ -165,7 +165,7 @@ const FOOTER = [
   ["Company", [
     ["About", "#about"],
     ["Contact", "#contact"],
-    ["Address", "#contact"],
+    ["WhatsApp help", "whatsapp"],
   ]],
   ["Help", [
     ["Chat super admin", "whatsapp"],
@@ -570,8 +570,7 @@ export default function LandingPage() {
         <p className="lp-copy">
           Small businesses deserve simple tools that help them understand their finances without forcing them into unnecessarily complicated accounting software.
         </p>
-        <p className="lp-copy lp-address">{COMPANY.fullAddress}</p>
-        <a className="lp-text-link" href="#contact">Visit us in Accra <Icon name="arrow" size={15} /></a>
+        <a className="lp-text-link" href="#contact">Contact us on WhatsApp <Icon name="arrow" size={15} /></a>
       </section>
 
       <section id="final-cta" className="lp-final">
@@ -599,10 +598,8 @@ export default function LandingPage() {
             </a>
             <p>{COMPANY.story}</p>
             <p className="lp-address">
-              <strong>Business address</strong>
-              {COMPANY.address}<br />
-              {COMPANY.city}<br />
-              {COMPANY.country}
+              <strong>Online business</strong>
+              {COMPANY.location}
             </p>
             <WhatsAppHelpLink />
             <p className="lp-whatsapp-note">Help and assistance on WhatsApp</p>
@@ -626,7 +623,7 @@ export default function LandingPage() {
             </div>
           ))}
         </div>
-        <p className="lp-copy-note">© 2026 {COMPANY.name}. All rights reserved. {COMPANY.fullAddress}</p>
+        <p className="lp-copy-note">© 2026 {COMPANY.name}. All rights reserved. {COMPANY.location}</p>
       </footer>
     </div>
   );

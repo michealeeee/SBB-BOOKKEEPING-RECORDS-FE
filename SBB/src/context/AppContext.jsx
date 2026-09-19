@@ -27,7 +27,7 @@ const seed = {
     name: "Northwind Books",
     email: "hello@northwind.example",
     phone: "030 111 0000",
-    address: "12 Market Street, Accra",
+    address: "",
     created_by: OWNER_ID,
     created_at: "2026-07-01",
     updated_at: "2026-09-01",
