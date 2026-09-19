@@ -1,6 +1,6 @@
-import { COMPANY, whatsappHelpUrl } from "../data/company";
+import { whatsappHelpUrl } from "../data/company";
 
-export function WhatsAppIcon({ size = 18 }) {
+export function WhatsAppIcon({ size = 22 }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">
       <path
@@ -18,12 +18,10 @@ export default function WhatsAppHelpLink({ context = "", className = "" }) {
       href={whatsappHelpUrl(context)}
       target="_blank"
       rel="noreferrer"
+      aria-label="WhatsApp"
+      title="WhatsApp"
     >
-      <span className="wa-help-mark">
-        <WhatsAppIcon size={20} />
-      </span>
-      Chat super admin
-      <span className="wa-help-number">{COMPANY.whatsappDisplay}</span>
+      <WhatsAppIcon size={28} />
     </a>
   );
 }

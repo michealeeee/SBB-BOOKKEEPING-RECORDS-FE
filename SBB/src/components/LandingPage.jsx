@@ -165,10 +165,8 @@ const FOOTER = [
   ["Company", [
     ["About", "#about"],
     ["Contact", "#contact"],
-    ["WhatsApp help", "whatsapp"],
   ]],
   ["Help", [
-    ["Chat super admin", "whatsapp"],
     ["Sign in", "/signin"],
     ["Create account", "/signup"],
   ]],
@@ -570,7 +568,7 @@ export default function LandingPage() {
         <p className="lp-copy">
           Small businesses deserve simple tools that help them understand their finances without forcing them into unnecessarily complicated accounting software.
         </p>
-        <a className="lp-text-link" href="#contact">Contact us on WhatsApp <Icon name="arrow" size={15} /></a>
+        <a className="lp-text-link" href="#contact">Get in touch <Icon name="arrow" size={15} /></a>
       </section>
 
       <section id="final-cta" className="lp-final">
@@ -602,7 +600,6 @@ export default function LandingPage() {
               {COMPANY.location}
             </p>
             <WhatsAppHelpLink />
-            <p className="lp-whatsapp-note">Help and assistance on WhatsApp</p>
           </div>
           {FOOTER.map(([title, links]) => (
             <div key={title}>
@@ -610,9 +607,7 @@ export default function LandingPage() {
               <ul>
                 {links.map(([label, href]) => (
                   <li key={label}>
-                    {href === "whatsapp" ? (
-                      <WhatsAppHelpLink />
-                    ) : href.startsWith("/") ? (
+                    {href.startsWith("/") ? (
                       <button type="button" className="lp-footer-link" onClick={() => navigate(href)}>{label}</button>
                     ) : (
                       <a href={href}>{label}</a>
