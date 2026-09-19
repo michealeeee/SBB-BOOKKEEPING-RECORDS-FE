@@ -595,6 +595,7 @@ export default function LandingPage() {
               {COMPANY.name}
             </a>
             <p>{COMPANY.story}</p>
+            <p className="lp-contact-label">Contact us</p>
             <WhatsAppHelpLink />
           </div>
           {FOOTER.map(([title, links]) => (

@@ -343,6 +343,12 @@
   gap: 10px;
 }
 
+.app-contact-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
 .app-page {
   width: 100%;
   max-width: 1120px;

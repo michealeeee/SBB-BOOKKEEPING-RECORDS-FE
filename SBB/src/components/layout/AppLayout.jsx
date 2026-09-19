@@ -116,6 +116,7 @@ export default function AppLayout() {
             <button type="button" className="ghost-btn" onClick={() => navigate("/")}>
               Back to home
             </button>
+            <span className="app-contact-label">Contact us</span>
             <WhatsAppHelpLink context={business?.name || "my Bookkeeply account"} />
           </div>
         </footer>
