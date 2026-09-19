@@ -1,10 +1,9 @@
 import { PLANS, limitLabel } from "../data/plans";
 import { formatUsd } from "../utils/format";
-import "../styles/landing.css";
 
 export default function PlanCards({ onChoose }) {
   return (
-    <div className="lp-plans">
+    <div className="in-app-plan-grid">
       {PLANS.filter((plan) => plan.active).map((plan) => (
         <article key={plan.planid} className={`lp-plan ${plan.featured ? "featured" : ""}`}>
           {plan.featured ? <p className="lp-plan-tag">Most popular</p> : null}
