@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import PlanCards from "./PlanCards";
+import { formatMoney } from "../utils/format";
 import "../styles/landing.css";
 
 export default function LandingPage() {
@@ -31,11 +33,6 @@ export default function LandingPage() {
     }
   };
 
-  const startDemo = () => {
-    setMenuOpen(false);
-    navigate("/signup");
-  };
-
   return (
     <div className="landing">
       <a className="skip-link" href="#features">
@@ -53,8 +50,8 @@ export default function LandingPage() {
           <button type="button" className="btn-outline" onClick={() => navigate("/signin")}>
             Sign in
           </button>
-          <button type="button" className="btn-fill" onClick={startDemo}>
-            Start demo
+          <button type="button" className="btn-fill" onClick={goPricing}>
+            Get started
           </button>
         </div>
         <button
@@ -94,8 +91,8 @@ export default function LandingPage() {
         <button type="button" className="btn-outline" onClick={() => navigate("/signin")}>
           Sign in
         </button>
-        <button type="button" className="btn-fill" onClick={startDemo}>
-          Start demo
+        <button type="button" className="btn-fill" onClick={goPricing}>
+          Get started
         </button>
       </div>
 
@@ -104,12 +101,13 @@ export default function LandingPage() {
           <p className="lp-kicker">Bookkeeping software</p>
           <h1>Keep income, expenses, and invoices in one ledger.</h1>
           <p>
-            Bookkeeply is a simple books app for small businesses. Record
-            transactions, send invoice records, and see profit at a glance.
+            Bookkeeply is a simple books app for small businesses. Sign in as a
+            user, work inside a business, and keep customers, invoices, income,
+            and expenses on that business.
           </p>
           <div className="lp-hero-actions">
-            <button type="button" className="btn-fill" onClick={startDemo}>
-              Open the demo books
+            <button type="button" className="btn-fill" onClick={goPricing}>
+              Get started
             </button>
             <button type="button" className="btn-outline" onClick={goPricing}>
               View plans
@@ -119,97 +117,70 @@ export default function LandingPage() {
         <aside className="ledger-card" aria-hidden="true">
           <div className="ledger-head">
             <strong>September ledger</strong>
-            <span>USD</span>
+            <span>GHS</span>
           </div>
           <div className="ledger-row">
             <span>Retainer — Northwind</span>
-            <b className="pos">+$2,100.00</b>
+            <b className="pos">+{formatMoney(2100)}</b>
           </div>
           <div className="ledger-row">
             <span>Office supplies</span>
-            <b className="neg">−$96.00</b>
+            <b className="neg">−{formatMoney(96)}</b>
           </div>
           <div className="ledger-row">
             <span>Product sales</span>
-            <b className="pos">+$3,120.00</b>
+            <b className="pos">+{formatMoney(3120)}</b>
           </div>
           <div className="ledger-foot">
             <span>Net</span>
-            <b>+$5,124.00</b>
+            <b>+{formatMoney(5124)}</b>
           </div>
         </aside>
       </header>
 
       <section id="features" className="lp-features">
         <article>
-          <h2>Ledger</h2>
-          <p>Log income and expenses with categories, dates, and running totals.</p>
+          <h2>Business</h2>
+          <p>A user joins through a membership. The business owns the books.</p>
+        </article>
+        <article>
+          <h2>Income &amp; expenses</h2>
+          <p>Record money in and money out. Income can link to an invoice.</p>
         </article>
         <article>
           <h2>Invoices</h2>
-          <p>Create customer invoices and mark them paid as money comes in.</p>
+          <p>Create invoices as paid, unpaid, or partial, optionally for a customer.</p>
         </article>
         <article>
-          <h2>Reports</h2>
-          <p>See a simple profit and loss view and export a CSV of your books.</p>
-        </article>
-        <article>
-          <h2>Contacts</h2>
-          <p>Keep customers and vendors next to the transactions they belong to.</p>
+          <h2>Plans</h2>
+          <p>One subscription per business, with customer, invoice, and user limits.</p>
         </article>
       </section>
 
       <section id="product" className="lp-product">
         <div>
-          <h2>Built like a set of books, not a dashboard toy.</h2>
+          <h2>When you need to know how the shop is doing, open the books.</h2>
           <p>
-            Numbers sit in tables. Statuses are plain. The sidebar follows how
-            bookkeepers actually work: books, sales, purchases, and reports.
+            Customers, invoices, income, expenses, and vendors sit on the
+            business. Team members share that one set of books, and the
+            subscription is billed to the business.
           </p>
         </div>
       </section>
 
       <section id="pricing" className="lp-pricing">
-        <h2>Monthly plans</h2>
-        <div className="lp-plans lp-plans-simple">
-          <div className="lp-plan">
-            <h3>Starter</h3>
-            <p className="lp-price">$9 / month</p>
-            <ul>
-              <li>100 customers</li>
-              <li>500 invoices</li>
-              <li>Ledger and bank accounts</li>
-            </ul>
-            <button type="button" onClick={() => navigate("/signup?plan=starter")}>
-              Start Starter
-            </button>
-          </div>
-          <div className="lp-plan featured">
-            <h3>Business</h3>
-            <p className="lp-price">$19 / month</p>
-            <ul>
-              <li>Unlimited customers</li>
-              <li>Unlimited invoices</li>
-              <li>Reports and tax estimate</li>
-            </ul>
-            <button type="button" onClick={() => navigate("/signup?plan=business")}>
-              Start Business
-            </button>
-          </div>
-          <div className="lp-plan">
-            <h3>Professional</h3>
-            <p className="lp-price">$39 / month</p>
-            <ul>
-              <li>Everything in Business</li>
-              <li>Priority support</li>
-              <li>Multi-account books</li>
-            </ul>
-            <button type="button" onClick={() => navigate("/signup?plan=professional")}>
-              Start Professional
-            </button>
-          </div>
+        <div className="lp-pricing-inner">
+          <p className="lp-kicker lp-pricing-kicker">Business plans</p>
+          <h2>Limits for the whole business</h2>
+          <p className="lp-pricing-lead">
+            Basic, Pro, and Enterprise set max customers, invoices, and users.
+            Everyone in the business uses the same subscription.
+          </p>
+          <PlanCards onChoose={(plan) => navigate(`/signup?plan=${plan}`)} />
+          <p className="lp-note">
+            Subscriptions are priced in USD. Checkout is not connected. Plans open a local demo account.
+          </p>
         </div>
-        <p className="lp-note">Checkout is not connected. Plans open a local demo account.</p>
       </section>
 
       <footer className="lp-footer">

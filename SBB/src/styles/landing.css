@@ -1,7 +1,7 @@
 .landing {
   min-height: 100vh;
   background: #f7f5ef;
-  color: #12233a;
+  color: #1b241c;
 }
 
 .lp-nav {
@@ -19,7 +19,7 @@
 .lp-logo {
   font-weight: 800;
   font-size: 20px;
-  color: #16324f;
+  color: #1c3328;
 }
 
 .lp-links {
@@ -28,7 +28,7 @@
 }
 
 .lp-links a {
-  color: #334155;
+  color: #3d4a40;
   text-decoration: none;
   font-weight: 600;
 }
@@ -57,8 +57,8 @@
 
 .btn-outline {
   background: transparent;
-  color: #16324f;
-  border: 1px solid #c9d3de;
+  color: #1c3328;
+  border: 1px solid #d5d0c4;
 }
 
 .lp-menu {
@@ -215,9 +215,9 @@
 }
 
 .lp-product {
-  background: #16324f;
-  color: #eef3f8;
-  padding: 48px 24px;
+  background: #1c3328;
+  color: #eef3ee;
+  padding: 56px 24px;
 }
 
 .lp-product div {
@@ -226,22 +226,23 @@
 }
 
 .lp-product h2 {
-  font-size: 32px;
-  margin: 0 0 12px;
+  font-size: 34px;
   line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0 0 14px;
 }
 
 .lp-product p {
   margin: 0;
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.6;
-  color: #d5dee7;
+  color: #d5e4db;
 }
 
 .lp-pricing {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 56px 24px;
+  background: #f7f5ef;
+  color: #1b241c;
+  padding: 64px 24px 72px;
   text-align: center;
 }
 
@@ -397,57 +398,6 @@
   margin: auto 20px 0;
   padding: 12px 16px;
   font-size: 15px;
-}
-
-.lp-plans-simple {
-  max-width: 960px;
-  margin: 24px auto 0;
-}
-
-.lp-plans-simple .lp-plan {
-  padding: 24px;
-}
-
-.lp-plans-simple .lp-plan h3,
-.lp-plans-simple .lp-price {
-  margin-left: 0;
-  margin-right: 0;
-}
-
-.lp-plans-simple .lp-plan h3 {
-  margin-top: 0;
-}
-
-.lp-plans-simple .lp-price {
-  font-size: 28px;
-  margin: 8px 0 12px;
-}
-
-.lp-plans-simple .lp-plan ul {
-  list-style: disc;
-  margin: 0 0 16px;
-  padding-left: 18px;
-  color: #5b6b7c;
-}
-
-.lp-plans-simple .lp-plan li {
-  position: static;
-  margin: 0 0 8px;
-  padding: 0;
-  border-radius: 0;
-  background: transparent;
-  color: #5b6b7c;
-  font-size: 15px;
-  font-weight: 500;
-}
-
-.lp-plans-simple .lp-plan li::before {
-  display: none;
-}
-
-.lp-plans-simple .lp-plan button {
-  width: 100%;
-  margin: 12px 0 0;
 }
 
 .lp-note {
