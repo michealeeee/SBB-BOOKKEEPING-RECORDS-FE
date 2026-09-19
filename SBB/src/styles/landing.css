@@ -749,32 +749,6 @@
   font-size: 11px;
 }
 
-.lp-toggle {
-  display: flex;
-  width: fit-content;
-  margin: 28px auto 0;
-  background: #ffffff08;
-  border: 1px solid #ffffff14;
-  border-radius: 999px;
-  padding: 4px;
-}
-
-.lp-toggle button {
-  border: 0;
-  background: transparent;
-  color: #94a3b8;
-  border-radius: 999px;
-  padding: 8px 14px;
-  font-size: 10px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.lp-toggle .is-on {
-  background: #19e68c;
-  color: #02110a;
-}
-
 .landing .lp-plans article {
   position: relative;
   display: flex;
@@ -812,16 +786,10 @@
 }
 
 .lp-price span,
-.lp-billed,
 .lp-includes {
   color: #94a3b8;
   font-size: 11px;
   font-weight: 500;
-}
-
-.lp-billed {
-  color: #19e68c;
-  font-size: 10px;
 }
 
 .landing .lp-plans button {

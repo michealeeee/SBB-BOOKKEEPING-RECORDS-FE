@@ -12,7 +12,7 @@ export default function PlanCards({ onChoose }) {
             {plan.billing_cycle} billing for the whole business
           </p>
           <p className="lp-price">
-            {formatUsd(plan.price)} <span className="lp-price-term">/ {plan.billing_cycle === "yearly" ? "year" : "month"}</span>
+            {formatUsd(plan.price)} <span className="lp-price-term">/ month</span>
           </p>
           <ul>
             <li>{limitLabel(plan.max_customers)} customers</li>

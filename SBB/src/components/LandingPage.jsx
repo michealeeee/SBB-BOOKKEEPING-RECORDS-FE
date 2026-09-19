@@ -89,7 +89,6 @@ const PLANS = [
     name: "Starter",
     description: "Perfect for getting started",
     monthly: "GH₵0",
-    yearly: "GH₵0",
     cta: "Get Started Free",
     features: [
       "Up to 100 transactions/month",
@@ -105,7 +104,6 @@ const PLANS = [
     name: "Professional",
     description: "Ideal for growing businesses",
     monthly: "GH₵7,500",
-    yearly: "GH₵6,000",
     cta: "Start Free Trial",
     popular: true,
     features: [
@@ -125,7 +123,6 @@ const PLANS = [
     name: "Business",
     description: "For established businesses",
     monthly: "GH₵15,000",
-    yearly: "GH₵12,000",
     cta: "Start Free Trial",
     features: [
       "Everything in Professional, plus:",
@@ -196,7 +193,6 @@ function LogoMark() {
 export default function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [yearly, setYearly] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -480,10 +476,6 @@ export default function LandingPage() {
             Start free and upgrade as your business grows. Every plan includes the core tools you need to maintain better business records.
           </p>
         </div>
-        <div className="lp-toggle" role="group" aria-label="Billing period">
-          <button type="button" className={!yearly ? "is-on" : ""} onClick={() => setYearly(false)}>Monthly</button>
-          <button type="button" className={yearly ? "is-on" : ""} onClick={() => setYearly(true)}>Yearly — Save 20%</button>
-        </div>
         <div className="lp-plans">
           {PLANS.map((plan) => (
             <article key={plan.id} className={plan.popular ? "popular" : ""}>
@@ -491,10 +483,9 @@ export default function LandingPage() {
               <h3>{plan.name}</h3>
               <p className="lp-plan-desc">{plan.description}</p>
               <p className="lp-price">
-                {yearly ? plan.yearly : plan.monthly}
+                {plan.monthly}
                 <span>/month</span>
               </p>
-              {yearly && plan.monthly !== "GH₵0" ? <p className="lp-billed">Billed annually — save 20%</p> : null}
               <button type="button" className={plan.popular ? "lp-primary" : "lp-outline"} onClick={() => start(plan.id)}>
                 {plan.cta}
               </button>
