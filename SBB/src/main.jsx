@@ -27,12 +27,6 @@ window.addEventListener("unhandledrejection", (event) => {
   showBootError(event.reason?.message || event.reason);
 });
 
-const currentPath = window.location.pathname;
-if (currentPath === "/SBB" || currentPath === "/SBB/" || currentPath.startsWith("/SBB/")) {
-  const rest = `/${currentPath.replace(/^\/SBB\/?/, "")}`.replace(/\/{2,}/g, "/") || "/";
-  window.history.replaceState(null, "", `${rest}${window.location.search}${window.location.hash}`);
-}
-
 const root = document.getElementById("root");
 if (!root) {
   throw new Error("Bookkeeply is missing #root");
