@@ -86,13 +86,40 @@
 }
 
 .auth-stage {
+  position: relative;
   display: grid;
   place-items: center;
-  padding: 40px 24px;
+  padding: 72px 24px 40px;
   overflow-y: auto;
   background:
     radial-gradient(ellipse at 80% 10%, rgba(27, 107, 74, 0.06), transparent 42%),
     #efece4;
+}
+
+.auth-back {
+  position: absolute;
+  top: 20px;
+  left: 24px;
+  display: inline-flex;
+  align-items: center;
+  color: #1c3328;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.auth-back:hover,
+.auth-panel-home:hover {
+  color: #19e68c;
+}
+
+.auth-panel-home {
+  margin-top: 28px;
+  color: #9ec9b3;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  width: fit-content;
 }
 
 .auth-card {
@@ -185,27 +212,11 @@
   font-weight: 650;
 }
 
-.auth-home {
-  display: block;
-  text-align: center;
-  margin-bottom: 16px;
-  color: var(--navy);
-  font-weight: 800;
-  text-decoration: none;
-  font-size: 18px;
-}
-
 .auth-hint {
   text-align: center;
   font-size: 13px;
   color: var(--muted);
   margin: 12px 0 0;
-}
-
-@media (min-width: 861px) {
-  .auth-home {
-    display: none;
-  }
 }
 
 @media (max-width: 860px) {

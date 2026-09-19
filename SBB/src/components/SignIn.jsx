@@ -44,9 +44,6 @@ function SignIn() {
   return (
     <AuthShell>
       <div className="auth-card">
-        <Link className="auth-home" to="/">
-          Bookkeeply
-        </Link>
         <h1>Welcome Back</h1>
         <p className="auth-lead">Sign in to your account</p>
 
@@ -90,6 +87,9 @@ function SignIn() {
         <p className="auth-footer">
           Don&apos;t have an account?
           <Link to="/signup"> Create Account</Link>
+        </p>
+        <p className="auth-footer">
+          <Link to="/">← Back to home</Link>
         </p>
       </div>
     </AuthShell>

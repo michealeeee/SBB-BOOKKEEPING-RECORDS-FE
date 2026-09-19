@@ -17,8 +17,16 @@ export default function AuthShell({ children }) {
           <li>Income linked to invoices</li>
           <li>One subscription for the whole team</li>
         </ul>
+        <Link className="auth-panel-home" to="/">
+          ← Back to home
+        </Link>
       </aside>
-      <div className="auth-stage">{children}</div>
+      <div className="auth-stage">
+        <Link className="auth-back" to="/">
+          ← Back to home
+        </Link>
+        {children}
+      </div>
     </div>
   );
 }

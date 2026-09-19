@@ -66,9 +66,6 @@ function SignUp() {
   return (
     <AuthShell>
       <div className="auth-card">
-        <Link className="auth-home" to="/">
-          Bookkeeply
-        </Link>
         <h1>Create Account</h1>
         <p className="auth-lead">
           Register as a user and create a business on the {selected.name} plan.
@@ -171,6 +168,9 @@ function SignUp() {
         <p className="auth-footer">
           Already have an account?
           <Link to="/signin"> Sign In</Link>
+        </p>
+        <p className="auth-footer">
+          <Link to="/">← Back to home</Link>
         </p>
       </div>
     </AuthShell>
