@@ -42,7 +42,7 @@ export default function Subscribers() {
   return (
     <div className="app-page">
       <header className="page-header">
-        <p>Open this page anytime from Subscriptions in the left menu or the header. Plans are billed in USD.</p>
+        <p>Open this page anytime from Subscriptions in the left menu or the header. Plans are billed in Ghana cedis.</p>
       </header>
 
       <section className="panel in-app-plans">

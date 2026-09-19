@@ -88,8 +88,8 @@ const PLANS = [
     id: "starter",
     name: "Starter",
     description: "Perfect for getting started",
-    monthly: "₦0",
-    yearly: "₦0",
+    monthly: "GH₵0",
+    yearly: "GH₵0",
     cta: "Get Started Free",
     features: [
       "Up to 100 transactions/month",
@@ -104,8 +104,8 @@ const PLANS = [
     id: "professional",
     name: "Professional",
     description: "Ideal for growing businesses",
-    monthly: "₦7,500",
-    yearly: "₦6,000",
+    monthly: "GH₵7,500",
+    yearly: "GH₵6,000",
     cta: "Start Free Trial",
     popular: true,
     features: [
@@ -124,8 +124,8 @@ const PLANS = [
     id: "business",
     name: "Business",
     description: "For established businesses",
-    monthly: "₦15,000",
-    yearly: "₦12,000",
+    monthly: "GH₵15,000",
+    yearly: "GH₵12,000",
     cta: "Start Free Trial",
     features: [
       "Everything in Professional, plus:",
@@ -144,7 +144,7 @@ const PLANS = [
 
 const STATS = [
   ["500+", "Active Businesses"],
-  ["₦2.5B+", "Transactions Recorded"],
+  ["GH₵2.5B+", "Transactions Recorded"],
   ["99.9%", "Uptime & Reliability"],
   ["4.9/5", "User Satisfaction"],
 ];
@@ -315,22 +315,22 @@ export default function LandingPage() {
               <div className="lp-kpis">
                 <article>
                   <span>Total Revenue</span>
-                  <b>₦1,245,000</b>
+                  <b>GH₵1,245,000</b>
                   <small className="up">+21.2% from last month</small>
                 </article>
                 <article>
                   <span>Total Expenses</span>
-                  <b>₦684,500</b>
+                  <b>GH₵684,500</b>
                   <small className="down">-2.7% from last month</small>
                 </article>
                 <article>
                   <span>Net Profit</span>
-                  <b>₦560,500</b>
+                  <b>GH₵560,500</b>
                   <small className="up">+18.7% from last month</small>
                 </article>
                 <article>
                   <span>Outstanding</span>
-                  <b>₦120,000</b>
+                  <b>GH₵120,000</b>
                   <small>3 invoices due</small>
                 </article>
               </div>
@@ -351,7 +351,7 @@ export default function LandingPage() {
                   <h4>Expense Breakdown</h4>
                   <div className="lp-donut-wrap">
                     <div className="lp-donut" />
-                    <p className="lp-break-total">₦684,500</p>
+                    <p className="lp-break-total">GH₵684,500</p>
                   </div>
                   <ul>
                     <li><span>Inventory</span><b>45%</b></li>
@@ -438,7 +438,7 @@ export default function LandingPage() {
             </div>
             <div className="lp-currency">
               <span>Currency</span>
-              <b>₦ Nigerian Naira</b>
+              <b>GH₵ Ghana Cedi</b>
             </div>
           </div>
           <div className="lp-connector" />
@@ -494,7 +494,7 @@ export default function LandingPage() {
                 {yearly ? plan.yearly : plan.monthly}
                 <span>/month</span>
               </p>
-              {yearly && plan.monthly !== "₦0" ? <p className="lp-billed">Billed annually — save 20%</p> : null}
+              {yearly && plan.monthly !== "GH₵0" ? <p className="lp-billed">Billed annually — save 20%</p> : null}
               <button type="button" className={plan.popular ? "lp-primary" : "lp-outline"} onClick={() => start(plan.id)}>
                 {plan.cta}
               </button>
