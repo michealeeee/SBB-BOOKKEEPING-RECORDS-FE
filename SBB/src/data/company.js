@@ -7,8 +7,8 @@ export const COMPANY = {
   city: "Accra, Greater Accra",
   country: "Ghana",
   fullAddress: "12 Market Street, Accra, Greater Accra, Ghana",
-  whatsappE164: "233240000000",
-  whatsappDisplay: "+233 24 000 0000",
+  whatsappE164: "233244266466",
+  whatsappDisplay: "024 426 6466",
 };
 
 export function whatsappHelpUrl(context = "") {
