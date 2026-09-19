@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { COMPANY, whatsappHelpUrl } from "../data/company";
 import "../styles/landing.css";
 
 const FEATURES = [
@@ -153,10 +154,22 @@ const SECURITY = [
 ];
 
 const FOOTER = [
-  ["Product", ["Features", "Pricing", "Security", "Updates"]],
-  ["Company", ["About", "Contact", "Careers", "Blog"]],
-  ["Resources", ["Help Center", "Guides", "Templates", "API Docs"]],
-  ["Legal", ["Privacy Policy", "Terms of Service", "Cookie Policy"]],
+  ["Product", [
+    ["Features", "#features"],
+    ["Pricing", "#pricing"],
+    ["Security", "#security"],
+    ["How it works", "#how-it-works"],
+  ]],
+  ["Company", [
+    ["About", "#about"],
+    ["Contact", "#contact"],
+    ["Address", "#contact"],
+  ]],
+  ["Help", [
+    ["Chat super admin", "whatsapp"],
+    ["Sign in", "/signin"],
+    ["Create account", "/signup"],
+  ]],
 ];
 
 const ICONS = {
@@ -500,7 +513,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="lp-section lp-security">
+      <section id="security" className="lp-section lp-security">
         <div>
           <p className="lp-kicker">Security first</p>
           <h2>Your records are <span className="text-gradient">business-critical.</span></h2>
@@ -525,10 +538,12 @@ export default function LandingPage() {
       <section id="about" className="lp-section lp-about">
         <div className="lp-icon-box tone-green"><Icon name="spark" size={20} /></div>
         <h2>There&apos;s a reason <span className="text-gradient">Bookkeeply exists.</span></h2>
+        <p className="lp-copy">{COMPANY.story}</p>
         <p className="lp-copy">
           Small businesses deserve simple tools that help them understand their finances without forcing them into unnecessarily complicated accounting software.
         </p>
-        <a className="lp-text-link" href="#final-cta">Learn About Bookkeeply <Icon name="arrow" size={15} /></a>
+        <p className="lp-copy lp-address">{COMPANY.fullAddress}</p>
+        <a className="lp-text-link" href="#contact">Visit us in Accra <Icon name="arrow" size={15} /></a>
       </section>
 
       <section id="final-cta" className="lp-final">
@@ -547,32 +562,50 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <footer className="lp-footer">
+      <footer id="contact" className="lp-footer">
         <div className="lp-footer-top">
-          <div>
+          <div className="lp-footer-about">
             <a className="lp-brand" href="#">
               <LogoMark />
-              Bookkeeply
+              {COMPANY.name}
             </a>
-            <p>Smart bookkeeping for modern businesses. Record today, understand tomorrow.</p>
-            <div className="lp-social">
-              <span>in</span>
-              <span>@</span>
-              <span>→</span>
-            </div>
+            <p>{COMPANY.story}</p>
+            <p className="lp-address">
+              <strong>Business address</strong>
+              {COMPANY.address}<br />
+              {COMPANY.city}<br />
+              {COMPANY.country}
+            </p>
+            <a
+              className="lp-whatsapp"
+              href={whatsappHelpUrl()}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Chat super admin on WhatsApp
+            </a>
+            <p className="lp-whatsapp-note">{COMPANY.whatsappDisplay} · Help and assistance</p>
           </div>
           {FOOTER.map(([title, links]) => (
             <div key={title}>
               <h3>{title}</h3>
               <ul>
-                {links.map((link) => (
-                  <li key={link}><a href="#features">{link}</a></li>
+                {links.map(([label, href]) => (
+                  <li key={label}>
+                    {href === "whatsapp" ? (
+                      <a href={whatsappHelpUrl()} target="_blank" rel="noreferrer">{label}</a>
+                    ) : href.startsWith("/") ? (
+                      <button type="button" className="lp-footer-link" onClick={() => navigate(href)}>{label}</button>
+                    ) : (
+                      <a href={href}>{label}</a>
+                    )}
+                  </li>
                 ))}
               </ul>
             </div>
           ))}
         </div>
-        <p className="lp-copy-note">© 2026 Bookkeeply. All rights reserved.</p>
+        <p className="lp-copy-note">© 2026 {COMPANY.name}. All rights reserved. {COMPANY.fullAddress}</p>
       </footer>
     </div>
   );

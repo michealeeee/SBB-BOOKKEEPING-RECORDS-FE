@@ -931,6 +931,12 @@
   align-items: flex-end;
 }
 
+.lp-about .lp-address {
+  margin-top: 16px;
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
 .lp-footer {
   border-top: 1px solid #ffffff12;
   padding: 48px 24px 24px;
@@ -940,15 +946,49 @@
 
 .lp-footer-top {
   display: grid;
-  grid-template-columns: 1.25fr repeat(4, 1fr);
+  grid-template-columns: 1.6fr repeat(3, 0.8fr);
   gap: 28px;
 }
 
+.lp-footer-about p,
 .lp-footer p {
   color: #64748b;
   font-size: 12px;
   line-height: 1.6;
-  max-width: 260px;
+  max-width: 340px;
+}
+
+.lp-address {
+  margin-top: 16px;
+}
+
+.lp-address strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #e2e8f0;
+  font-size: 11px;
+}
+
+.lp-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 8px;
+  background: #25d366;
+  color: #052e16 !important;
+  font-size: 12px !important;
+  font-weight: 800;
+}
+
+.lp-whatsapp:hover {
+  filter: brightness(1.05);
+}
+
+.lp-whatsapp-note {
+  margin-top: 8px !important;
 }
 
 .lp-social {
@@ -980,10 +1020,21 @@
   padding: 0;
 }
 
-.lp-footer a {
+.lp-footer a,
+.lp-footer-link {
   color: #64748b;
   text-decoration: none;
   font-size: 10px;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.lp-footer a:hover,
+.lp-footer-link:hover {
+  color: #e2e8f0;
 }
 
 .lp-copy-note {

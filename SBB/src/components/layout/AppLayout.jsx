@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
+import { COMPANY, whatsappHelpUrl } from "../../data/company";
 import { userLabel } from "../../utils/entities";
 import Sidebar from "./Sidebar";
 import "../../styles/app.css";
@@ -102,6 +103,20 @@ export default function AppLayout() {
         <main id="main-content" className="app-main" tabIndex={-1}>
           <Outlet />
         </main>
+        <footer className="app-footer">
+          <div>
+            <strong>{business?.name || COMPANY.name}</strong>
+            <p>{business?.address || COMPANY.fullAddress}</p>
+          </div>
+          <a
+            className="app-whatsapp"
+            href={whatsappHelpUrl(business?.name || "my Bookkeeply account")}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Chat super admin on WhatsApp
+          </a>
+        </footer>
       </div>
     </div>
   );
