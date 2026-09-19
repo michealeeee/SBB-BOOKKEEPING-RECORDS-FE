@@ -7,15 +7,15 @@ export default function AuthShell({ children }) {
         <Link className="auth-kicker" to="/">
           Bookkeeply
         </Link>
-        <h2>A quiet ledger for everyday books.</h2>
+        <h2>A quiet ledger for the business, not just one login.</h2>
         <p>
-          Record income and expenses, send invoices, and read a simple profit
-          and loss — stored in this browser.
+          You sign in as a user, join a business as a member, and keep customers,
+          invoices, income, expenses, and vendors on that business.
         </p>
         <ul>
-          <li>Daily and weekly entries</li>
-          <li>Invoices and open balances</li>
-          <li>Local books, no server</li>
+          <li>User, membership, and business</li>
+          <li>Income linked to invoices</li>
+          <li>One subscription for the whole team</li>
         </ul>
       </aside>
       <div className="auth-stage">{children}</div>

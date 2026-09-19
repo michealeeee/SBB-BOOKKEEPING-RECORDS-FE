@@ -3,7 +3,7 @@ const NAV_GROUPS = [
     label: "Books",
     items: [
       { to: "/app", label: "Dashboard", end: true },
-      { to: "/app/transactions", label: "Transactions" },
+      { to: "/app/income", label: "Income" },
       { to: "/app/expenses", label: "Expenses" },
     ],
   },
@@ -26,8 +26,12 @@ const NAV_GROUPS = [
     ],
   },
   {
-    label: "Plans",
-    items: [{ to: "/app/subscriptions", label: "Subscriptions" }],
+    label: "Business",
+    items: [
+      { to: "/app/subscription", label: "Subscription" },
+      { to: "/app/team", label: "Team" },
+      { to: "/app/business", label: "Business" },
+    ],
   },
 ];
 

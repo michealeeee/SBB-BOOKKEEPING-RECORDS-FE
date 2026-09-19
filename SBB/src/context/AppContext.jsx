@@ -1,56 +1,248 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { PLANS, getPlan } from "../data/plans";
+import { customerLabel } from "../utils/entities";
 
 /* Context files export the provider and a hook together. */
 /* eslint-disable react-refresh/only-export-components */
 
 const AUTH_KEY = "bookkeeply-auth";
 const USER_KEY = "bookkeeply-user";
-const BOOKS_KEY = "bookkeeply-books-v2";
+const BOOKS_KEY = "bookkeeply-books-v3";
 
 const AppContext = createContext(null);
 
-function createId() {
-  return crypto.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+function createId(prefix = "id") {
+  const raw = crypto.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  return `${prefix}-${raw.slice(0, 8)}`;
 }
 
+const BUSINESS_ID = "biz-demo";
+const OWNER_ID = "usr-alex";
+const STAFF_ID = "usr-staff";
+const SUB_ID = "sub-demo";
+
 const seed = {
-  transactions: [
-    { id: "t1", date: "2026-08-02", description: "Website redesign project", category: "Services", type: "income", amount: 4200 },
-    { id: "t2", date: "2026-08-05", description: "Office rent", category: "Rent", type: "expense", amount: 1200 },
-    { id: "t3", date: "2026-08-08", description: "Invoice INV-1042 — Ama K.", category: "Consulting", type: "income", amount: 1850 },
-    { id: "t4", date: "2026-08-12", description: "Software subscriptions", category: "Software", type: "expense", amount: 240 },
-    { id: "t5", date: "2026-08-18", description: "Product sales", category: "Sales", type: "income", amount: 3120 },
-    { id: "t6", date: "2026-08-22", description: "Internet & utilities", category: "Utilities", type: "expense", amount: 180 },
-    { id: "t7", date: "2026-09-03", description: "Retainer — Northwind Ltd", category: "Consulting", type: "income", amount: 2100 },
-    { id: "t8", date: "2026-09-08", description: "Office supplies", category: "Supplies", type: "expense", amount: 96 },
-  ],
-  invoices: [
-    { id: "INV-1042", customer: "Ama K.", amount: 1850, status: "Paid", issued: "2026-08-01", due: "2026-08-15" },
-    { id: "INV-1043", customer: "John Doe", amount: 2400, status: "Sent", issued: "2026-08-10", due: "2026-08-31" },
-    { id: "INV-1044", customer: "Northwind Ltd", amount: 1350, status: "Overdue", issued: "2026-07-12", due: "2026-08-12" },
-    { id: "INV-1045", customer: "Ama K.", amount: 1850, status: "Draft", issued: "2026-08-24", due: "2026-09-10" },
-  ],
-  expenses: [
-    { id: "e1", name: "Office Rent", amount: 1200, category: "Rent", date: "2026-08-05" },
-    { id: "e2", name: "Internet", amount: 80, category: "Utilities", date: "2026-08-08" },
-    { id: "e3", name: "Accounting software", amount: 49, category: "Software", date: "2026-08-14" },
-    { id: "e4", name: "Office supplies", amount: 96, category: "Supplies", date: "2026-09-08" },
-  ],
-  vendors: [
-    { id: "v1", name: "Office Supplies Ltd", contact: "024 000 0000", email: "info@office.com" },
-    { id: "v2", name: "City Utilities", contact: "030 111 2222", email: "billing@cityutil.com" },
+  business: {
+    businessid: BUSINESS_ID,
+    name: "Northwind Books",
+    email: "hello@northwind.example",
+    phone: "030 111 0000",
+    address: "12 Market Street, Accra",
+    created_by: OWNER_ID,
+    created_at: "2026-07-01",
+    updated_at: "2026-09-01",
+  },
+  members: [
+    {
+      userid: OWNER_ID,
+      businessid: BUSINESS_ID,
+      first_name: "Alex",
+      last_name: "Mensah",
+      email: "alex@bookkeeply.app",
+      role: "owner",
+      active: true,
+      created_at: "2026-07-01",
+    },
+    {
+      userid: STAFF_ID,
+      businessid: BUSINESS_ID,
+      first_name: "Efua",
+      last_name: "Boateng",
+      email: "efua@northwind.example",
+      role: "staff",
+      active: true,
+      created_at: "2026-08-01",
+    },
   ],
   customers: [
-    { id: "c1", name: "John Doe", email: "john@example.com", balance: 2400 },
-    { id: "c2", name: "Ama K.", email: "ama@example.com", balance: 1850 },
-    { id: "c3", name: "Northwind Ltd", email: "ap@northwind.com", balance: 1350 },
+    {
+      customerid: "cus-ama",
+      businessid: BUSINESS_ID,
+      first_name: "Ama",
+      last_name: "Kusi",
+      business_name: "",
+      email: "ama@example.com",
+      phone_number: "024 000 0000",
+      address: "East Legon, Accra",
+      created_at: "2026-07-12",
+    },
+    {
+      customerid: "cus-john",
+      businessid: BUSINESS_ID,
+      first_name: "John",
+      last_name: "Doe",
+      business_name: "",
+      email: "john@example.com",
+      phone_number: "024 111 2222",
+      address: "Tema",
+      created_at: "2026-07-20",
+    },
+    {
+      customerid: "cus-north",
+      businessid: BUSINESS_ID,
+      first_name: "",
+      last_name: "",
+      business_name: "Northwind Ltd",
+      email: "ap@northwind.com",
+      phone_number: "030 555 0100",
+      address: "Airport City",
+      created_at: "2026-07-04",
+    },
   ],
-  subscribers: [
-    { id: "s1", name: "Ama K.", plan: "Professional", status: "Active", renew: "2026-09-10" },
-    { id: "s2", name: "John D.", plan: "Starter", status: "Active", renew: "2026-09-25" },
-    { id: "s3", name: "Northwind Ltd", plan: "Business", status: "Suspended", renew: "2026-08-30" },
+  invoices: [
+    {
+      invoice_no: "INV-1042",
+      customer_id: "cus-ama",
+      businessid: BUSINESS_ID,
+      amount: 1850,
+      due_date: "2026-08-15",
+      status: "paid",
+      created_at: "2026-08-01",
+    },
+    {
+      invoice_no: "INV-1043",
+      customer_id: "cus-john",
+      businessid: BUSINESS_ID,
+      amount: 2400,
+      due_date: "2026-08-31",
+      status: "unpaid",
+      created_at: "2026-08-10",
+    },
+    {
+      invoice_no: "INV-1044",
+      customer_id: "cus-north",
+      businessid: BUSINESS_ID,
+      amount: 1350,
+      due_date: "2026-08-12",
+      status: "partial",
+      created_at: "2026-07-12",
+    },
+  ],
+  income: [
+    {
+      incomeid: "inc-1",
+      businessid: BUSINESS_ID,
+      invoiceid: null,
+      source: "Services",
+      amount: 4200,
+      description: "Website redesign project",
+      transaction_date: "2026-08-02",
+    },
+    {
+      incomeid: "inc-2",
+      businessid: BUSINESS_ID,
+      invoiceid: "INV-1042",
+      source: "Consulting",
+      amount: 1850,
+      description: "Payment for INV-1042",
+      transaction_date: "2026-08-08",
+    },
+    {
+      incomeid: "inc-3",
+      businessid: BUSINESS_ID,
+      invoiceid: null,
+      source: "Sales",
+      amount: 3120,
+      description: "Product sales",
+      transaction_date: "2026-08-18",
+    },
+    {
+      incomeid: "inc-4",
+      businessid: BUSINESS_ID,
+      invoiceid: null,
+      source: "Consulting",
+      amount: 2100,
+      description: "Retainer — Northwind Ltd",
+      transaction_date: "2026-09-03",
+    },
+  ],
+  expenses: [
+    {
+      expenseid: "exp-1",
+      businessid: BUSINESS_ID,
+      category: "Rent",
+      amount: 1200,
+      description: "Office rent",
+      expense_date: "2026-08-05",
+    },
+    {
+      expenseid: "exp-2",
+      businessid: BUSINESS_ID,
+      category: "Utilities",
+      amount: 180,
+      description: "Internet & utilities",
+      expense_date: "2026-08-22",
+    },
+    {
+      expenseid: "exp-3",
+      businessid: BUSINESS_ID,
+      category: "Software",
+      amount: 240,
+      description: "Software subscriptions",
+      expense_date: "2026-08-12",
+    },
+    {
+      expenseid: "exp-4",
+      businessid: BUSINESS_ID,
+      category: "Supplies",
+      amount: 96,
+      description: "Office supplies",
+      expense_date: "2026-09-08",
+    },
+  ],
+  vendors: [
+    {
+      vendorid: "ven-1",
+      businessid: BUSINESS_ID,
+      business_name: "Office Supplies Ltd",
+      contact_person: "Kofi Mensah",
+      email: "info@office.com",
+      phone: "024 000 0000",
+      address: "Kaneshie",
+    },
+    {
+      vendorid: "ven-2",
+      businessid: BUSINESS_ID,
+      business_name: "City Utilities",
+      contact_person: "Billing desk",
+      email: "billing@cityutil.com",
+      phone: "030 111 2222",
+      address: "Accra Central",
+    },
+  ],
+  subscription: {
+    subscriptionid: SUB_ID,
+    businessid: BUSINESS_ID,
+    planid: "pro",
+    status: "active",
+    start_date: "2026-08-19",
+    end_date: "2026-09-19",
+    created_at: "2026-08-19",
+    updated_at: "2026-08-19",
+  },
+  payments: [
+    {
+      paymentid: "pay-1",
+      userid: OWNER_ID,
+      subscriptionid: SUB_ID,
+      amount: 19,
+      payment_method: "card",
+      transaction_reference: "demo-ref-4412",
+      status: "success",
+      created_at: "2026-08-19",
+    },
   ],
 };
+
+function todayISO() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function addMonthsISO(iso, months) {
+  const date = new Date(`${iso}T00:00:00`);
+  date.setMonth(date.getMonth() + months);
+  return date.toISOString().slice(0, 10);
+}
 
 function readAuth() {
   try {
@@ -60,14 +252,34 @@ function readAuth() {
   }
 }
 
+function defaultSessionUser() {
+  const owner = seed.members[0];
+  return {
+    userid: owner.userid,
+    first_name: owner.first_name,
+    last_name: owner.last_name,
+    email: owner.email,
+  };
+}
+
 function readUser() {
   try {
     const raw = sessionStorage.getItem(USER_KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed?.email) {
+        return {
+          userid: parsed.userid || OWNER_ID,
+          first_name: parsed.first_name || "",
+          last_name: parsed.last_name || "",
+          email: parsed.email,
+        };
+      }
+    }
   } catch {
     /* ignore */
   }
-  return { name: "Alex Mensah", email: "alex@bookkeeply.app" };
+  return defaultSessionUser();
 }
 
 function loadBooks() {
@@ -77,12 +289,17 @@ function loadBooks() {
       const parsed = JSON.parse(raw);
       if (parsed && typeof parsed === "object") {
         return {
-          transactions: Array.isArray(parsed.transactions) ? parsed.transactions : seed.transactions,
+          ...seed,
+          ...parsed,
+          business: parsed.business || seed.business,
+          members: Array.isArray(parsed.members) ? parsed.members : seed.members,
+          customers: Array.isArray(parsed.customers) ? parsed.customers : seed.customers,
           invoices: Array.isArray(parsed.invoices) ? parsed.invoices : seed.invoices,
+          income: Array.isArray(parsed.income) ? parsed.income : seed.income,
           expenses: Array.isArray(parsed.expenses) ? parsed.expenses : seed.expenses,
           vendors: Array.isArray(parsed.vendors) ? parsed.vendors : seed.vendors,
-          customers: Array.isArray(parsed.customers) ? parsed.customers : seed.customers,
-          subscribers: Array.isArray(parsed.subscribers) ? parsed.subscribers : seed.subscribers,
+          subscription: parsed.subscription || seed.subscription,
+          payments: Array.isArray(parsed.payments) ? parsed.payments : seed.payments,
         };
       }
     }
@@ -92,11 +309,26 @@ function loadBooks() {
   return seed;
 }
 
+function withinLimit(count, max) {
+  return !max || max <= 0 || count < max;
+}
+
 export function AppProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(readAuth);
   const [user, setUser] = useState(readUser);
   const [books, setBooks] = useState(loadBooks);
-  const { transactions, invoices, expenses, vendors, customers, subscribers } = books;
+
+  const {
+    business,
+    members,
+    customers,
+    invoices,
+    income,
+    expenses,
+    vendors,
+    subscription,
+    payments,
+  } = books;
 
   useEffect(() => {
     try {
@@ -106,15 +338,96 @@ export function AppProvider({ children }) {
     }
   }, [books]);
 
+  const membership = useMemo(
+    () => members.find((item) => item.userid === user.userid) || members.find((item) => item.role === "owner"),
+    [members, user.userid]
+  );
+
+  const plan = getPlan(subscription?.planid);
+
   const signIn = (profile) => {
-    setUser(profile);
+    const nextUser = {
+      userid: profile.userid || createId("usr"),
+      first_name: profile.first_name || "",
+      last_name: profile.last_name || "",
+      email: profile.email,
+    };
+    setUser(nextUser);
     setIsAuthenticated(true);
     try {
       sessionStorage.setItem(AUTH_KEY, "1");
-      sessionStorage.setItem(USER_KEY, JSON.stringify(profile));
+      sessionStorage.setItem(USER_KEY, JSON.stringify(nextUser));
     } catch {
       /* ignore */
     }
+  };
+
+  const registerBusiness = (profile) => {
+    const userid = createId("usr");
+    const businessid = createId("biz");
+    const subscriptionid = createId("sub");
+    const planid = PLANS.some((item) => item.planid === profile.planid) ? profile.planid : "basic";
+    const selected = getPlan(planid);
+    const start = todayISO();
+    const nextUser = {
+      userid,
+      first_name: profile.first_name,
+      last_name: profile.last_name,
+      email: profile.email,
+    };
+
+    setBooks({
+      business: {
+        businessid,
+        name: profile.business_name,
+        email: profile.business_email || profile.email,
+        phone: profile.phone || "",
+        address: profile.address || "",
+        created_by: userid,
+        created_at: start,
+        updated_at: start,
+      },
+      members: [
+        {
+          userid,
+          businessid,
+          first_name: profile.first_name,
+          last_name: profile.last_name,
+          email: profile.email,
+          role: "owner",
+          active: true,
+          created_at: start,
+        },
+      ],
+      customers: [],
+      invoices: [],
+      income: [],
+      expenses: [],
+      vendors: [],
+      subscription: {
+        subscriptionid,
+        businessid,
+        planid,
+        status: "active",
+        start_date: start,
+        end_date: addMonthsISO(start, 1),
+        created_at: start,
+        updated_at: start,
+      },
+      payments: [
+        {
+          paymentid: createId("pay"),
+          userid,
+          subscriptionid,
+          amount: selected.price,
+          payment_method: "demo",
+          transaction_reference: createId("ref"),
+          status: "pending",
+          created_at: start,
+        },
+      ],
+    });
+    signIn(nextUser);
   };
 
   const signOut = () => {
@@ -127,155 +440,336 @@ export function AppProvider({ children }) {
     }
   };
 
-  const addTransaction = (item) => {
+  const updateBusiness = (fields) => {
     setBooks((current) => ({
       ...current,
-      transactions: [{ id: createId(), ...item }, ...current.transactions],
+      business: {
+        ...current.business,
+        ...fields,
+        updated_at: todayISO(),
+      },
     }));
   };
 
-  const removeTransaction = (id) => {
+  const addMember = (item) => {
+    const planLimits = getPlan(books.subscription.planid);
+    if (!withinLimit(books.members.length, planLimits.max_users)) {
+      return { error: `This plan allows ${planLimits.max_users} users.` };
+    }
     setBooks((current) => ({
       ...current,
-      transactions: current.transactions.filter((item) => item.id !== id),
+      members: [
+        {
+          userid: createId("usr"),
+          businessid: current.business.businessid,
+          first_name: item.first_name,
+          last_name: item.last_name,
+          email: item.email,
+          role: item.role || "staff",
+          active: true,
+          created_at: todayISO(),
+        },
+        ...current.members,
+      ],
+    }));
+    return { ok: true };
+  };
+
+  const updateMember = (userid, fields) => {
+    setBooks((current) => ({
+      ...current,
+      members: current.members.map((item) =>
+        item.userid === userid ? { ...item, ...fields, updated_at: todayISO() } : item
+      ),
+    }));
+  };
+
+  const addCustomer = (item) => {
+    const planLimits = getPlan(books.subscription.planid);
+    if (!withinLimit(books.customers.length, planLimits.max_customers)) {
+      return { error: `This plan allows ${planLimits.max_customers} customers.` };
+    }
+    setBooks((current) => ({
+      ...current,
+      customers: [
+        {
+          customerid: createId("cus"),
+          businessid: current.business.businessid,
+          first_name: item.first_name || "",
+          last_name: item.last_name || "",
+          business_name: item.business_name || "",
+          email: item.email || "",
+          phone_number: item.phone_number || "",
+          address: item.address || "",
+          created_at: todayISO(),
+          updated_at: todayISO(),
+        },
+        ...current.customers,
+      ],
+    }));
+    return { ok: true };
+  };
+
+  const removeCustomer = (customerid) => {
+    setBooks((current) => ({
+      ...current,
+      customers: current.customers.filter((item) => item.customerid !== customerid),
     }));
   };
 
   const addInvoice = (item) => {
+    const planLimits = getPlan(books.subscription.planid);
+    if (!withinLimit(books.invoices.length, planLimits.max_invoices)) {
+      return { error: `This plan allows ${planLimits.max_invoices} invoices.` };
+    }
     setBooks((current) => {
-      const nums = current.invoices.map((invoice) => Number(String(invoice.id).replace(/\D/g, "")) || 0);
+      const nums = current.invoices.map((invoice) => Number(String(invoice.invoice_no).replace(/\D/g, "")) || 0);
       const next = Math.max(1045, ...nums) + 1;
       return {
         ...current,
         invoices: [
           {
-            id: `INV-${next}`,
-            status: "Draft",
-            issued: new Date().toISOString().slice(0, 10),
-            ...item,
+            invoice_no: `INV-${next}`,
+            customer_id: item.customer_id || null,
+            businessid: current.business.businessid,
+            amount: item.amount,
+            due_date: item.due_date || "",
+            status: item.status || "unpaid",
+            created_at: todayISO(),
+            updated_at: todayISO(),
           },
           ...current.invoices,
         ],
       };
     });
+    return { ok: true };
   };
 
-  const updateInvoiceStatus = (id, status) => {
+  const updateInvoiceStatus = (invoice_no, status) => {
     setBooks((current) => ({
       ...current,
-      invoices: current.invoices.map((item) => (item.id === id ? { ...item, status } : item)),
+      invoices: current.invoices.map((item) =>
+        item.invoice_no === invoice_no ? { ...item, status, updated_at: todayISO() } : item
+      ),
+    }));
+  };
+
+  const addIncome = (item) => {
+    setBooks((current) => ({
+      ...current,
+      income: [
+        {
+          incomeid: createId("inc"),
+          businessid: current.business.businessid,
+          invoiceid: item.invoiceid || null,
+          source: item.source || "",
+          amount: item.amount,
+          description: item.description || "",
+          transaction_date: item.transaction_date,
+          created_at: todayISO(),
+          updated_at: todayISO(),
+        },
+        ...current.income,
+      ],
+    }));
+  };
+
+  const removeIncome = (incomeid) => {
+    setBooks((current) => ({
+      ...current,
+      income: current.income.filter((item) => item.incomeid !== incomeid),
     }));
   };
 
   const addExpense = (item) => {
     setBooks((current) => ({
       ...current,
-      expenses: [{ id: createId(), ...item }, ...current.expenses],
-      transactions: [
+      expenses: [
         {
-          id: createId(),
-          date: item.date,
-          description: item.name,
-          category: item.category || "Expense",
-          type: "expense",
+          expenseid: createId("exp"),
+          businessid: current.business.businessid,
+          category: item.category || "",
           amount: item.amount,
+          description: item.description || "",
+          expense_date: item.expense_date,
+          created_at: todayISO(),
+          updated_at: todayISO(),
         },
-        ...current.transactions,
+        ...current.expenses,
       ],
     }));
   };
 
-  const removeExpense = (id) => {
+  const removeExpense = (expenseid) => {
     setBooks((current) => ({
       ...current,
-      expenses: current.expenses.filter((item) => item.id !== id),
+      expenses: current.expenses.filter((item) => item.expenseid !== expenseid),
     }));
   };
 
   const addVendor = (item) => {
     setBooks((current) => ({
       ...current,
-      vendors: [{ id: createId(), ...item }, ...current.vendors],
+      vendors: [
+        {
+          vendorid: createId("ven"),
+          businessid: current.business.businessid,
+          business_name: item.business_name,
+          contact_person: item.contact_person || "",
+          email: item.email || "",
+          phone: item.phone || "",
+          address: item.address || "",
+          created_at: todayISO(),
+          updated_at: todayISO(),
+        },
+        ...current.vendors,
+      ],
     }));
   };
 
-  const removeVendor = (id) => {
+  const removeVendor = (vendorid) => {
     setBooks((current) => ({
       ...current,
-      vendors: current.vendors.filter((item) => item.id !== id),
+      vendors: current.vendors.filter((item) => item.vendorid !== vendorid),
     }));
   };
 
-  const addCustomer = (item) => {
-    setBooks((current) => ({
-      ...current,
-      customers: [{ id: createId(), balance: 0, ...item }, ...current.customers],
-    }));
+  const choosePlan = (planid) => {
+    const selected = getPlan(planid);
+    const start = todayISO();
+    setBooks((current) => {
+      const subscriptionid = current.subscription?.subscriptionid || createId("sub");
+      return {
+        ...current,
+        subscription: {
+          subscriptionid,
+          businessid: current.business.businessid,
+          planid: selected.planid,
+          status: "active",
+          start_date: start,
+          end_date: addMonthsISO(start, 1),
+          created_at: current.subscription?.created_at || start,
+          updated_at: start,
+        },
+        payments: [
+          {
+            paymentid: createId("pay"),
+            userid: user.userid,
+            subscriptionid,
+            amount: selected.price,
+            payment_method: "demo",
+            transaction_reference: createId("ref"),
+            status: "pending",
+            created_at: start,
+          },
+          ...current.payments,
+        ],
+      };
+    });
   };
 
-  const removeCustomer = (id) => {
-    setBooks((current) => ({
-      ...current,
-      customers: current.customers.filter((item) => item.id !== id),
+  const ledger = useMemo(() => {
+    const incomeRows = income.map((item) => ({
+      id: item.incomeid,
+      date: item.transaction_date,
+      description: item.description || item.source,
+      category: item.source,
+      type: "income",
+      amount: item.amount,
     }));
+    const expenseRows = expenses.map((item) => ({
+      id: item.expenseid,
+      date: item.expense_date,
+      description: item.description || item.category,
+      category: item.category,
+      type: "expense",
+      amount: item.amount,
+    }));
+    return [...incomeRows, ...expenseRows].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  }, [income, expenses]);
+
+  const addLedgerEntry = (item) => {
+    if (item.type === "expense") {
+      addExpense({
+        category: item.category,
+        amount: item.amount,
+        description: item.description,
+        expense_date: item.date,
+      });
+      return;
+    }
+    addIncome({
+      source: item.category,
+      amount: item.amount,
+      description: item.description,
+      transaction_date: item.date,
+      invoiceid: null,
+    });
   };
 
-  const addSubscriber = (item) => {
-    setBooks((current) => ({
-      ...current,
-      subscribers: [{ id: createId(), ...item }, ...current.subscribers],
-    }));
-  };
-
-  const updateSubscriberStatus = (id, status) => {
-    setBooks((current) => ({
-      ...current,
-      subscribers: current.subscribers.map((item) => (item.id === id ? { ...item, status } : item)),
-    }));
+  const removeLedgerEntry = (id) => {
+    if (String(id).startsWith("exp-") || expenses.some((item) => item.expenseid === id)) {
+      removeExpense(id);
+      return;
+    }
+    removeIncome(id);
   };
 
   const totals = useMemo(() => {
-    const income = transactions
-      .filter((item) => item.type === "income")
-      .reduce((sum, item) => sum + Number(item.amount || 0), 0);
-    const expenseTotal = transactions
-      .filter((item) => item.type === "expense")
-      .reduce((sum, item) => sum + Number(item.amount || 0), 0);
+    const incomeTotal = income.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+    const expenseTotal = expenses.reduce((sum, item) => sum + Number(item.amount || 0), 0);
     const outstanding = invoices
-      .filter((item) => item.status !== "Paid")
+      .filter((item) => item.status !== "paid")
       .reduce((sum, item) => sum + Number(item.amount || 0), 0);
     return {
-      income,
+      income: incomeTotal,
       expenses: expenseTotal,
-      net: income - expenseTotal,
+      net: incomeTotal - expenseTotal,
       outstanding,
     };
-  }, [transactions, invoices]);
+  }, [income, expenses, invoices]);
+
+  const findCustomer = (customerid) => customers.find((item) => item.customerid === customerid);
 
   const value = {
     isAuthenticated,
     user,
-    signIn,
-    signOut,
-    transactions,
+    business,
+    membership,
+    members,
+    customers,
     invoices,
+    income,
     expenses,
     vendors,
-    customers,
-    subscribers,
+    subscription,
+    payments,
+    plan,
+    plans: PLANS,
+    ledger,
+    transactions: ledger,
     totals,
-    addTransaction,
-    removeTransaction,
+    customerLabel,
+    findCustomer,
+    signIn,
+    registerBusiness,
+    signOut,
+    updateBusiness,
+    addMember,
+    updateMember,
+    addCustomer,
+    removeCustomer,
     addInvoice,
     updateInvoiceStatus,
+    addIncome,
+    removeIncome,
     addExpense,
     removeExpense,
     addVendor,
     removeVendor,
-    addCustomer,
-    removeCustomer,
-    addSubscriber,
-    updateSubscriberStatus,
+    choosePlan,
+    addTransaction: addLedgerEntry,
+    removeTransaction: removeLedgerEntry,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useApp } from "../../context/AppContext";
+import { userLabel } from "../../utils/entities";
 import {
   addDaysISO,
   formatDate,
@@ -70,7 +71,7 @@ function pickLedgerDate(items) {
 
 export default function Dashboard() {
   const { totals, user, transactions, addTransaction } = useApp();
-  const name = user?.name || "there";
+  const name = userLabel(user);
   const [view, setView] = useState("daily");
   const [selectedDate, setSelectedDate] = useState(() => pickLedgerDate(transactions));
   const [form, setForm] = useState(() => emptyForm(pickLedgerDate(transactions)));
@@ -152,7 +153,7 @@ export default function Dashboard() {
         ? `Recorded for ${formatWeekdayDate(form.date)}.`
         : view === "weekly"
           ? `Recorded in the week of ${formatWeekRange(weekStart)}.`
-          : "Transaction added to this demo session."
+                      : "Recorded on this business."
     );
   };
 
@@ -160,7 +161,7 @@ export default function Dashboard() {
     <div className="app-page">
       <header className="page-header">
         <p>
-          Welcome back, {name}. Daily and weekly transactions are listed below.
+          Welcome back, {name}. Income and expenses below belong to this business.
         </p>
       </header>
       <div className="record-bar">
@@ -246,11 +247,11 @@ export default function Dashboard() {
       </div>
 
       <section className="panel ledger-panel" id="daily-transactions">
-        <h2>Daily transactions</h2>
+        <h2>Daily books</h2>
         <p className="muted form-hint">{formatWeekdayDate(selectedDate)}</p>
         {dailyRows.length === 0 ? (
           <div className="empty-ledger">
-            <p className="empty-state">No transactions on this day.</p>
+            <p className="empty-state">No income or expenses on this day.</p>
             {latestDate && latestDate !== selectedDate ? (
               <button
                 type="button"
@@ -267,11 +268,11 @@ export default function Dashboard() {
       </section>
 
       <section className="panel ledger-panel" id="weekly-transactions">
-        <h2>Weekly transactions</h2>
+        <h2>Weekly books</h2>
         <p className="muted form-hint">Week of {formatWeekRange(weekStart)}</p>
         {weeklyRows.length === 0 ? (
           <div className="empty-ledger">
-            <p className="empty-state">No transactions recorded this week.</p>
+            <p className="empty-state">No income or expenses recorded this week.</p>
             {latestDate && !inWeek(latestDate, weekStart) ? (
               <button
                 type="button"
@@ -299,7 +300,7 @@ export default function Dashboard() {
       </section>
 
       <section className="panel">
-        <h2>Add transaction</h2>
+        <h2>Add income or expense</h2>
         <p className="muted form-hint">
           {view === "daily"
             ? `Recording for ${formatWeekdayDate(selectedDate)}.`
@@ -375,9 +376,9 @@ export default function Dashboard() {
 
       {view === "all" ? (
         <section className="panel ledger-panel">
-          <h2>All transactions</h2>
+          <h2>All income and expenses</h2>
           {transactions.length === 0 ? (
-            <p className="empty-state">No transactions yet.</p>
+            <p className="empty-state">No records yet.</p>
           ) : (
             <>
               {transactions.length > 12 ? (

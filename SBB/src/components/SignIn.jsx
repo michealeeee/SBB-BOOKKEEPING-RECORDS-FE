@@ -37,7 +37,7 @@ function SignIn() {
     setSubmitting(true);
     const localName = email.split("@")[0];
     const name = localName.charAt(0).toUpperCase() + localName.slice(1);
-    signIn({ name, email: email.trim() });
+    signIn({ first_name: name, last_name: "", email: email.trim() });
     navigate("/app", { replace: true });
   };
 
@@ -83,8 +83,8 @@ function SignIn() {
         </form>
 
         <p className="auth-hint">
-          Demo only — no server is connected. Any valid email and password (6+
-          characters) will sign you in locally.
+          Demo only — no server is connected. The password is checked locally and
+          is never stored with the user record in this UI.
         </p>
 
         <p className="auth-footer">

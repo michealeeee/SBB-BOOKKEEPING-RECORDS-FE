@@ -1,19 +1,20 @@
 import { useMemo, useState } from "react";
 import { useApp } from "../../context/AppContext";
+import { customerLabel } from "../../utils/entities";
 import { badgeClass, formatDate, formatMoney } from "../../utils/format";
 
 const emptyForm = {
-  customer: "",
+  customer_id: "",
   amount: "",
-  due: "",
-  status: "Draft",
+  due_date: "",
+  status: "unpaid",
 };
 
 export default function Invoices() {
-  const { invoices, customers, addInvoice, updateInvoiceStatus } = useApp();
+  const { invoices, customers, addInvoice, updateInvoiceStatus, findCustomer } = useApp();
   const [form, setForm] = useState({
     ...emptyForm,
-    customer: customers[0]?.name || "",
+    customer_id: customers[0]?.customerid || "",
   });
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -23,37 +24,42 @@ export default function Invoices() {
   const visible = useMemo(() => {
     return invoices.filter((item) => {
       const matchesStatus = statusFilter === "all" || item.status === statusFilter;
-      const haystack = `${item.id} ${item.customer}`.toLowerCase();
+      const customer = findCustomer(item.customer_id);
+      const haystack = `${item.invoice_no} ${customerLabel(customer)}`.toLowerCase();
       return matchesStatus && haystack.includes(query.trim().toLowerCase());
     });
-  }, [invoices, query, statusFilter]);
+  }, [invoices, query, statusFilter, findCustomer]);
 
   const submit = (event) => {
     event.preventDefault();
     setError("");
     setSuccess("");
-    if (!form.customer || !form.amount || !form.due) {
-      setError("Customer, amount, and due date are required.");
+    if (!form.amount) {
+      setError("Amount is required.");
       return;
     }
     if (Number(form.amount) <= 0) {
       setError("Amount must be greater than zero.");
       return;
     }
-    addInvoice({
-      customer: form.customer,
+    const result = addInvoice({
+      customer_id: form.customer_id || null,
       amount: Number(form.amount),
-      due: form.due,
+      due_date: form.due_date,
       status: form.status,
     });
-    setForm({ ...emptyForm, customer: customers[0]?.name || "" });
-    setSuccess("Invoice created in this demo session. No email was sent.");
+    if (result?.error) {
+      setError(result.error);
+      return;
+    }
+    setForm({ ...emptyForm, customer_id: customers[0]?.customerid || "" });
+    setSuccess("Invoice created for this business. No email was sent.");
   };
 
   return (
     <div className="app-page">
       <header className="page-header">
-        <p>Create and track invoices. Sending and collection are not connected yet.</p>
+        <p>Invoices belong to the business and can optionally link to a customer. Status is paid, unpaid, or partial.</p>
       </header>
 
       <section className="panel">
@@ -65,12 +71,13 @@ export default function Invoices() {
             <label htmlFor="inv-customer">Customer</label>
             <select
               id="inv-customer"
-              value={form.customer}
-              onChange={(e) => setForm({ ...form, customer: e.target.value })}
+              value={form.customer_id}
+              onChange={(e) => setForm({ ...form, customer_id: e.target.value })}
             >
+              <option value="">No customer</option>
               {customers.map((customer) => (
-                <option key={customer.id} value={customer.name}>
-                  {customer.name}
+                <option key={customer.customerid} value={customer.customerid}>
+                  {customerLabel(customer)}
                 </option>
               ))}
             </select>
@@ -91,8 +98,8 @@ export default function Invoices() {
             <input
               id="inv-due"
               type="date"
-              value={form.due}
-              onChange={(e) => setForm({ ...form, due: e.target.value })}
+              value={form.due_date}
+              onChange={(e) => setForm({ ...form, due_date: e.target.value })}
             />
           </div>
           <div className="field">
@@ -102,10 +109,9 @@ export default function Invoices() {
               value={form.status}
               onChange={(e) => setForm({ ...form, status: e.target.value })}
             >
-              <option>Draft</option>
-              <option>Sent</option>
-              <option>Paid</option>
-              <option>Overdue</option>
+              <option value="unpaid">Unpaid</option>
+              <option value="partial">Partial</option>
+              <option value="paid">Paid</option>
             </select>
           </div>
           <button className="btn" type="submit">
@@ -133,10 +139,9 @@ export default function Invoices() {
               onChange={(e) => setStatusFilter(e.target.value)}
             >
               <option value="all">All</option>
-              <option>Draft</option>
-              <option>Sent</option>
-              <option>Paid</option>
-              <option>Overdue</option>
+              <option value="unpaid">Unpaid</option>
+              <option value="partial">Partial</option>
+              <option value="paid">Paid</option>
             </select>
           </div>
         </div>
@@ -148,10 +153,10 @@ export default function Invoices() {
             <table className="data-table">
               <thead>
                 <tr>
-                  <th>Invoice</th>
+                  <th>Invoice no</th>
                   <th>Customer</th>
-                  <th>Issued</th>
-                  <th>Due</th>
+                  <th>Created</th>
+                  <th>Due date</th>
                   <th className="num">Amount</th>
                   <th>Status</th>
                   <th></th>
@@ -159,21 +164,21 @@ export default function Invoices() {
               </thead>
               <tbody>
                 {visible.map((item) => (
-                  <tr key={item.id}>
-                    <td>{item.id}</td>
-                    <td>{item.customer}</td>
-                    <td>{formatDate(item.issued)}</td>
-                    <td>{formatDate(item.due)}</td>
+                  <tr key={item.invoice_no}>
+                    <td>{item.invoice_no}</td>
+                    <td>{customerLabel(findCustomer(item.customer_id))}</td>
+                    <td>{formatDate(item.created_at)}</td>
+                    <td>{item.due_date ? formatDate(item.due_date) : "—"}</td>
                     <td className="num">{formatMoney(item.amount)}</td>
                     <td>
                       <span className={badgeClass(item.status)}>{item.status}</span>
                     </td>
                     <td>
-                      {item.status !== "Paid" ? (
+                      {item.status !== "paid" ? (
                         <button
                           type="button"
                           className="btn btn-secondary"
-                          onClick={() => updateInvoiceStatus(item.id, "Paid")}
+                          onClick={() => updateInvoiceStatus(item.invoice_no, "paid")}
                         >
                           Mark paid
                         </button>

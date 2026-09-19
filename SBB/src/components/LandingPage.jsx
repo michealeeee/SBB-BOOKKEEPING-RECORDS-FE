@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PlanCards from "./PlanCards";
-import { EVERY_PLAN } from "../data/planOffers";
 import { formatMoney } from "../utils/format";
 import "../styles/landing.css";
 
@@ -45,6 +44,7 @@ export default function LandingPage() {
         <div className="lp-links">
           <a href="#features">Features</a>
           <a href="#product">Product</a>
+          <a href="#pricing">Pricing</a>
         </div>
         <div className="lp-actions">
           <button type="button" className="btn-outline" onClick={() => navigate("/signin")}>
@@ -87,6 +87,7 @@ export default function LandingPage() {
         </button>
         <a href="#features" onClick={() => setMenuOpen(false)}>Features</a>
         <a href="#product" onClick={() => setMenuOpen(false)}>Product</a>
+        <a href="#pricing" onClick={() => setMenuOpen(false)}>Pricing</a>
         <button type="button" className="btn-outline" onClick={() => navigate("/signin")}>
           Sign in
         </button>
@@ -100,8 +101,9 @@ export default function LandingPage() {
           <p className="lp-kicker">Bookkeeping software</p>
           <h1>Keep income, expenses, and invoices in one ledger.</h1>
           <p>
-            Bookkeeply is a simple books app for small businesses. Record
-            transactions, send invoice records, and see profit at a glance.
+            Bookkeeply is a simple books app for small businesses. Sign in as a
+            user, work inside a business, and keep customers, invoices, income,
+            and expenses on that business.
           </p>
           <div className="lp-hero-actions">
             <button type="button" className="btn-fill" onClick={goPricing}>
@@ -138,20 +140,20 @@ export default function LandingPage() {
 
       <section id="features" className="lp-features">
         <article>
-          <h2>Ledger</h2>
-          <p>Log income and expenses with categories, dates, and running totals.</p>
+          <h2>Business</h2>
+          <p>A user joins through a membership. The business owns the books.</p>
+        </article>
+        <article>
+          <h2>Income &amp; expenses</h2>
+          <p>Record money in and money out. Income can link to an invoice.</p>
         </article>
         <article>
           <h2>Invoices</h2>
-          <p>Create customer invoices and mark them paid as money comes in.</p>
+          <p>Create invoices as paid, unpaid, or partial, optionally for a customer.</p>
         </article>
         <article>
-          <h2>Reports</h2>
-          <p>See a simple profit and loss view and export a CSV of your books.</p>
-        </article>
-        <article>
-          <h2>Contacts</h2>
-          <p>Keep customers and vendors next to the transactions they belong to.</p>
+          <h2>Plans</h2>
+          <p>One subscription per business, with customer, invoice, and user limits.</p>
         </article>
       </section>
 
@@ -159,27 +161,21 @@ export default function LandingPage() {
         <div>
           <h2>When you need to know how the shop is doing, open the books.</h2>
           <p>
-            Income, expenses, and invoices live in one ledger. Customers and
-            vendors stay on those entries. Profit, charts, and a tax estimate
-            are already waiting on the same page.
+            Customers, invoices, income, expenses, and vendors sit on the
+            business. Team members share that one set of books, and the
+            subscription is billed to the business.
           </p>
         </div>
       </section>
 
       <section id="pricing" className="lp-pricing">
         <div className="lp-pricing-inner">
-          <p className="lp-kicker lp-pricing-kicker">Same tools</p>
-          <h2>Same books on every plan</h2>
+          <p className="lp-kicker lp-pricing-kicker">Business plans</p>
+          <h2>Limits for the whole business</h2>
           <p className="lp-pricing-lead">
-            Starter, Business, and Professional all include the same Bookkeeply
-            books: ledger, invoices, contacts, reports, tax estimate, and charts.
-            The plans differ by price, not by features.
+            Basic, Pro, and Enterprise set max customers, invoices, and users.
+            Everyone in the business uses the same subscription.
           </p>
-          <ul className="lp-every">
-            {EVERY_PLAN.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
           <PlanCards onChoose={(plan) => navigate(`/signup?plan=${plan}`)} />
           <p className="lp-note">
             Subscriptions are priced in USD. Checkout is not connected. Plans open a local demo account.

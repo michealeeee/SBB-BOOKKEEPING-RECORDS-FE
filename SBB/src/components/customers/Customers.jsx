@@ -1,12 +1,20 @@
 import { useMemo, useState } from "react";
 import { useApp } from "../../context/AppContext";
+import { customerLabel } from "../../utils/entities";
 import { formatMoney } from "../../utils/format";
 import ConfirmDialog from "../ConfirmDialog";
 
-const emptyForm = { name: "", email: "" };
+const emptyForm = {
+  first_name: "",
+  last_name: "",
+  business_name: "",
+  email: "",
+  phone_number: "",
+  address: "",
+};
 
 export default function Customers() {
-  const { customers, addCustomer, removeCustomer } = useApp();
+  const { customers, invoices, addCustomer, removeCustomer } = useApp();
   const [form, setForm] = useState(emptyForm);
   const [query, setQuery] = useState("");
   const [error, setError] = useState("");
@@ -16,32 +24,50 @@ export default function Customers() {
   const visible = useMemo(
     () =>
       customers.filter((item) =>
-        `${item.name} ${item.email}`.toLowerCase().includes(query.trim().toLowerCase())
+        `${item.first_name} ${item.last_name} ${item.business_name} ${item.email}`
+          .toLowerCase()
+          .includes(query.trim().toLowerCase())
       ),
     [customers, query]
   );
+
+  const openBalance = (customerid) =>
+    invoices
+      .filter((invoice) => invoice.customer_id === customerid && invoice.status !== "paid")
+      .reduce((sum, invoice) => sum + Number(invoice.amount || 0), 0);
 
   const submit = (event) => {
     event.preventDefault();
     setError("");
     setSuccess("");
-    if (!form.name.trim()) {
-      setError("Customer name is required.");
+    if (!form.first_name.trim() && !form.business_name.trim()) {
+      setError("Add a person name or a customer business name.");
       return;
     }
     if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       setError("Enter a valid email or leave it blank.");
       return;
     }
-    addCustomer({ name: form.name.trim(), email: form.email.trim() });
+    const result = addCustomer({
+      first_name: form.first_name.trim(),
+      last_name: form.last_name.trim(),
+      business_name: form.business_name.trim(),
+      email: form.email.trim(),
+      phone_number: form.phone_number.trim(),
+      address: form.address.trim(),
+    });
+    if (result?.error) {
+      setError(result.error);
+      return;
+    }
     setForm(emptyForm);
-    setSuccess("Customer added to this demo session.");
+    setSuccess("Customer added to this business. The backend would attach businessid from your membership.");
   };
 
   return (
     <div className="app-page">
       <header className="page-header">
-        <p>Customer list with demo balances. These are not live accounts receivable.</p>
+        <p>Customers belong to the logged-in business. You do not pick a business when adding one.</p>
       </header>
 
       <section className="panel">
@@ -50,11 +76,27 @@ export default function Customers() {
         {success ? <p className="form-success" role="status">{success}</p> : null}
         <form className="form-grid" onSubmit={submit}>
           <div className="field">
-            <label htmlFor="cus-name">Name</label>
+            <label htmlFor="cus-first">First name</label>
             <input
-              id="cus-name"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              id="cus-first"
+              value={form.first_name}
+              onChange={(e) => setForm({ ...form, first_name: e.target.value })}
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="cus-last">Last name</label>
+            <input
+              id="cus-last"
+              value={form.last_name}
+              onChange={(e) => setForm({ ...form, last_name: e.target.value })}
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="cus-biz">Business name</label>
+            <input
+              id="cus-biz"
+              value={form.business_name}
+              onChange={(e) => setForm({ ...form, business_name: e.target.value })}
             />
           </div>
           <div className="field">
@@ -64,6 +106,22 @@ export default function Customers() {
               type="email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="cus-phone">Phone number</label>
+            <input
+              id="cus-phone"
+              value={form.phone_number}
+              onChange={(e) => setForm({ ...form, phone_number: e.target.value })}
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="cus-address">Address</label>
+            <input
+              id="cus-address"
+              value={form.address}
+              onChange={(e) => setForm({ ...form, address: e.target.value })}
             />
           </div>
           <button className="btn" type="submit">
@@ -91,18 +149,22 @@ export default function Customers() {
             <table className="data-table">
               <thead>
                 <tr>
-                  <th>Name</th>
+                  <th>Customer</th>
                   <th>Email</th>
-                  <th className="num">Balance</th>
+                  <th>Phone</th>
+                  <th>Address</th>
+                  <th className="num">Open invoices</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
                 {visible.map((item) => (
-                  <tr key={item.id}>
-                    <td>{item.name}</td>
+                  <tr key={item.customerid}>
+                    <td>{customerLabel(item)}</td>
                     <td>{item.email || "—"}</td>
-                    <td className="num">{formatMoney(item.balance)}</td>
+                    <td>{item.phone_number || "—"}</td>
+                    <td>{item.address || "—"}</td>
+                    <td className="num">{formatMoney(openBalance(item.customerid))}</td>
                     <td>
                       <button
                         type="button"
@@ -123,11 +185,11 @@ export default function Customers() {
       <ConfirmDialog
         open={Boolean(pendingDelete)}
         title="Remove customer?"
-        message={`Remove ${pendingDelete?.name} from the demo list?`}
+        message={`Remove ${customerLabel(pendingDelete)} from this business?`}
         confirmLabel="Remove"
         onCancel={() => setPendingDelete(null)}
         onConfirm={() => {
-          removeCustomer(pendingDelete.id);
+          removeCustomer(pendingDelete.customerid);
           setPendingDelete(null);
         }}
       />

@@ -328,6 +328,10 @@
   overflow: hidden;
 }
 
+.lp-plan.featured {
+  border-color: #1b6b4a;
+}
+
 .lp-plan h3 {
   margin: 18px 20px 0;
   font-size: 22px;

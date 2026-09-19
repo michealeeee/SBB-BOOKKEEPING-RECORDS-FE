@@ -22,7 +22,7 @@ npm run dev
 
 Open **http://localhost:5173/** (not GitHub, not `index.html`). Hard-refresh with **Ctrl+Shift+R**.
 
-You should see **Same books on every plan**. Starter, Business, and Professional must list the **same four bullets**. There is no gold/dark Business card.
+You should see **Basic**, **Pro**, and **Enterprise** plans. Each lists customer, invoice, and user limits. The books belong to a business, not a single login.
 
 ## If `git pull` says “not a git repository”
 

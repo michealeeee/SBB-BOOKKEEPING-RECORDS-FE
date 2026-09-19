@@ -1,10 +1,11 @@
 import { NavLink } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
+import { userLabel } from "../../utils/entities";
 import NAV_GROUPS from "./nav";
 
 export default function Sidebar({ mobileOpen, onClose, onSignOut }) {
-  const { user } = useApp();
-  const displayName = user?.name?.trim() || user?.email || "Account";
+  const { user, business, membership } = useApp();
+  const displayName = userLabel(user);
   const initials =
     displayName
       .split(/\s+/)
@@ -26,7 +27,7 @@ export default function Sidebar({ mobileOpen, onClose, onSignOut }) {
         </span>
         <div>
           <strong>Bookkeeply</strong>
-          <span>General ledger</span>
+          <span>{business?.name || "Business books"}</span>
         </div>
       </div>
 
@@ -58,7 +59,7 @@ export default function Sidebar({ mobileOpen, onClose, onSignOut }) {
           </span>
           <div>
             <strong>{displayName}</strong>
-            <span>{user?.email || ""}</span>
+            <span>{membership?.role || "member"} · {user?.email || ""}</span>
           </div>
         </div>
         <button type="button" className="side-logout" onClick={onSignOut}>

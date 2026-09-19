@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useApp } from "../context/AppContext";
+import { getPlan } from "../data/plans";
 import AuthShell from "./AuthShell";
 
 function SignUp() {
   const navigate = useNavigate();
-  const { signIn } = useApp();
+  const { registerBusiness } = useApp();
   const [params] = useSearchParams();
-  const plan = params.get("plan");
+  const planid = params.get("plan") || "basic";
+  const selected = getPlan(planid);
 
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [businessName, setBusinessName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -24,8 +30,8 @@ function SignUp() {
     event.preventDefault();
     setError("");
 
-    if (!name.trim() || !email.trim() || !password || !confirm) {
-      setError("Fill in all fields to create an account.");
+    if (!firstName.trim() || !email.trim() || !password || !confirm || !businessName.trim()) {
+      setError("First name, email, password, and business name are required.");
       return;
     }
 
@@ -45,10 +51,14 @@ function SignUp() {
     }
 
     setSubmitting(true);
-    signIn({
-      name: name.trim(),
+    registerBusiness({
+      first_name: firstName.trim(),
+      last_name: lastName.trim(),
       email: email.trim(),
-      plan: plan === "premium" ? "Premium" : plan === "basic" ? "Basic" : undefined,
+      business_name: businessName.trim(),
+      phone: phone.trim(),
+      address: address.trim(),
+      planid: selected.planid,
     });
     navigate("/app", { replace: true });
   };
@@ -61,11 +71,8 @@ function SignUp() {
         </Link>
         <h1>Create Account</h1>
         <p className="auth-lead">
-          {plan === "premium"
-            ? "Register for the Premium plan"
-            : plan === "basic"
-              ? "Register for the Basic plan"
-              : "Register to get started"}
+          Register as a user and create a business on the {selected.name} plan.
+          The password stays on this form and is never stored in the books UI.
         </p>
 
         {error ? (
@@ -75,17 +82,27 @@ function SignUp() {
         ) : null}
 
         <form onSubmit={handleSubmit} noValidate>
-          <label htmlFor="signup-name">Full name</label>
+          <label htmlFor="signup-first">First name</label>
           <input
-            id="signup-name"
+            id="signup-first"
             type="text"
-            autoComplete="name"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            placeholder="Alex Mensah"
+            autoComplete="given-name"
+            value={firstName}
+            onChange={(event) => setFirstName(event.target.value)}
+            placeholder="Alex"
           />
 
-          <label htmlFor="signup-email">Email address</label>
+          <label htmlFor="signup-last">Last name</label>
+          <input
+            id="signup-last"
+            type="text"
+            autoComplete="family-name"
+            value={lastName}
+            onChange={(event) => setLastName(event.target.value)}
+            placeholder="Mensah"
+          />
+
+          <label htmlFor="signup-email">Email</label>
           <input
             id="signup-email"
             type="email"
@@ -93,6 +110,33 @@ function SignUp() {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             placeholder="you@business.com"
+          />
+
+          <label htmlFor="signup-business">Business name</label>
+          <input
+            id="signup-business"
+            type="text"
+            value={businessName}
+            onChange={(event) => setBusinessName(event.target.value)}
+            placeholder="Northwind Books"
+          />
+
+          <label htmlFor="signup-phone">Business phone</label>
+          <input
+            id="signup-phone"
+            type="text"
+            value={phone}
+            onChange={(event) => setPhone(event.target.value)}
+            placeholder="Optional"
+          />
+
+          <label htmlFor="signup-address">Business address</label>
+          <input
+            id="signup-address"
+            type="text"
+            value={address}
+            onChange={(event) => setAddress(event.target.value)}
+            placeholder="Optional"
           />
 
           <label htmlFor="signup-password">Password</label>
@@ -116,13 +160,12 @@ function SignUp() {
           />
 
           <button className="auth-submit" type="submit" disabled={submitting}>
-            {submitting ? "Creating account…" : "Sign Up"}
+            {submitting ? "Creating account…" : "Create business"}
           </button>
         </form>
 
         <p className="auth-hint">
-          Demo only — no server is connected. Your session stays in this
-          browser until you log out.
+          Demo only. You become the business owner. Staff can be added later from Team.
         </p>
 
         <p className="auth-footer">

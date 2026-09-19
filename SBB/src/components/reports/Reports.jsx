@@ -14,19 +14,19 @@ function groupByCategory(items) {
 }
 
 export default function Reports() {
-  const { totals, transactions, invoices } = useApp();
+  const { totals, income, expenses, invoices } = useApp();
   const incomeRows = useMemo(
-    () => groupByCategory(transactions.filter((item) => item.type === "income")),
-    [transactions]
+    () => groupByCategory(income.map((item) => ({ category: item.source, amount: item.amount }))),
+    [income]
   );
   const expenseRows = useMemo(
-    () => groupByCategory(transactions.filter((item) => item.type === "expense")),
-    [transactions]
+    () => groupByCategory(expenses.map((item) => ({ category: item.category, amount: item.amount }))),
+    [expenses]
   );
   const invoiceMix = useMemo(() => {
-    const groups = { Paid: 0, Sent: 0, Overdue: 0, Draft: 0 };
+    const groups = { paid: 0, unpaid: 0, partial: 0 };
     invoices.forEach((item) => {
-      const status = groups[item.status] !== undefined ? item.status : "Sent";
+      const status = groups[item.status] !== undefined ? item.status : "unpaid";
       groups[status] += Number(item.amount || 0);
     });
     return Object.entries(groups).filter(([, amount]) => amount > 0);
@@ -35,9 +35,16 @@ export default function Reports() {
   const downloadCsv = () => {
     const rows = [
       ["Type", "Date", "Description", "Category", "Amount (GHS)"],
-      ...transactions.map((item) => [
-        item.type,
-        item.date,
+      ...income.map((item) => [
+        "income",
+        item.transaction_date,
+        item.description,
+        item.source,
+        item.amount,
+      ]),
+      ...expenses.map((item) => [
+        "expense",
+        item.expense_date,
         item.description,
         item.category,
         item.amount,

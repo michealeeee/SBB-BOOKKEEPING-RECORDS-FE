@@ -1,24 +1,29 @@
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
+import { userLabel } from "../../utils/entities";
 import Sidebar from "./Sidebar";
 import "../../styles/app.css";
 
 const TITLES = {
   "/app": "Dashboard",
-  "/app/transactions": "Transactions",
+  "/app/income": "Income",
+  "/app/transactions": "Income",
   "/app/invoices": "Invoices",
   "/app/reports": "Reports",
   "/app/expenses": "Expenses",
   "/app/vendors": "Vendors",
   "/app/customers": "Customers",
   "/app/taxes": "Taxes",
-  "/app/subscribers": "Subscriptions",
-  "/app/subscriptions": "Subscriptions",
+  "/app/subscription": "Subscription",
+  "/app/subscriptions": "Subscription",
+  "/app/subscribers": "Subscription",
+  "/app/team": "Team",
+  "/app/business": "Business",
 };
 
 export default function AppLayout() {
-  const { user, signOut } = useApp();
+  const { user, business, signOut } = useApp();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
@@ -86,8 +91,8 @@ export default function AppLayout() {
             <h1>{page}</h1>
           </div>
           <div className="topbar-meta">
-            <span className="period">Demo books · GHS</span>
-            <span className="top-user">{user?.name || user?.email || "Account"}</span>
+            <span className="period">{business?.name || "Business"} · GHS</span>
+            <span className="top-user">{userLabel(user)}</span>
             <button type="button" className="ghost-btn" onClick={handleSignOut}>
               Log out
             </button>

@@ -1,8 +1,15 @@
 import { useMemo, useState } from "react";
 import { useApp } from "../../context/AppContext";
+import { vendorLabel } from "../../utils/entities";
 import ConfirmDialog from "../ConfirmDialog";
 
-const emptyForm = { name: "", contact: "", email: "" };
+const emptyForm = {
+  business_name: "",
+  contact_person: "",
+  email: "",
+  phone: "",
+  address: "",
+};
 
 export default function Vendors() {
   const { vendors, addVendor, removeVendor } = useApp();
@@ -15,7 +22,9 @@ export default function Vendors() {
   const visible = useMemo(
     () =>
       vendors.filter((item) =>
-        `${item.name} ${item.email}`.toLowerCase().includes(query.trim().toLowerCase())
+        `${item.business_name} ${item.contact_person} ${item.email}`
+          .toLowerCase()
+          .includes(query.trim().toLowerCase())
       ),
     [vendors, query]
   );
@@ -24,23 +33,29 @@ export default function Vendors() {
     event.preventDefault();
     setError("");
     setSuccess("");
-    if (!form.name.trim()) {
-      setError("Vendor name is required.");
+    if (!form.business_name.trim()) {
+      setError("Vendor business name is required.");
       return;
     }
     if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       setError("Enter a valid email or leave it blank.");
       return;
     }
-    addVendor({ ...form, name: form.name.trim() });
+    addVendor({
+      business_name: form.business_name.trim(),
+      contact_person: form.contact_person.trim(),
+      email: form.email.trim(),
+      phone: form.phone.trim(),
+      address: form.address.trim(),
+    });
     setForm(emptyForm);
-    setSuccess("Vendor added to this demo session.");
+    setSuccess("Vendor added to this business.");
   };
 
   return (
     <div className="app-page">
       <header className="page-header">
-        <p>Keep supplier contacts in one place.</p>
+        <p>Vendors supply goods or services to the business.</p>
       </header>
 
       <section className="panel">
@@ -49,19 +64,19 @@ export default function Vendors() {
         {success ? <p className="form-success" role="status">{success}</p> : null}
         <form className="form-grid" onSubmit={submit}>
           <div className="field">
-            <label htmlFor="ven-name">Name</label>
+            <label htmlFor="ven-name">Business name</label>
             <input
               id="ven-name"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              value={form.business_name}
+              onChange={(e) => setForm({ ...form, business_name: e.target.value })}
             />
           </div>
           <div className="field">
-            <label htmlFor="ven-contact">Contact</label>
+            <label htmlFor="ven-contact">Contact person</label>
             <input
               id="ven-contact"
-              value={form.contact}
-              onChange={(e) => setForm({ ...form, contact: e.target.value })}
+              value={form.contact_person}
+              onChange={(e) => setForm({ ...form, contact_person: e.target.value })}
             />
           </div>
           <div className="field">
@@ -71,6 +86,22 @@ export default function Vendors() {
               type="email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="ven-phone">Phone</label>
+            <input
+              id="ven-phone"
+              value={form.phone}
+              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="ven-address">Address</label>
+            <input
+              id="ven-address"
+              value={form.address}
+              onChange={(e) => setForm({ ...form, address: e.target.value })}
             />
           </div>
           <button className="btn" type="submit">
@@ -98,18 +129,22 @@ export default function Vendors() {
             <table className="data-table">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Contact</th>
+                  <th>Business name</th>
+                  <th>Contact person</th>
                   <th>Email</th>
+                  <th>Phone</th>
+                  <th>Address</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
                 {visible.map((item) => (
-                  <tr key={item.id}>
-                    <td>{item.name}</td>
-                    <td>{item.contact || "—"}</td>
+                  <tr key={item.vendorid}>
+                    <td>{item.business_name}</td>
+                    <td>{item.contact_person || "—"}</td>
                     <td>{item.email || "—"}</td>
+                    <td>{item.phone || "—"}</td>
+                    <td>{item.address || "—"}</td>
                     <td>
                       <button
                         type="button"
@@ -130,11 +165,11 @@ export default function Vendors() {
       <ConfirmDialog
         open={Boolean(pendingDelete)}
         title="Remove vendor?"
-        message={`Remove ${pendingDelete?.name} from the demo list?`}
+        message={`Remove ${vendorLabel(pendingDelete)} from this business?`}
         confirmLabel="Remove"
         onCancel={() => setPendingDelete(null)}
         onConfirm={() => {
-          removeVendor(pendingDelete.id);
+          removeVendor(pendingDelete.vendorid);
           setPendingDelete(null);
         }}
       />
