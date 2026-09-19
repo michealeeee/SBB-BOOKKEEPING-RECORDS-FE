@@ -110,7 +110,7 @@ export default function AppLayout() {
         <footer className="app-footer">
           <div>
             <strong>{business?.name || COMPANY.name}</strong>
-            <p>{business?.address || COMPANY.location}</p>
+            <p>{business?.address || COMPANY.tagline}</p>
           </div>
           <div className="app-footer-actions">
             <button type="button" className="ghost-btn" onClick={() => navigate("/")}>

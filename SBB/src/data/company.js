@@ -2,8 +2,7 @@ export const COMPANY = {
   name: "Bookkeeply",
   tagline: "Smart bookkeeping for modern businesses. Record today, understand tomorrow.",
   story:
-    "Bookkeeply is an online Ghanaian bookkeeping workspace for small businesses. We help shops, traders and growing teams record income, expenses and invoices in Ghana cedis, from anywhere, instead of scattered notebooks and complicated accounting software.",
-  location: "Ghana · Online",
+    "Bookkeeply is an online bookkeeping workspace for small businesses. We help shops, traders and growing teams record income, expenses and invoices in one secure workspace, instead of scattered notebooks and complicated accounting software.",
   whatsappE164: "233244266466",
   whatsappDisplay: "024 426 6466",
 };

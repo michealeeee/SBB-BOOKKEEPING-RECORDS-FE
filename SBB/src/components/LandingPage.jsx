@@ -473,7 +473,7 @@ export default function LandingPage() {
             </div>
             <div className="lp-currency">
               <span>Currency</span>
-              <b>GH₵ Ghana Cedi</b>
+              <b>GH₵</b>
             </div>
           </div>
           <div className="lp-connector" />
@@ -595,10 +595,6 @@ export default function LandingPage() {
               {COMPANY.name}
             </a>
             <p>{COMPANY.story}</p>
-            <p className="lp-address">
-              <strong>Online business</strong>
-              {COMPANY.location}
-            </p>
             <WhatsAppHelpLink />
           </div>
           {FOOTER.map(([title, links]) => (
@@ -618,7 +614,7 @@ export default function LandingPage() {
             </div>
           ))}
         </div>
-        <p className="lp-copy-note">© 2026 {COMPANY.name}. All rights reserved. {COMPANY.location}</p>
+        <p className="lp-copy-note">© 2026 {COMPANY.name}. All rights reserved.</p>
       </footer>
     </div>
   );
