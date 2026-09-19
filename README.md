@@ -22,7 +22,7 @@ npm run dev
 
 Open **http://localhost:5173/** (not GitHub, not `index.html`). Hard-refresh with **Ctrl+Shift+R**.
 
-You should see **Start demo**, a USD September ledger, **Built like a set of books, not a dashboard toy**, and **Monthly plans** for Starter, Business, and Professional.
+You should see **Basic**, **Pro**, and **Enterprise** plans. Each lists customer, invoice, and user limits. The books belong to a business, not a single login.
 
 ## If `git pull` says “not a git repository”
 
