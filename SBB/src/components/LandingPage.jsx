@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useApp } from "../context/AppContext";
-import { COMPANY, whatsappHelpUrl } from "../data/company";
+import { COMPANY } from "../data/company";
+import WhatsAppHelpLink from "./WhatsAppHelpLink";
 import "../styles/landing.css";
 
 const FEATURES = [
@@ -603,15 +604,8 @@ export default function LandingPage() {
               {COMPANY.city}<br />
               {COMPANY.country}
             </p>
-            <a
-              className="lp-whatsapp"
-              href={whatsappHelpUrl()}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Chat super admin on WhatsApp
-            </a>
-            <p className="lp-whatsapp-note">{COMPANY.whatsappDisplay} · Help and assistance</p>
+            <WhatsAppHelpLink />
+            <p className="lp-whatsapp-note">Help and assistance on WhatsApp</p>
           </div>
           {FOOTER.map(([title, links]) => (
             <div key={title}>
@@ -620,7 +614,7 @@ export default function LandingPage() {
                 {links.map(([label, href]) => (
                   <li key={label}>
                     {href === "whatsapp" ? (
-                      <a href={whatsappHelpUrl()} target="_blank" rel="noreferrer">{label}</a>
+                      <WhatsAppHelpLink />
                     ) : href.startsWith("/") ? (
                       <button type="button" className="lp-footer-link" onClick={() => navigate(href)}>{label}</button>
                     ) : (

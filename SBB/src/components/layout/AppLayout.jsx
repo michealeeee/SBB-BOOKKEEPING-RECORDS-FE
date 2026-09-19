@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useApp } from "../../context/AppContext";
-import { COMPANY, whatsappHelpUrl } from "../../data/company";
+import { COMPANY } from "../../data/company";
+import WhatsAppHelpLink from "../WhatsAppHelpLink";
 import { userLabel } from "../../utils/entities";
 import Sidebar from "./Sidebar";
 import "../../styles/app.css";
@@ -115,14 +116,7 @@ export default function AppLayout() {
             <button type="button" className="ghost-btn" onClick={() => navigate("/")}>
               Back to home
             </button>
-            <a
-              className="app-whatsapp"
-              href={whatsappHelpUrl(business?.name || "my Bookkeeply account")}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Chat super admin on WhatsApp
-            </a>
+            <WhatsAppHelpLink context={business?.name || "my Bookkeeply account"} />
           </div>
         </footer>
       </div>

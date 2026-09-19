@@ -323,17 +323,23 @@
   font-size: 12px;
 }
 
-.app-whatsapp {
+.app-whatsapp,
+.app-footer a.wa-help {
   display: inline-flex;
   align-items: center;
-  min-height: 36px;
-  padding: 0 14px;
-  border-radius: 8px;
-  background: #25d366;
-  color: #052e16 !important;
-  font-size: 13px;
-  font-weight: 700;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 16px 0 8px;
+  border-radius: 999px;
+  background: #25d366 !important;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  font-weight: 800;
   text-decoration: none;
+}
+
+.app-footer a.wa-help {
+  margin-top: 0;
 }
 
 .app-footer-actions {
