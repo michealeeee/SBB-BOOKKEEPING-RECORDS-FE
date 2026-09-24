@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useApp } from "../../context/AppContext";
 import { formatDate, formatMoney } from "../../utils/format";
 import ConfirmDialog from "../ConfirmDialog";
+import FieldLabel from "../FieldLabel";
 
 const emptyForm = {
   source: "",
@@ -41,13 +42,17 @@ export default function Income() {
       setError("Amount must be greater than zero.");
       return;
     }
-    addIncome({
+    const result = addIncome({
       source: form.source.trim(),
       amount: Number(form.amount),
       description: form.description.trim(),
       transaction_date: form.transaction_date,
       invoiceid: form.invoiceid || null,
     });
+    if (result?.error) {
+      setError(result.error);
+      return;
+    }
     setForm({ ...emptyForm, transaction_date: form.transaction_date });
     setSuccess("Income recorded for this business. It is not tied to a user account.");
   };
@@ -66,31 +71,40 @@ export default function Income() {
         {success ? <p className="form-success" role="status">{success}</p> : null}
         <form className="form-grid" onSubmit={submit}>
           <div className="field">
-            <label htmlFor="inc-source">Source</label>
+            <FieldLabel htmlFor="inc-source" required>
+              Source
+            </FieldLabel>
             <input
               id="inc-source"
               value={form.source}
+              required
               onChange={(e) => setForm({ ...form, source: e.target.value })}
               placeholder="Sales, consulting, retainer"
             />
           </div>
           <div className="field">
-            <label htmlFor="inc-amount">Amount</label>
+            <FieldLabel htmlFor="inc-amount" required>
+              Amount
+            </FieldLabel>
             <input
               id="inc-amount"
               type="number"
               min="0"
               step="0.01"
               value={form.amount}
+              required
               onChange={(e) => setForm({ ...form, amount: e.target.value })}
             />
           </div>
           <div className="field">
-            <label htmlFor="inc-date">Transaction date</label>
+            <FieldLabel htmlFor="inc-date" required>
+              Transaction date
+            </FieldLabel>
             <input
               id="inc-date"
               type="date"
               value={form.transaction_date}
+              required
               onChange={(e) => setForm({ ...form, transaction_date: e.target.value })}
             />
           </div>
@@ -143,6 +157,7 @@ export default function Income() {
               <thead>
                 <tr>
                   <th>incomeid</th>
+                  <th>businessid</th>
                   <th>Date</th>
                   <th>Source</th>
                   <th>Invoice</th>
@@ -157,6 +172,7 @@ export default function Income() {
                 {visible.map((item) => (
                   <tr key={item.incomeid}>
                     <td>{item.incomeid}</td>
+                    <td>{item.businessid || "—"}</td>
                     <td>{formatDate(item.transaction_date)}</td>
                     <td>{item.source || "—"}</td>
                     <td>{item.invoiceid || "—"}</td>

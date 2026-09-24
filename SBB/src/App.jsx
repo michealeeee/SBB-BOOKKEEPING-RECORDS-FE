@@ -12,6 +12,7 @@ import Taxes from "./components/taxes/Taxes";
 import Subscription from "./components/subscription/Subscription";
 import Team from "./components/team/Team";
 import Business from "./components/business/Business";
+import Records from "./components/records/Records";
 import LandingPage from "./components/LandingPage";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
@@ -77,6 +78,7 @@ export default function App() {
             <Route path="subscribers" element={<Navigate to="/app/subscription" replace />} />
             <Route path="team" element={<Team />} />
             <Route path="business" element={<Business />} />
+            <Route path="records" element={<Records />} />
             <Route path="*" element={<Navigate to="/app" replace />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />

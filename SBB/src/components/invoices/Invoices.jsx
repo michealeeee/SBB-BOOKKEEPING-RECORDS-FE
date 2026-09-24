@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useApp } from "../../context/AppContext";
 import { customerLabel } from "../../utils/entities";
 import { badgeClass, formatDate, formatMoney } from "../../utils/format";
+import FieldLabel from "../FieldLabel";
 
 const emptyForm = {
   customer_id: "",
@@ -83,13 +84,16 @@ export default function Invoices() {
             </select>
           </div>
           <div className="field">
-            <label htmlFor="inv-amount">Amount</label>
+            <FieldLabel htmlFor="inv-amount" required>
+              Amount
+            </FieldLabel>
             <input
               id="inv-amount"
               type="number"
               min="0"
               step="0.01"
               value={form.amount}
+              required
               onChange={(e) => setForm({ ...form, amount: e.target.value })}
             />
           </div>
@@ -154,6 +158,7 @@ export default function Invoices() {
               <thead>
                 <tr>
                   <th>Invoice no</th>
+                  <th>businessid</th>
                   <th>Customer</th>
                   <th>created_at</th>
                   <th>updated_at</th>
@@ -167,6 +172,7 @@ export default function Invoices() {
                 {visible.map((item) => (
                   <tr key={item.invoice_no}>
                     <td>{item.invoice_no}</td>
+                    <td>{item.businessid || "—"}</td>
                     <td>{customerLabel(findCustomer(item.customer_id))}</td>
                     <td>{formatDate(item.created_at)}</td>
                     <td>{formatDate(item.updated_at)}</td>

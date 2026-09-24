@@ -3,6 +3,7 @@ import { useApp } from "../../context/AppContext";
 import { vendorLabel } from "../../utils/entities";
 import { formatDate } from "../../utils/format";
 import ConfirmDialog from "../ConfirmDialog";
+import FieldLabel from "../FieldLabel";
 
 const emptyForm = {
   business_name: "",
@@ -42,13 +43,17 @@ export default function Vendors() {
       setError("Enter a valid email or leave it blank.");
       return;
     }
-    addVendor({
+    const result = addVendor({
       business_name: form.business_name.trim(),
       contact_person: form.contact_person.trim(),
       email: form.email.trim(),
       phone: form.phone.trim(),
       address: form.address.trim(),
     });
+    if (result?.error) {
+      setError(result.error);
+      return;
+    }
     setForm(emptyForm);
     setSuccess("Vendor added to this business.");
   };
@@ -65,10 +70,13 @@ export default function Vendors() {
         {success ? <p className="form-success" role="status">{success}</p> : null}
         <form className="form-grid" onSubmit={submit}>
           <div className="field">
-            <label htmlFor="ven-name">Business name</label>
+            <FieldLabel htmlFor="ven-name" required>
+              Business name
+            </FieldLabel>
             <input
               id="ven-name"
               value={form.business_name}
+              required
               onChange={(e) => setForm({ ...form, business_name: e.target.value })}
             />
           </div>
@@ -131,6 +139,7 @@ export default function Vendors() {
               <thead>
                 <tr>
                   <th>vendorid</th>
+                  <th>businessid</th>
                   <th>Business name</th>
                   <th>Contact person</th>
                   <th>Email</th>
@@ -145,6 +154,7 @@ export default function Vendors() {
                 {visible.map((item) => (
                   <tr key={item.vendorid}>
                     <td>{item.vendorid}</td>
+                    <td>{item.businessid || "—"}</td>
                     <td>{item.business_name}</td>
                     <td>{item.contact_person || "—"}</td>
                     <td>{item.email || "—"}</td>

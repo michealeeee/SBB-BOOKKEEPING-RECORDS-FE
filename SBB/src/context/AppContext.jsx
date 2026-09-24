@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { PLANS, getPlan } from "../data/plans";
+import { EMAIL_PATTERN, validateFormRecord } from "../data/models";
 import { customerLabel } from "../utils/entities";
 
 /* Context files export the provider and a hook together. */
@@ -7,7 +8,7 @@ import { customerLabel } from "../utils/entities";
 
 const AUTH_KEY = "bookkeeply-auth";
 const USER_KEY = "bookkeeply-user";
-const BOOKS_KEY = "bookkeeply-books-v3";
+const BOOKS_KEY = "bookkeeply-books-v4";
 
 const AppContext = createContext(null);
 
@@ -21,7 +22,25 @@ const OWNER_ID = "usr-alex";
 const STAFF_ID = "usr-staff";
 const SUB_ID = "sub-demo";
 
+const seedUsers = [
+  {
+    userid: OWNER_ID,
+    first_name: "Alex",
+    last_name: "Mensah",
+    email: "alex@bookkeeply.app",
+    created_at: "2026-07-01",
+  },
+  {
+    userid: STAFF_ID,
+    first_name: "Efua",
+    last_name: "Boateng",
+    email: "efua@northwind.example",
+    created_at: "2026-08-01",
+  },
+];
+
 const seed = {
+  users: seedUsers,
   business: {
     businessid: BUSINESS_ID,
     name: "Northwind Books",
@@ -319,6 +338,7 @@ function loadBooks() {
         return {
           ...seed,
           ...parsed,
+          users: Array.isArray(parsed.users) ? parsed.users : seed.users,
           business: parsed.business || seed.business,
           members: Array.isArray(parsed.members) ? parsed.members : seed.members,
           customers: Array.isArray(parsed.customers) ? parsed.customers : seed.customers,
@@ -347,6 +367,7 @@ export function AppProvider({ children }) {
   const [books, setBooks] = useState(loadBooks);
 
   const {
+    users,
     business,
     members,
     customers,
@@ -373,14 +394,25 @@ export function AppProvider({ children }) {
 
   const plan = getPlan(subscription?.planid);
 
+  const publicUser = (record) => ({
+    userid: record.userid,
+    first_name: record.first_name || "",
+    last_name: record.last_name || "",
+    email: record.email,
+    created_at: record.created_at || todayISO(),
+  });
+
   const signIn = (profile) => {
-    const nextUser = {
-      userid: profile.userid || createId("usr"),
-      first_name: profile.first_name || "",
-      last_name: profile.last_name || "",
+    const existing =
+      books.users?.find((item) => item.email?.toLowerCase() === profile.email?.toLowerCase()) ||
+      books.members?.find((item) => item.email?.toLowerCase() === profile.email?.toLowerCase());
+    const nextUser = publicUser({
+      userid: profile.userid || existing?.userid || createId("usr"),
+      first_name: profile.first_name || existing?.first_name || "",
+      last_name: profile.last_name || existing?.last_name || "",
       email: profile.email,
-      created_at: profile.created_at || todayISO(),
-    };
+      created_at: profile.created_at || existing?.created_at || todayISO(),
+    });
     setUser(nextUser);
     setIsAuthenticated(true);
     try {
@@ -392,21 +424,33 @@ export function AppProvider({ children }) {
   };
 
   const registerBusiness = (profile) => {
+    const userCheck = validateFormRecord("user", {
+      first_name: profile.first_name,
+      email: profile.email,
+    });
+    if (!userCheck.ok) return userCheck;
+    const businessCheck = validateFormRecord("business", { name: profile.business_name });
+    if (!businessCheck.ok) return businessCheck;
+    if (!EMAIL_PATTERN.test(profile.email || "")) {
+      return { error: "Enter a valid email address." };
+    }
+
     const userid = createId("usr");
     const businessid = createId("biz");
     const subscriptionid = createId("sub");
     const planid = PLANS.some((item) => item.planid === profile.planid) ? profile.planid : "basic";
     const selected = getPlan(planid);
     const start = todayISO();
-    const nextUser = {
+    const nextUser = publicUser({
       userid,
       first_name: profile.first_name,
       last_name: profile.last_name,
       email: profile.email,
       created_at: start,
-    };
+    });
 
     setBooks({
+      users: [nextUser],
       business: {
         businessid,
         name: profile.business_name,
@@ -427,6 +471,7 @@ export function AppProvider({ children }) {
           role: "owner",
           active: true,
           created_at: start,
+          updated_at: start,
         },
       ],
       customers: [],
@@ -458,6 +503,7 @@ export function AppProvider({ children }) {
       ],
     });
     signIn(nextUser);
+    return { ok: true };
   };
 
   const signOut = () => {
@@ -471,6 +517,8 @@ export function AppProvider({ children }) {
   };
 
   const updateBusiness = (fields) => {
+    const check = validateFormRecord("business", { name: fields.name });
+    if (!check.ok) return check;
     setBooks((current) => ({
       ...current,
       business: {
@@ -479,26 +527,45 @@ export function AppProvider({ children }) {
         updated_at: todayISO(),
       },
     }));
+    return { ok: true };
   };
 
   const addMember = (item) => {
+    const userCheck = validateFormRecord("user", {
+      first_name: item.first_name,
+      email: item.email,
+    });
+    if (!userCheck.ok) return userCheck;
+    if (!EMAIL_PATTERN.test(item.email || "")) {
+      return { error: "Enter a valid email address." };
+    }
     const planLimits = getPlan(books.subscription.planid);
     if (!withinLimit(books.members.length, planLimits.max_users)) {
       return { error: `This plan allows ${planLimits.max_users} users.` };
     }
+    const userid = createId("usr");
+    const created = todayISO();
+    const nextUser = publicUser({
+      userid,
+      first_name: item.first_name,
+      last_name: item.last_name,
+      email: item.email,
+      created_at: created,
+    });
     setBooks((current) => ({
       ...current,
+      users: [nextUser, ...(current.users || []).filter((user) => user.email !== item.email)],
       members: [
         {
-          userid: createId("usr"),
+          userid,
           businessid: current.business.businessid,
           first_name: item.first_name,
           last_name: item.last_name,
           email: item.email,
           role: item.role || "staff",
           active: item.active !== false,
-          created_at: todayISO(),
-          updated_at: todayISO(),
+          created_at: created,
+          updated_at: created,
         },
         ...current.members,
       ],
@@ -516,6 +583,12 @@ export function AppProvider({ children }) {
   };
 
   const addCustomer = (item) => {
+    if (!String(item.first_name || "").trim() && !String(item.business_name || "").trim()) {
+      return { error: "Add a person name or a customer business name." };
+    }
+    if (item.email && !EMAIL_PATTERN.test(item.email)) {
+      return { error: "Enter a valid email or leave it blank." };
+    }
     const planLimits = getPlan(books.subscription.planid);
     if (!withinLimit(books.customers.length, planLimits.max_customers)) {
       return { error: `This plan allows ${planLimits.max_customers} customers.` };
@@ -549,6 +622,11 @@ export function AppProvider({ children }) {
   };
 
   const addInvoice = (item) => {
+    const check = validateFormRecord("invoice", item);
+    if (!check.ok) return check;
+    if (Number(item.amount) <= 0) {
+      return { error: "Amount must be greater than zero." };
+    }
     const planLimits = getPlan(books.subscription.planid);
     if (!withinLimit(books.invoices.length, planLimits.max_invoices)) {
       return { error: `This plan allows ${planLimits.max_invoices} invoices.` };
@@ -586,6 +664,11 @@ export function AppProvider({ children }) {
   };
 
   const addIncome = (item) => {
+    const check = validateFormRecord("income", item);
+    if (!check.ok) return check;
+    if (Number(item.amount) <= 0) {
+      return { error: "Amount must be greater than zero." };
+    }
     setBooks((current) => ({
       ...current,
       income: [
@@ -603,6 +686,7 @@ export function AppProvider({ children }) {
         ...current.income,
       ],
     }));
+    return { ok: true };
   };
 
   const removeIncome = (incomeid) => {
@@ -613,6 +697,11 @@ export function AppProvider({ children }) {
   };
 
   const addExpense = (item) => {
+    const check = validateFormRecord("expense", item);
+    if (!check.ok) return check;
+    if (Number(item.amount) <= 0) {
+      return { error: "Amount must be greater than zero." };
+    }
     setBooks((current) => ({
       ...current,
       expenses: [
@@ -629,6 +718,7 @@ export function AppProvider({ children }) {
         ...current.expenses,
       ],
     }));
+    return { ok: true };
   };
 
   const removeExpense = (expenseid) => {
@@ -639,6 +729,11 @@ export function AppProvider({ children }) {
   };
 
   const addVendor = (item) => {
+    const check = validateFormRecord("vendor", item);
+    if (!check.ok) return check;
+    if (item.email && !EMAIL_PATTERN.test(item.email)) {
+      return { error: "Enter a valid email or leave it blank." };
+    }
     setBooks((current) => ({
       ...current,
       vendors: [
@@ -656,6 +751,7 @@ export function AppProvider({ children }) {
         ...current.vendors,
       ],
     }));
+    return { ok: true };
   };
 
   const removeVendor = (vendorid) => {
@@ -721,15 +817,14 @@ export function AppProvider({ children }) {
 
   const addLedgerEntry = (item) => {
     if (item.type === "expense") {
-      addExpense({
+      return addExpense({
         category: item.category,
         amount: item.amount,
         description: item.description,
         expense_date: item.date,
       });
-      return;
     }
-    addIncome({
+    return addIncome({
       source: item.category,
       amount: item.amount,
       description: item.description,
@@ -765,6 +860,7 @@ export function AppProvider({ children }) {
   const value = {
     isAuthenticated,
     user,
+    users,
     business,
     membership,
     members,

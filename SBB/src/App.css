@@ -157,6 +157,13 @@
   color: #1c3328;
 }
 
+.req {
+  color: #b42318;
+  margin-left: 3px;
+  text-decoration: none;
+  font-weight: 800;
+}
+
 .auth-card input {
   width: 100%;
   padding: 12px 14px;

@@ -74,6 +74,7 @@ export default function Customers() {
         <h2>Add customer</h2>
         {error ? <p className="auth-error" role="alert">{error}</p> : null}
         {success ? <p className="form-success" role="status">{success}</p> : null}
+        <p className="muted form-hint">Required: first name or customer business name. The app attaches businessid from your membership.</p>
         <form className="form-grid" onSubmit={submit}>
           <div className="field">
             <label htmlFor="cus-first">First name</label>
@@ -150,6 +151,7 @@ export default function Customers() {
               <thead>
                 <tr>
                   <th>customerid</th>
+                  <th>businessid</th>
                   <th>First name</th>
                   <th>Last name</th>
                   <th>Business name</th>
@@ -166,6 +168,7 @@ export default function Customers() {
                 {visible.map((item) => (
                   <tr key={item.customerid}>
                     <td>{item.customerid}</td>
+                    <td>{item.businessid || "—"}</td>
                     <td>{item.first_name || "—"}</td>
                     <td>{item.last_name || "—"}</td>
                     <td>{item.business_name || "—"}</td>

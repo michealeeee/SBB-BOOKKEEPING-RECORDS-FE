@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useApp } from "../../context/AppContext";
 import { userLabel } from "../../utils/entities";
 import { formatDate } from "../../utils/format";
+import FieldLabel from "../FieldLabel";
 
 export default function Business() {
   const { business, membership, members, updateBusiness } = useApp();
@@ -19,12 +20,17 @@ export default function Business() {
     event.preventDefault();
     setSuccess("");
     if (!canEdit) return;
-    updateBusiness({
+    if (!form.name.trim()) {
+      setSuccess("");
+      return;
+    }
+    const result = updateBusiness({
       name: form.name.trim(),
       email: form.email.trim(),
       phone: form.phone.trim(),
       address: form.address.trim(),
     });
+    if (result?.error) return;
     setSuccess("Business profile updated. Bookkeeping records stay attached to this businessid.");
   };
 
@@ -49,10 +55,13 @@ export default function Business() {
         {success ? <p className="form-success" role="status">{success}</p> : null}
         <form className="form-grid" onSubmit={submit}>
           <div className="field">
-            <label htmlFor="biz-name">Business name</label>
+            <FieldLabel htmlFor="biz-name" required>
+              Business name
+            </FieldLabel>
             <input
               id="biz-name"
               value={form.name}
+              required
               disabled={!canEdit}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
             />

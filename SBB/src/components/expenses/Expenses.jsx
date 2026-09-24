@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useApp } from "../../context/AppContext";
 import { formatDate, formatMoney } from "../../utils/format";
 import ConfirmDialog from "../ConfirmDialog";
+import FieldLabel from "../FieldLabel";
 
 const emptyForm = {
   category: "",
@@ -38,12 +39,16 @@ export default function Expenses() {
       setError("Amount must be greater than zero.");
       return;
     }
-    addExpense({
+    const result = addExpense({
       category: form.category.trim(),
       amount: Number(form.amount),
       description: form.description.trim(),
       expense_date: form.expense_date,
     });
+    if (result?.error) {
+      setError(result.error);
+      return;
+    }
     setForm({ ...emptyForm, expense_date: form.expense_date });
     setSuccess("Expense recorded for this business.");
   };
@@ -60,31 +65,40 @@ export default function Expenses() {
         {success ? <p className="form-success" role="status">{success}</p> : null}
         <form className="form-grid" onSubmit={submit}>
           <div className="field">
-            <label htmlFor="exp-cat">Category</label>
+            <FieldLabel htmlFor="exp-cat" required>
+              Category
+            </FieldLabel>
             <input
               id="exp-cat"
               value={form.category}
+              required
               onChange={(e) => setForm({ ...form, category: e.target.value })}
               placeholder="Rent, salary, electricity"
             />
           </div>
           <div className="field">
-            <label htmlFor="exp-amount">Amount</label>
+            <FieldLabel htmlFor="exp-amount" required>
+              Amount
+            </FieldLabel>
             <input
               id="exp-amount"
               type="number"
               min="0"
               step="0.01"
               value={form.amount}
+              required
               onChange={(e) => setForm({ ...form, amount: e.target.value })}
             />
           </div>
           <div className="field">
-            <label htmlFor="exp-date">Expense date</label>
+            <FieldLabel htmlFor="exp-date" required>
+              Expense date
+            </FieldLabel>
             <input
               id="exp-date"
               type="date"
               value={form.expense_date}
+              required
               onChange={(e) => setForm({ ...form, expense_date: e.target.value })}
             />
           </div>
@@ -122,6 +136,7 @@ export default function Expenses() {
               <thead>
                 <tr>
                   <th>expenseid</th>
+                  <th>businessid</th>
                   <th>Date</th>
                   <th>Category</th>
                   <th>Description</th>
@@ -135,6 +150,7 @@ export default function Expenses() {
                 {visible.map((item) => (
                   <tr key={item.expenseid}>
                     <td>{item.expenseid}</td>
+                    <td>{item.businessid || "—"}</td>
                     <td>{formatDate(item.expense_date)}</td>
                     <td>{item.category || "—"}</td>
                     <td>{item.description || "—"}</td>

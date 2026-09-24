@@ -22,6 +22,7 @@ const TITLES = {
   "/app/subscribers": "Subscription",
   "/app/team": "Team",
   "/app/business": "Business",
+  "/app/records": "Records",
 };
 
 export default function AppLayout() {
