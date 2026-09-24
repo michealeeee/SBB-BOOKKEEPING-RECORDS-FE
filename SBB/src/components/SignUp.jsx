@@ -7,10 +7,10 @@ import AuthShell from "./AuthShell";
 
 function SignUp() {
   const navigate = useNavigate();
-  const { registerBusiness } = useApp();
+  const { registerBusiness, plans } = useApp();
   const [params] = useSearchParams();
   const planid = params.get("plan") || "basic";
-  const selected = getPlan(planid);
+  const selected = getPlan(planid, plans);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");

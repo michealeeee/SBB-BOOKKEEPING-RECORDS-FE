@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useApp } from "../../context/AppContext";
-import { PLANS, getPlan, limitLabel } from "../../data/plans";
+import { getPlan, limitLabel } from "../../data/plans";
 import { badgeClass, formatDate, formatUsd } from "../../utils/format";
 
 export function SuperAdminOverview() {
@@ -99,26 +99,169 @@ export function SuperAdminBusinesses() {
 }
 
 export function SuperAdminPlans() {
-  const { tenants } = useApp();
-  const usage = PLANS.map((plan) => ({
+  const { plans, tenants, updatePlan } = useApp();
+  const [drafts, setDrafts] = useState(() => Object.fromEntries(plans.map((plan) => [plan.planid, { ...plan }])));
+  const [notice, setNotice] = useState("");
+  const [error, setError] = useState("");
+  const [editing, setEditing] = useState(plans[0]?.planid || "basic");
+
+  const usage = plans.map((plan) => ({
     ...plan,
     used: tenants.filter((item) => item.planid === plan.planid).length,
   }));
 
+  const draft = drafts[editing] || plans.find((item) => item.planid === editing) || plans[0];
+
+  const setDraft = (fields) => {
+    setDrafts((current) => ({
+      ...current,
+      [editing]: { ...(current[editing] || draft), ...fields },
+    }));
+  };
+
+  const save = (event) => {
+    event.preventDefault();
+    setError("");
+    setNotice("");
+    const result = updatePlan(editing, draft);
+    if (result?.error) {
+      setError(result.error);
+      return;
+    }
+    setNotice(`${draft.name} was updated. Tenants and the pricing page use this catalog.`);
+  };
+
   return (
     <div className="app-page">
       <header className="page-header">
-        <p>Plans are system-wide. Tenants subscribe; the super admin is not billed.</p>
+        <p>
+          Review every published plan, then change price, billing cycle, and limits. Tenant businesses
+          pick from this catalog.
+        </p>
       </header>
+      {error ? <p className="auth-error" role="alert">{error}</p> : null}
+      {notice ? <p className="form-success" role="status">{notice}</p> : null}
+
       <section className="panel">
         <h2>Plan catalog</h2>
-        <PlanTable plans={usage} showUsage />
+        <PlanTable
+          plans={usage}
+          showUsage
+          selected={editing}
+          onSelect={(planid) => {
+            setEditing(planid);
+            setError("");
+            setNotice("");
+          }}
+        />
       </section>
+
+      {draft ? (
+        <section className="panel">
+          <h2>Update {draft.name}</h2>
+          <p className="muted">planid: {draft.planid}. 0 in a limit means unlimited.</p>
+          <form className="form-grid" onSubmit={save}>
+            <div className="field">
+              <label htmlFor="plan-name">Name</label>
+              <input
+                id="plan-name"
+                value={draft.name || ""}
+                onChange={(event) => setDraft({ name: event.target.value })}
+              />
+            </div>
+            <div className="field">
+              <label htmlFor="plan-desc">Description</label>
+              <input
+                id="plan-desc"
+                value={draft.description || ""}
+                onChange={(event) => setDraft({ description: event.target.value })}
+              />
+            </div>
+            <div className="field">
+              <label htmlFor="plan-price">Price</label>
+              <input
+                id="plan-price"
+                type="number"
+                min="0"
+                step="0.01"
+                value={draft.price}
+                onChange={(event) => setDraft({ price: event.target.value })}
+              />
+            </div>
+            <div className="field">
+              <label htmlFor="plan-cycle">Billing cycle</label>
+              <select
+                id="plan-cycle"
+                value={draft.billing_cycle || "monthly"}
+                onChange={(event) => setDraft({ billing_cycle: event.target.value })}
+              >
+                <option value="monthly">Monthly</option>
+                <option value="yearly">Yearly</option>
+              </select>
+            </div>
+            <div className="field">
+              <label htmlFor="plan-customers">Max customers</label>
+              <input
+                id="plan-customers"
+                type="number"
+                min="0"
+                value={draft.max_customers}
+                onChange={(event) => setDraft({ max_customers: event.target.value })}
+              />
+            </div>
+            <div className="field">
+              <label htmlFor="plan-invoices">Max invoices</label>
+              <input
+                id="plan-invoices"
+                type="number"
+                min="0"
+                value={draft.max_invoices}
+                onChange={(event) => setDraft({ max_invoices: event.target.value })}
+              />
+            </div>
+            <div className="field">
+              <label htmlFor="plan-users">Max users</label>
+              <input
+                id="plan-users"
+                type="number"
+                min="0"
+                value={draft.max_users}
+                onChange={(event) => setDraft({ max_users: event.target.value })}
+              />
+            </div>
+            <div className="field">
+              <label htmlFor="plan-active">Available</label>
+              <select
+                id="plan-active"
+                value={draft.active === false ? "false" : "true"}
+                onChange={(event) => setDraft({ active: event.target.value === "true" })}
+              >
+                <option value="true">Active</option>
+                <option value="false">Hidden</option>
+              </select>
+            </div>
+            <div className="field">
+              <label htmlFor="plan-featured">Featured</label>
+              <select
+                id="plan-featured"
+                value={draft.featured ? "true" : "false"}
+                onChange={(event) => setDraft({ featured: event.target.value === "true" })}
+              >
+                <option value="false">No</option>
+                <option value="true">Most popular</option>
+              </select>
+            </div>
+            <button className="btn" type="submit">
+              Save plan
+            </button>
+          </form>
+        </section>
+      ) : null}
     </div>
   );
 }
 
-function PlanTable({ plans, showUsage = false }) {
+function PlanTable({ plans, showUsage = false, selected, onSelect }) {
   return (
     <div className="table-wrap">
       <table className="data-table">
@@ -130,19 +273,36 @@ function PlanTable({ plans, showUsage = false }) {
             <th>Customers</th>
             <th>Invoices</th>
             <th>Users</th>
+            <th>Status</th>
             {showUsage ? <th className="num">Tenants</th> : null}
+            {onSelect ? <th></th> : null}
           </tr>
         </thead>
         <tbody>
           {plans.map((plan) => (
-            <tr key={plan.planid}>
-              <td>{plan.name}</td>
+            <tr key={plan.planid} className={selected === plan.planid ? "is-selected" : undefined}>
+              <td>
+                <strong>{plan.name}</strong>
+                {plan.description ? <div className="muted">{plan.description}</div> : null}
+              </td>
               <td>{plan.billing_cycle}</td>
               <td className="num">{formatUsd(plan.price)}</td>
               <td>{limitLabel(plan.max_customers)}</td>
               <td>{limitLabel(plan.max_invoices)}</td>
               <td>{limitLabel(plan.max_users)}</td>
+              <td>
+                <span className={badgeClass(plan.active === false ? "suspended" : "active")}>
+                  {plan.active === false ? "hidden" : "active"}
+                </span>
+              </td>
               {showUsage ? <td className="num">{plan.used}</td> : null}
+              {onSelect ? (
+                <td>
+                  <button type="button" className="btn btn-secondary" onClick={() => onSelect(plan.planid)}>
+                    {selected === plan.planid ? "Editing" : "Edit"}
+                  </button>
+                </td>
+              ) : null}
             </tr>
           ))}
         </tbody>
@@ -152,6 +312,7 @@ function PlanTable({ plans, showUsage = false }) {
 }
 
 function TenantTable({ rows, compact = false, onStatus, onPlan }) {
+  const { plans } = useApp();
   if (rows.length === 0) {
     return <p className="empty-state">No businesses to show.</p>;
   }
@@ -178,7 +339,7 @@ function TenantTable({ rows, compact = false, onStatus, onPlan }) {
                 <div className="muted">{item.businessid}</div>
               </td>
               <td>{item.owner_email || "—"}</td>
-              <td>{getPlan(item.planid).name}</td>
+              <td>{getPlan(item.planid, plans).name}</td>
               <td>
                 <span className={badgeClass(item.status)}>{item.status}</span>
               </td>
@@ -192,7 +353,7 @@ function TenantTable({ rows, compact = false, onStatus, onPlan }) {
                       value={item.planid}
                       onChange={(event) => onPlan?.(item.businessid, event.target.value)}
                     >
-                      {PLANS.map((plan) => (
+                      {plans.map((plan) => (
                         <option key={plan.planid} value={plan.planid}>
                           {plan.name}
                         </option>

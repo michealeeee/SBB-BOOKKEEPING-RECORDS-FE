@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useApp } from "../context/AppContext";
 import { COMPANY } from "../data/company";
+import { getPlan, limitLabel } from "../data/plans";
+import { formatUsd } from "../utils/format";
 import WhatsAppHelpLink from "./WhatsAppHelpLink";
 import "../styles/landing.css";
 
@@ -207,7 +209,7 @@ export default function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
-  const { isAuthenticated, isSuperAdmin } = useApp();
+  const { isAuthenticated, isSuperAdmin, plans } = useApp();
 
   useEffect(() => {
     document.title = "Bookkeeply — Smart Bookkeeping";
@@ -516,26 +518,33 @@ export default function LandingPage() {
           </p>
         </div>
         <div className="lp-plans">
-          {PLANS.map((plan) => (
-            <article key={plan.id} className={plan.popular ? "popular" : ""}>
-              {plan.popular ? <p className="lp-popular">MOST POPULAR</p> : null}
-              <h3>{plan.name}</h3>
-              <p className="lp-plan-desc">{plan.description}</p>
+          {PLANS.map((plan) => {
+            const live = getPlan(plan.id, plans);
+            if (live.active === false) return null;
+            return (
+            <article key={plan.id} className={live.featured || plan.popular ? "popular" : ""}>
+              {live.featured || plan.popular ? <p className="lp-popular">MOST POPULAR</p> : null}
+              <h3>{live.name}</h3>
+              <p className="lp-plan-desc">{live.description || plan.description}</p>
               <p className="lp-price">
-                {plan.monthly}
-                <span>/month</span>
+                {formatUsd(live.price)}
+                <span>/{live.billing_cycle === "yearly" ? "year" : "month"}</span>
               </p>
-              <button type="button" className={plan.popular ? "lp-primary" : "lp-outline"} onClick={() => start(plan.id)}>
+              <button type="button" className={live.featured || plan.popular ? "lp-primary" : "lp-outline"} onClick={() => start(live.planid)}>
                 {plan.cta}
               </button>
               <p className="lp-includes">Includes:</p>
               <ul>
+                <li><Icon name="check" size={12} /> {limitLabel(live.max_customers)} customers</li>
+                <li><Icon name="check" size={12} /> {limitLabel(live.max_invoices)} invoices</li>
+                <li><Icon name="check" size={12} /> {limitLabel(live.max_users)} users</li>
                 {plan.features.map((feature) => (
                   <li key={feature}><Icon name="check" size={12} /> {feature}</li>
                 ))}
               </ul>
             </article>
-          ))}
+            );
+          })}
         </div>
       </section>
 

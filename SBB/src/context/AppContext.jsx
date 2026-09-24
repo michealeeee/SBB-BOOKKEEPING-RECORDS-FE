@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { PLANS, getPlan } from "../data/plans";
+import { PLANS, getPlan, clonePlans } from "../data/plans";
 import { isSuperAdminEmail } from "../data/superAdmin";
 import { customerLabel } from "../utils/entities";
 
@@ -406,11 +406,30 @@ function loadTenants(books) {
   return upsertTenant(SEEDED_TENANTS, live);
 }
 
+function loadPlans() {
+  try {
+    const raw = localStorage.getItem(PLATFORM_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed?.plans) && parsed.plans.length) {
+        return parsed.plans.map((plan) => {
+          const seed = getPlan(plan.planid, PLANS);
+          return { ...seed, ...plan };
+        });
+      }
+    }
+  } catch {
+    /* ignore */
+  }
+  return clonePlans();
+}
+
 export function AppProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(readAuth);
   const [user, setUser] = useState(readUser);
   const [books, setBooks] = useState(loadBooks);
   const [tenants, setTenants] = useState(() => loadTenants(loadBooks()));
+  const [plans, setPlans] = useState(loadPlans);
 
   const {
     business,
@@ -451,13 +470,13 @@ export function AppProvider({ children }) {
 
   useEffect(() => {
     try {
-      localStorage.setItem(PLATFORM_KEY, JSON.stringify({ tenants: tenantCatalog }));
+      localStorage.setItem(PLATFORM_KEY, JSON.stringify({ tenants: tenantCatalog, plans }));
     } catch {
       /* ignore */
     }
-  }, [tenantCatalog]);
+  }, [tenantCatalog, plans]);
 
-  const plan = getPlan(subscription?.planid);
+  const plan = getPlan(subscription?.planid, plans);
 
   const signIn = (profile) => {
     const platformAdmin = profile.platform_role === "super_admin" || isSuperAdminEmail(profile.email);
@@ -483,8 +502,8 @@ export function AppProvider({ children }) {
     const userid = createId("usr");
     const businessid = createId("biz");
     const subscriptionid = createId("sub");
-    const planid = PLANS.some((item) => item.planid === profile.planid) ? profile.planid : "basic";
-    const selected = getPlan(planid);
+    const planid = plans.some((item) => item.planid === profile.planid) ? profile.planid : "basic";
+    const selected = getPlan(planid, plans);
     const start = todayISO();
     const nextUser = {
       userid,
@@ -569,7 +588,7 @@ export function AppProvider({ children }) {
   };
 
   const updateTenantPlan = (businessid, planid) => {
-    const selected = getPlan(planid);
+    const selected = getPlan(planid, plans);
     setTenants((current) =>
       current.map((item) => (item.businessid === businessid ? { ...item, planid: selected.planid } : item))
     );
@@ -608,7 +627,7 @@ export function AppProvider({ children }) {
   };
 
   const addMember = (item) => {
-    const planLimits = getPlan(books.subscription.planid);
+    const planLimits = getPlan(books.subscription.planid, plans);
     if (!withinLimit(books.members.length, planLimits.max_users)) {
       return { error: `This plan allows ${planLimits.max_users} users.` };
     }
@@ -642,7 +661,7 @@ export function AppProvider({ children }) {
   };
 
   const addCustomer = (item) => {
-    const planLimits = getPlan(books.subscription.planid);
+    const planLimits = getPlan(books.subscription.planid, plans);
     if (!withinLimit(books.customers.length, planLimits.max_customers)) {
       return { error: `This plan allows ${planLimits.max_customers} customers.` };
     }
@@ -675,7 +694,7 @@ export function AppProvider({ children }) {
   };
 
   const addInvoice = (item) => {
-    const planLimits = getPlan(books.subscription.planid);
+    const planLimits = getPlan(books.subscription.planid, plans);
     if (!withinLimit(books.invoices.length, planLimits.max_invoices)) {
       return { error: `This plan allows ${planLimits.max_invoices} invoices.` };
     }
@@ -792,7 +811,7 @@ export function AppProvider({ children }) {
   };
 
   const choosePlan = (planid) => {
-    const selected = getPlan(planid);
+    const selected = getPlan(planid, plans);
     const start = todayISO();
     setBooks((current) => {
       const subscriptionid = current.subscription?.subscriptionid || createId("sub");
@@ -888,9 +907,51 @@ export function AppProvider({ children }) {
 
   const findCustomer = (customerid) => customers.find((item) => item.customerid === customerid);
 
+  const updatePlan = (planid, fields) => {
+    const current = getPlan(planid, plans);
+    if (!current) {
+      return { error: "That plan was not found." };
+    }
+    const name = String(fields.name ?? current.name).trim();
+    if (!name) {
+      return { error: "Plan name is required." };
+    }
+    const price = Number(fields.price);
+    if (Number.isNaN(price) || price < 0) {
+      return { error: "Price must be zero or more." };
+    }
+    const billing_cycle = fields.billing_cycle === "yearly" ? "yearly" : "monthly";
+    const toLimit = (value) => {
+      const next = Number(value);
+      if (Number.isNaN(next) || next < 0) return 0;
+      return Math.round(next);
+    };
+    setPlans((list) =>
+      list.map((item) => {
+        if (item.planid !== current.planid) {
+          return fields.featured ? { ...item, featured: false } : item;
+        }
+        return {
+          ...item,
+          name,
+          description: String(fields.description ?? item.description ?? "").trim(),
+          price,
+          billing_cycle,
+          max_customers: toLimit(fields.max_customers),
+          max_invoices: toLimit(fields.max_invoices),
+          max_users: toLimit(fields.max_users),
+          active: fields.active !== false,
+          featured: Boolean(fields.featured),
+          updated_at: todayISO(),
+        };
+      })
+    );
+    return { ok: true };
+  };
+
   const platformStats = useMemo(() => {
     const active = tenantCatalog.filter((item) => item.status !== "suspended");
-    const mrr = active.reduce((sum, item) => sum + Number(getPlan(item.planid).price || 0), 0);
+    const mrr = active.reduce((sum, item) => sum + Number(getPlan(item.planid, plans).price || 0), 0);
     const memberCount = tenantCatalog.reduce((sum, item) => sum + Number(item.members || 0), 0);
     return {
       businesses: tenantCatalog.length,
@@ -898,7 +959,7 @@ export function AppProvider({ children }) {
       active: active.length,
       mrr,
     };
-  }, [tenantCatalog]);
+  }, [tenantCatalog, plans]);
 
   const value = {
     isAuthenticated,
@@ -915,7 +976,8 @@ export function AppProvider({ children }) {
     subscription,
     payments,
     plan,
-    plans: PLANS,
+    plans,
+    updatePlan,
     tenants: tenantCatalog,
     currentTenant,
     platformStats,

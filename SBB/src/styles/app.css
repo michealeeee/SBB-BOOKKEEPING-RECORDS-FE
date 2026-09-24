@@ -692,6 +692,10 @@
   background: #f8fafc;
 }
 
+.data-table tbody tr.is-selected {
+  background: #eef6f1;
+}
+
 .badge {
   display: inline-flex;
   border-radius: 999px;
