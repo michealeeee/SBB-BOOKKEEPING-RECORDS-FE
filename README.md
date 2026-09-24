@@ -24,6 +24,8 @@ Open **http://localhost:5173/** (not GitHub, not `index.html`). Hard-refresh wit
 
 You should see **Basic**, **Pro**, and **Enterprise** plans. Each lists customer, invoice, and user limits. The books belong to a business, not a single login.
 
+After sign-in, open **Records** in the sidebar. That page lists models 1–12 (User through SubscriptionPayment) and their required fields.
+
 ## If `git pull` says “not a git repository”
 
 You are in your home folder (`~`), not the project. Clone or `cd` into `SBB-BOOKKEEPING-RECORDS-FE` first, then run the block above.
