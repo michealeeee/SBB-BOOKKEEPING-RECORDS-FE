@@ -52,7 +52,7 @@ function SignUp() {
     }
 
     setSubmitting(true);
-    const result = registerBusiness({
+    registerBusiness({
       first_name: firstName.trim(),
       last_name: lastName.trim(),
       email: email.trim(),
@@ -62,11 +62,6 @@ function SignUp() {
       address: address.trim(),
       planid: selected.planid,
     });
-    if (result?.error) {
-      setSubmitting(false);
-      setError(result.error);
-      return;
-    }
     navigate("/app", { replace: true });
   };
 
@@ -86,18 +81,12 @@ function SignUp() {
         ) : null}
 
         <form onSubmit={handleSubmit} noValidate>
-          <label htmlFor="signup-first">
-            First name
-            <abbr className="req" title="Required">
-              *
-            </abbr>
-          </label>
+          <label htmlFor="signup-first">First name</label>
           <input
             id="signup-first"
             type="text"
             autoComplete="given-name"
             value={firstName}
-            required
             onChange={(event) => setFirstName(event.target.value)}
             placeholder="Alex"
           />
@@ -112,33 +101,21 @@ function SignUp() {
             placeholder="Mensah"
           />
 
-          <label htmlFor="signup-email">
-            Email
-            <abbr className="req" title="Required">
-              *
-            </abbr>
-          </label>
+          <label htmlFor="signup-email">Email</label>
           <input
             id="signup-email"
             type="email"
             autoComplete="email"
             value={email}
-            required
             onChange={(event) => setEmail(event.target.value)}
             placeholder="you@business.com"
           />
 
-          <label htmlFor="signup-business">
-            Business name
-            <abbr className="req" title="Required">
-              *
-            </abbr>
-          </label>
+          <label htmlFor="signup-business">Business name</label>
           <input
             id="signup-business"
             type="text"
             value={businessName}
-            required
             onChange={(event) => setBusinessName(event.target.value)}
             placeholder="Northwind Books"
           />
@@ -170,34 +147,22 @@ function SignUp() {
             placeholder="Optional"
           />
 
-          <label htmlFor="signup-password">
-            Password
-            <abbr className="req" title="Required">
-              *
-            </abbr>
-          </label>
+          <label htmlFor="signup-password">Password</label>
           <input
             id="signup-password"
             type="password"
             autoComplete="new-password"
             value={password}
-            required
             onChange={(event) => setPassword(event.target.value)}
             placeholder="At least 6 characters"
           />
 
-          <label htmlFor="signup-confirm">
-            Confirm password
-            <abbr className="req" title="Required">
-              *
-            </abbr>
-          </label>
+          <label htmlFor="signup-confirm">Confirm password</label>
           <input
             id="signup-confirm"
             type="password"
             autoComplete="new-password"
             value={confirm}
-            required
             onChange={(event) => setConfirm(event.target.value)}
             placeholder="Re-enter password"
           />

@@ -16,7 +16,6 @@ import {
 import LineChart from "./LineChart";
 import IncomeExpenseChart from "./IncomeExpenseChart";
 import SummaryBoxes from "./SummaryBoxes";
-import FieldLabel from "../FieldLabel";
 
 const VIEWS = [
   { id: "all", label: "All" },
@@ -127,12 +126,8 @@ export default function Dashboard() {
     event.preventDefault();
     setError("");
     setSuccess("");
-    if (!form.category.trim() || !form.amount || !form.date) {
-      setError(
-        form.type === "income"
-          ? "Source, amount, and transaction date are required."
-          : "Category, amount, and expense date are required."
-      );
+    if (!form.description.trim() || !form.amount) {
+      setError("Description and amount are required.");
       return;
     }
     if (Number(form.amount) <= 0) {
@@ -147,15 +142,11 @@ export default function Dashboard() {
       setError("Pick a date in the selected week.");
       return;
     }
-    const result = addTransaction({
+    addTransaction({
       ...form,
       description: form.description.trim(),
       amount: Number(form.amount),
     });
-    if (result?.error) {
-      setError(result.error);
-      return;
-    }
     setForm(emptyForm(view === "all" ? todayISO() : form.date));
     setSuccess(
       view === "daily"
@@ -321,16 +312,13 @@ export default function Dashboard() {
         {success ? <p className="form-success" role="status">{success}</p> : null}
         <form className="form-grid" onSubmit={submit}>
           <div className="field">
-            <FieldLabel htmlFor="dash-date" required>
-              {form.type === "income" ? "Transaction date" : "Expense date"}
-            </FieldLabel>
+            <label htmlFor="dash-date">Date</label>
             <input
               id="dash-date"
               type="date"
               min={view === "weekly" ? weekStart : undefined}
               max={view === "weekly" ? weekEnd : undefined}
               value={form.date}
-              required
               onChange={(e) => setForm({ ...form, date: e.target.value })}
             />
           </div>
@@ -344,13 +332,10 @@ export default function Dashboard() {
             />
           </div>
           <div className="field">
-            <FieldLabel htmlFor="dash-cat" required>
-              {form.type === "income" ? "Source" : "Category"}
-            </FieldLabel>
+            <label htmlFor="dash-cat">Category</label>
             <input
               id="dash-cat"
               value={form.category}
-              required
               onChange={(e) => setForm({ ...form, category: e.target.value })}
             />
           </div>
@@ -366,16 +351,13 @@ export default function Dashboard() {
             </select>
           </div>
           <div className="field">
-            <FieldLabel htmlFor="dash-amt" required>
-              Amount
-            </FieldLabel>
+            <label htmlFor="dash-amt">Amount</label>
             <input
               id="dash-amt"
               type="number"
               min="0"
               step="0.01"
               value={form.amount}
-              required
               onChange={(e) => setForm({ ...form, amount: e.target.value })}
             />
           </div>

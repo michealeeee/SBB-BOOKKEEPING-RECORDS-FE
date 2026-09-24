@@ -54,34 +54,22 @@ function SignIn() {
         ) : null}
 
         <form onSubmit={handleSubmit} noValidate>
-          <label htmlFor="signin-email">
-            Email address
-            <abbr className="req" title="Required">
-              *
-            </abbr>
-          </label>
+          <label htmlFor="signin-email">Email address</label>
           <input
             id="signin-email"
             type="email"
             autoComplete="email"
             value={email}
-            required
             onChange={(event) => setEmail(event.target.value)}
             placeholder="you@business.com"
           />
 
-          <label htmlFor="signin-password">
-            Password
-            <abbr className="req" title="Required">
-              *
-            </abbr>
-          </label>
+          <label htmlFor="signin-password">Password</label>
           <input
             id="signin-password"
             type="password"
             autoComplete="current-password"
             value={password}
-            required
             onChange={(event) => setPassword(event.target.value)}
             placeholder="Enter password"
           />

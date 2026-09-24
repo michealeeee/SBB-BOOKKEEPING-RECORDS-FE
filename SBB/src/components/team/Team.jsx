@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useApp } from "../../context/AppContext";
 import { userLabel } from "../../utils/entities";
 import { badgeClass, formatDate } from "../../utils/format";
-import FieldLabel from "../FieldLabel";
 
 const emptyForm = {
   first_name: "",
@@ -78,13 +77,10 @@ export default function Team() {
         {success ? <p className="form-success" role="status">{success}</p> : null}
         <form className="form-grid" onSubmit={submit}>
           <div className="field">
-            <FieldLabel htmlFor="mem-first" required>
-              First name
-            </FieldLabel>
+            <label htmlFor="mem-first">First name</label>
             <input
               id="mem-first"
               value={form.first_name}
-              required
               onChange={(e) => setForm({ ...form, first_name: e.target.value })}
             />
           </div>
@@ -97,21 +93,16 @@ export default function Team() {
             />
           </div>
           <div className="field">
-            <FieldLabel htmlFor="mem-email" required>
-              Email
-            </FieldLabel>
+            <label htmlFor="mem-email">Email</label>
             <input
               id="mem-email"
               type="email"
               value={form.email}
-              required
               onChange={(e) => setForm({ ...form, email: e.target.value })}
             />
           </div>
           <div className="field">
-            <FieldLabel htmlFor="mem-role" required>
-              Role
-            </FieldLabel>
+            <label htmlFor="mem-role">Role</label>
             <select
               id="mem-role"
               value={form.role}
@@ -146,7 +137,6 @@ export default function Team() {
             <thead>
               <tr>
                 <th>userid</th>
-                <th>businessid</th>
                 <th>User</th>
                 <th>Email</th>
                 <th>Role</th>
@@ -160,7 +150,6 @@ export default function Team() {
               {members.map((item) => (
                 <tr key={item.userid}>
                   <td>{item.userid}</td>
-                  <td>{item.businessid || "—"}</td>
                   <td>{userLabel(item)}</td>
                   <td>{item.email}</td>
                   <td>
