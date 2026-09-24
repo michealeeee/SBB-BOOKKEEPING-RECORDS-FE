@@ -103,7 +103,7 @@ export function summarizeLedger(items) {
 
 export function badgeClass(status) {
   const key = String(status || "").toLowerCase();
-  if (["paid", "income", "active", "success", "owner"].includes(key)) return `badge badge-${key === "success" || key === "owner" ? "paid" : key}`;
+  if (["paid", "income", "active", "success", "owner", "super_admin"].includes(key)) return `badge badge-${key === "success" || key === "owner" || key === "super_admin" ? "paid" : key}`;
   if (["sent", "draft", "partial", "admin", "pending"].includes(key)) return "badge badge-sent";
   if (["overdue", "expense", "cancelled", "failed", "expired", "unpaid"].includes(key)) return "badge badge-overdue";
   if (key === "suspended" || key === "staff") return "badge badge-suspended";

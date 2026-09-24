@@ -4,32 +4,21 @@ import { useApp } from "../../context/AppContext";
 import { COMPANY } from "../../data/company";
 import WhatsAppHelpLink from "../WhatsAppHelpLink";
 import { userLabel } from "../../utils/entities";
-import Sidebar from "./Sidebar";
+import AdminSidebar from "./AdminSidebar";
 import "../../styles/app.css";
 
 const TITLES = {
-  "/app": "Dashboard",
-  "/app/income": "Income",
-  "/app/transactions": "Income",
-  "/app/invoices": "Invoices",
-  "/app/reports": "Reports",
-  "/app/expenses": "Expenses",
-  "/app/vendors": "Vendors",
-  "/app/customers": "Customers",
-  "/app/taxes": "Taxes",
-  "/app/subscription": "Subscription",
-  "/app/subscriptions": "Subscription",
-  "/app/subscribers": "Subscription",
-  "/app/team": "Team",
-  "/app/business": "Business",
+  "/admin": "Platform overview",
+  "/admin/businesses": "Businesses",
+  "/admin/plans": "Plans",
 };
 
-export default function AppLayout() {
-  const { user, business, currentTenant, signOut } = useApp();
+export default function SuperAdminLayout() {
+  const { user, signOut } = useApp();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
-  const page = TITLES[location.pathname] || "Books";
+  const page = TITLES[location.pathname] || "Super admin";
 
   useEffect(() => {
     document.title = `${page} · Bookkeeply`;
@@ -70,11 +59,7 @@ export default function AppLayout() {
         />
       ) : null}
 
-      <Sidebar
-        mobileOpen={mobileOpen}
-        onClose={() => setMobileOpen(false)}
-        onSignOut={handleSignOut}
-      />
+      <AdminSidebar mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} onSignOut={handleSignOut} />
 
       <div className="app-frame">
         <header className="app-topbar">
@@ -89,11 +74,11 @@ export default function AppLayout() {
             <span className="sr-only">{mobileOpen ? "Close menu" : "Open menu"}</span>
           </button>
           <div>
-            <p className="eyebrow">Books</p>
+            <p className="eyebrow">SaaS platform</p>
             <h1>{page}</h1>
           </div>
           <div className="topbar-meta">
-            <span className="period">{business?.name || "Business"} · GHS</span>
+            <span className="period">Super admin</span>
             <span className="top-user">{userLabel(user)}</span>
             <button type="button" className="ghost-btn" onClick={() => navigate("/")}>
               Home
@@ -105,24 +90,19 @@ export default function AppLayout() {
         </header>
 
         <main id="main-content" className="app-main" tabIndex={-1}>
-          {currentTenant?.status === "suspended" ? (
-            <p className="auth-error" role="status">
-              This business is suspended by the Bookkeeply super admin. Contact support if you need access.
-            </p>
-          ) : null}
           <Outlet />
         </main>
         <footer className="app-footer">
           <div>
-            <strong>{business?.name || COMPANY.name}</strong>
-            <p>{business?.address || COMPANY.tagline}</p>
+            <strong>{COMPANY.name} super admin</strong>
+            <p>Operate tenant businesses, plans, and subscriptions.</p>
           </div>
           <div className="app-footer-actions">
             <button type="button" className="ghost-btn" onClick={() => navigate("/")}>
               Back to home
             </button>
             <span className="app-contact-label">Contact us</span>
-            <WhatsAppHelpLink context={business?.name || "my Bookkeeply account"} />
+            <WhatsAppHelpLink context="the Bookkeeply super admin console" />
           </div>
         </footer>
       </div>

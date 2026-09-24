@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { PLANS, getPlan } from "../data/plans";
+import { isSuperAdminEmail } from "../data/superAdmin";
 import { customerLabel } from "../utils/entities";
 
 /* Context files export the provider and a hook together. */
@@ -8,6 +9,7 @@ import { customerLabel } from "../utils/entities";
 const AUTH_KEY = "bookkeeply-auth";
 const USER_KEY = "bookkeeply-user";
 const BOOKS_KEY = "bookkeeply-books-v3";
+const PLATFORM_KEY = "bookkeeply-platform-v1";
 
 const AppContext = createContext(null);
 
@@ -301,6 +303,8 @@ function readUser() {
           first_name: parsed.first_name || "",
           last_name: parsed.last_name || "",
           email: parsed.email,
+          platform_role: parsed.platform_role || (isSuperAdminEmail(parsed.email) ? "super_admin" : undefined),
+          created_at: parsed.created_at,
         };
       }
     }
@@ -341,10 +345,72 @@ function withinLimit(count, max) {
   return !max || max <= 0 || count < max;
 }
 
+const SEEDED_TENANTS = [
+  {
+    businessid: "biz-accra",
+    name: "Accra Market Co",
+    email: "hello@accramarket.example",
+    owner_email: "ama@accramarket.example",
+    members: 3,
+    planid: "basic",
+    subscription_status: "active",
+    status: "active",
+    created_at: "2026-06-12",
+  },
+  {
+    businessid: "biz-tema",
+    name: "Tema Wholesale",
+    email: "ops@temawholesale.example",
+    owner_email: "kofi@temawholesale.example",
+    members: 8,
+    planid: "enterprise",
+    subscription_status: "active",
+    status: "active",
+    created_at: "2026-05-02",
+  },
+];
+
+function tenantFromBooks(books, extra = {}) {
+  const owner = books.members?.find((item) => item.role === "owner") || books.members?.[0];
+  return {
+    businessid: books.business.businessid,
+    name: books.business.name,
+    email: books.business.email,
+    owner_email: owner?.email || "",
+    members: books.members?.length || 0,
+    planid: books.subscription?.planid,
+    subscription_status: books.subscription?.status,
+    status: extra.status || "active",
+    created_at: books.business.created_at,
+  };
+}
+
+function upsertTenant(list, tenant) {
+  const rest = (list || []).filter((item) => item.businessid !== tenant.businessid);
+  return [{ ...tenant }, ...rest];
+}
+
+function loadTenants(books) {
+  const live = tenantFromBooks(books);
+  try {
+    const raw = localStorage.getItem(PLATFORM_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed?.tenants) && parsed.tenants.length) {
+        return upsertTenant(parsed.tenants, live);
+      }
+    }
+  } catch {
+    /* ignore */
+  }
+  return upsertTenant(SEEDED_TENANTS, live);
+}
+
 export function AppProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(readAuth);
   const [user, setUser] = useState(readUser);
   const [books, setBooks] = useState(loadBooks);
+  const [tenants, setTenants] = useState(() => loadTenants(loadBooks()));
 
   const {
     business,
@@ -366,19 +432,41 @@ export function AppProvider({ children }) {
     }
   }, [books]);
 
-  const membership = useMemo(
-    () => members.find((item) => item.userid === user.userid) || members.find((item) => item.role === "owner"),
-    [members, user.userid]
+  const isSuperAdmin = user?.platform_role === "super_admin" || isSuperAdminEmail(user?.email);
+
+  const membership = useMemo(() => {
+    if (isSuperAdmin) return null;
+    return members.find((item) => item.userid === user.userid) || members.find((item) => item.role === "owner");
+  }, [isSuperAdmin, members, user.userid]);
+
+  const tenantCatalog = useMemo(() => {
+    const previous = tenants.find((item) => item.businessid === business?.businessid);
+    return upsertTenant(tenants, tenantFromBooks(books, { status: previous?.status || "active" }));
+  }, [tenants, books, business?.businessid]);
+
+  const currentTenant = useMemo(
+    () => tenantCatalog.find((item) => item.businessid === business?.businessid),
+    [tenantCatalog, business?.businessid]
   );
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(PLATFORM_KEY, JSON.stringify({ tenants: tenantCatalog }));
+    } catch {
+      /* ignore */
+    }
+  }, [tenantCatalog]);
 
   const plan = getPlan(subscription?.planid);
 
   const signIn = (profile) => {
+    const platformAdmin = profile.platform_role === "super_admin" || isSuperAdminEmail(profile.email);
     const nextUser = {
-      userid: profile.userid || createId("usr"),
+      userid: profile.userid || (platformAdmin ? "usr-super" : createId("usr")),
       first_name: profile.first_name || "",
       last_name: profile.last_name || "",
       email: profile.email,
+      platform_role: platformAdmin ? "super_admin" : undefined,
       created_at: profile.created_at || todayISO(),
     };
     setUser(nextUser);
@@ -405,6 +493,20 @@ export function AppProvider({ children }) {
       email: profile.email,
       created_at: start,
     };
+
+    setTenants((current) =>
+      upsertTenant(upsertTenant(current, tenantFromBooks(books)), {
+        businessid,
+        name: profile.business_name,
+        email: profile.business_email || profile.email,
+        owner_email: profile.email,
+        members: 1,
+        planid,
+        subscription_status: "active",
+        status: "active",
+        created_at: start,
+      })
+    );
 
     setBooks({
       business: {
@@ -458,6 +560,30 @@ export function AppProvider({ children }) {
       ],
     });
     signIn(nextUser);
+  };
+
+  const updateTenantStatus = (businessid, status) => {
+    setTenants((current) =>
+      current.map((item) => (item.businessid === businessid ? { ...item, status } : item))
+    );
+  };
+
+  const updateTenantPlan = (businessid, planid) => {
+    const selected = getPlan(planid);
+    setTenants((current) =>
+      current.map((item) => (item.businessid === businessid ? { ...item, planid: selected.planid } : item))
+    );
+    setBooks((current) => {
+      if (current.business.businessid !== businessid) return current;
+      return {
+        ...current,
+        subscription: {
+          ...current.subscription,
+          planid: selected.planid,
+          updated_at: todayISO(),
+        },
+      };
+    });
   };
 
   const signOut = () => {
@@ -762,8 +888,21 @@ export function AppProvider({ children }) {
 
   const findCustomer = (customerid) => customers.find((item) => item.customerid === customerid);
 
+  const platformStats = useMemo(() => {
+    const active = tenantCatalog.filter((item) => item.status !== "suspended");
+    const mrr = active.reduce((sum, item) => sum + Number(getPlan(item.planid).price || 0), 0);
+    const memberCount = tenantCatalog.reduce((sum, item) => sum + Number(item.members || 0), 0);
+    return {
+      businesses: tenantCatalog.length,
+      members: memberCount,
+      active: active.length,
+      mrr,
+    };
+  }, [tenantCatalog]);
+
   const value = {
     isAuthenticated,
+    isSuperAdmin,
     user,
     business,
     membership,
@@ -777,6 +916,9 @@ export function AppProvider({ children }) {
     payments,
     plan,
     plans: PLANS,
+    tenants: tenantCatalog,
+    currentTenant,
+    platformStats,
     ledger,
     transactions: ledger,
     totals,
@@ -799,6 +941,8 @@ export function AppProvider({ children }) {
     addVendor,
     removeVendor,
     choosePlan,
+    updateTenantStatus,
+    updateTenantPlan,
     addTransaction: addLedgerEntry,
     removeTransaction: removeLedgerEntry,
   };

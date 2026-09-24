@@ -633,6 +633,17 @@
   background: #f8fafc;
 }
 
+.tenant-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.tenant-actions select {
+  min-width: 120px;
+}
+
 .btn-ghost {
   background: transparent;
   color: var(--expense);

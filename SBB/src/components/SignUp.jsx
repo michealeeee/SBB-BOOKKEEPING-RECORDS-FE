@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useApp } from "../context/AppContext";
 import { getPlan } from "../data/plans";
+import { isSuperAdminEmail } from "../data/superAdmin";
 import AuthShell from "./AuthShell";
 
 function SignUp() {
@@ -38,6 +39,11 @@ function SignUp() {
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
       setError("Enter a valid email address.");
+      return;
+    }
+
+    if (isSuperAdminEmail(email.trim())) {
+      setError("That email is reserved for the Bookkeeply super admin. Sign in instead.");
       return;
     }
 

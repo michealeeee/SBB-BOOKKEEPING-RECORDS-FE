@@ -207,7 +207,7 @@ export default function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
-  const { isAuthenticated } = useApp();
+  const { isAuthenticated, isSuperAdmin } = useApp();
 
   useEffect(() => {
     document.title = "Bookkeeply — Smart Bookkeeping";
@@ -243,7 +243,7 @@ export default function LandingPage() {
   const start = (plan) => {
     setMenuOpen(false);
     if (isAuthenticated) {
-      navigate("/app");
+      navigate(isSuperAdmin ? "/admin" : "/app");
       return;
     }
     if (!plan) {
@@ -255,7 +255,7 @@ export default function LandingPage() {
 
   const goSignIn = () => {
     setMenuOpen(false);
-    navigate(isAuthenticated ? "/app" : "/signin");
+    navigate(isAuthenticated ? (isSuperAdmin ? "/admin" : "/app") : "/signin");
   };
 
   return (
@@ -275,7 +275,7 @@ export default function LandingPage() {
           </nav>
           <div className="lp-actions">
             <button type="button" className="lp-ghost" onClick={goSignIn}>
-              {isAuthenticated ? "Open dashboard" : "Sign in"}
+              {isAuthenticated ? (isSuperAdmin ? "Open console" : "Open dashboard") : "Sign in"}
             </button>
             <button type="button" className="lp-primary" onClick={() => start()}>
               {isAuthenticated ? "Back to books" : "Get Started Free"}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useApp } from "../context/AppContext";
+import { checkSuperAdminPassword, isSuperAdminEmail, SUPER_ADMIN } from "../data/superAdmin";
 import AuthShell from "./AuthShell";
 
 function SignIn() {
@@ -31,6 +32,23 @@ function SignIn() {
 
     if (password.length < 6) {
       setError("Password must be at least 6 characters.");
+      return;
+    }
+
+    if (isSuperAdminEmail(email.trim())) {
+      if (!checkSuperAdminPassword(password)) {
+        setError("That super admin password is not correct.");
+        return;
+      }
+      setSubmitting(true);
+      signIn({
+        userid: SUPER_ADMIN.userid,
+        first_name: SUPER_ADMIN.first_name,
+        last_name: SUPER_ADMIN.last_name,
+        email: SUPER_ADMIN.email,
+        platform_role: "super_admin",
+      });
+      navigate("/admin", { replace: true });
       return;
     }
 
@@ -82,6 +100,9 @@ function SignIn() {
         <p className="auth-hint">
           Demo only — no server is connected. The password is checked locally and
           is never stored with the user record in this UI.
+        </p>
+        <p className="auth-hint">
+          Super admin: {SUPER_ADMIN.email} / {SUPER_ADMIN.password}
         </p>
 
         <p className="auth-footer">

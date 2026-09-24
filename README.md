@@ -37,3 +37,5 @@ You are in your home folder (`~`), not the project. Clone or `cd` into `SBB-BOOK
 - A Vite server that was started before you pulled
 
 Sign in with any valid email and a password of 6+ characters, for example `demo@business.com` / `demo1234`.
+
+Super admin (platform operator, not a business member): `admin@bookkeeply.app` / `admin1234`. That opens `/admin`.

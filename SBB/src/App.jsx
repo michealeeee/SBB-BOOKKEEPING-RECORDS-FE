@@ -12,23 +12,39 @@ import Taxes from "./components/taxes/Taxes";
 import Subscription from "./components/subscription/Subscription";
 import Team from "./components/team/Team";
 import Business from "./components/business/Business";
+import SuperAdminLayout from "./components/admin/SuperAdminLayout";
+import { SuperAdminOverview, SuperAdminBusinesses, SuperAdminPlans } from "./components/admin/SuperAdminPages";
 import LandingPage from "./components/LandingPage";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import "./App.css";
 
 function ProtectedRoute({ children }) {
-  const { isAuthenticated } = useApp();
+  const { isAuthenticated, isSuperAdmin } = useApp();
   if (!isAuthenticated) {
     return <Navigate to="/" replace />;
+  }
+  if (isSuperAdmin) {
+    return <Navigate to="/admin" replace />;
+  }
+  return children;
+}
+
+function SuperAdminRoute({ children }) {
+  const { isAuthenticated, isSuperAdmin } = useApp();
+  if (!isAuthenticated) {
+    return <Navigate to="/signin" replace />;
+  }
+  if (!isSuperAdmin) {
+    return <Navigate to="/app" replace />;
   }
   return children;
 }
 
 function PublicOnly({ children }) {
-  const { isAuthenticated } = useApp();
+  const { isAuthenticated, isSuperAdmin } = useApp();
   if (isAuthenticated) {
-    return <Navigate to="/app" replace />;
+    return <Navigate to={isSuperAdmin ? "/admin" : "/app"} replace />;
   }
   return children;
 }
@@ -78,6 +94,19 @@ export default function App() {
             <Route path="team" element={<Team />} />
             <Route path="business" element={<Business />} />
             <Route path="*" element={<Navigate to="/app" replace />} />
+          </Route>
+          <Route
+            path="/admin"
+            element={
+              <SuperAdminRoute>
+                <SuperAdminLayout />
+              </SuperAdminRoute>
+            }
+          >
+            <Route index element={<SuperAdminOverview />} />
+            <Route path="businesses" element={<SuperAdminBusinesses />} />
+            <Route path="plans" element={<SuperAdminPlans />} />
+            <Route path="*" element={<Navigate to="/admin" replace />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
