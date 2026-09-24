@@ -303,7 +303,7 @@ export default function LandingPage() {
         <a href="#pricing" onClick={() => setMenuOpen(false)}>Pricing</a>
         <a href="#about" onClick={() => setMenuOpen(false)}>About</a>
         <button type="button" className="lp-ghost" onClick={goSignIn}>
-          {isAuthenticated ? "Open dashboard" : "Sign in"}
+          {isAuthenticated ? (isSuperAdmin ? "Open console" : "Open dashboard") : "Sign in"}
         </button>
         <button type="button" className="lp-primary" onClick={() => start()}>
           {isAuthenticated ? "Back to books" : "Get Started Free"}
